@@ -1,0 +1,31 @@
+{
+  "name": "p2-groupformation",
+  "version": "1.0.0",
+  "description": "AAU p2 project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mads256h/p2-groupformation.git"
+  },
+  "keywords": [
+    "groupformation"
+  ],
+  "author": "SW2 C2-6",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mads256h/p2-groupformation/issues"
+  },
+  "homepage": "https://github.com/mads256h/p2-groupformation#readme",
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^32.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "jsdoc": "^3.6.6"
+  }
+}
