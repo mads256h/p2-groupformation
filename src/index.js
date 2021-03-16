@@ -13,8 +13,3 @@ function printStr(str) {
     }
     console.log(str);
 }
-
-const bruh = function()
-{
-
-}
