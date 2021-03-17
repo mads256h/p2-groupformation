@@ -28,9 +28,17 @@ jobs:
       - name: Install npm modules
         run: npm install
 
-      # Run ESLINT
+      # Run ESLint
       - name: Run ESLint
-        run: npm run lint
+        run: npm run js-lint
+
+      # Run html-validate
+      - name: Run html-validate
+        run: npm run html-lint
+
+      # Run stylelint
+      - name: Run stylelint
+        run: npm run css-lint
   test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest

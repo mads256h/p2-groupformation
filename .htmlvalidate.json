@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "html-validate:recommended",
+    "html-validate:document"
+  ],
+
+  "rules": {
+    "no-unknown-elements": "error",
+    "no-style-tag": "error",
+    "require-sri": "off"
+  }
+}
