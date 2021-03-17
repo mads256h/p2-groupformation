@@ -2,7 +2,7 @@
   "name": "p2-groupformation",
   "version": "1.0.0",
   "description": "AAU p2 project",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "main": "node src/index.js",
     "lint": "eslint src/",
