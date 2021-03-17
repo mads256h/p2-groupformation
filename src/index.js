@@ -1,5 +1,7 @@
 #!/usr/bin/node
 
+const plus = require("./math.js");
+
 printStr("Hello, world!");
 
 /**
@@ -13,3 +15,6 @@ function printStr(str) {
     }
     console.log(str);
 }
+
+
+console.log(plus(2, 6));
