@@ -2,18 +2,21 @@ module.exports = {
   env: {
     browser: false,
     node: true,
-    es2021: true
+    es2021: true,
+    "jest/globals": true
   },
   extends: [
-    'eslint:recommended',
-    'plugin:jsdoc/recommended'
+    "eslint:recommended",
+    "plugin:jsdoc/recommended",
+    "plugin:jest/recommended"
   ],
   plugins: [
-    "jsdoc"
+    "jsdoc",
+    "jest"
   ],
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: 'module'
+    sourceType: "module"
   },
   rules: {
     "semi": ["error", "always"],
@@ -23,7 +26,6 @@ module.exports = {
     "no-implied-eval": ["error"],
     "no-implicit-coercion": ["error"],
     "no-labels": ["error"],
-    "no-magic-numbers": ["error"],
     "strict": ["error"],
     "yoda": ["error", "never"],
     "no-shadow": ["error"],
