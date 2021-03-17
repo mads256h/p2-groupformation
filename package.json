@@ -6,7 +6,8 @@
   "scripts": {
     "main": "node src/index.js",
     "lint": "eslint src/",
-    "test": "jest"
+    "test": "jest",
+    "doc": "jsdoc -r src/"
   },
   "repository": {
     "type": "git",
