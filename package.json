@@ -4,7 +4,7 @@
   "description": "AAU p2 project",
   "main": "index.js",
   "scripts": {
-    "main": "src/index.js",
+    "main": "node src/index.js",
     "lint": "eslint src/",
     "test": "jest"
   },
