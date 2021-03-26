@@ -1,13 +1,13 @@
 module.exports = {Group, Student, Criteria, LearningStyles, SubjectPreference, Subject};
-const typecheck = require("./typecheck");
+const typeassert = require("./typeassert");
 
 class Group {
     constructor(name, id, students){
-        typecheck.isString(name);
-        typecheck.isNumber(id);
-        typecheck.isInteger(id);
-        typecheck.isArray(students);
-        typecheck.arrayItemsIsInstance(students, Student);
+        typeassert.assertString(name);
+        typeassert.assertNumber(id);
+        typeassert.assertInteger(id);
+        typeassert.assertArray(students);
+        typeassert.assertArrayItemsInstanceOf(students, Student);
 
         this.name = name;
         this.id = id;
@@ -20,8 +20,8 @@ class Group {
 
 class Student {
     constructor(name, criteria){
-        typecheck.isString(name);
-        typecheck.isInstance(criteria, Criteria);
+        typeassert.assertString(name);
+        typeassert.assertInstanceOf(criteria, Criteria);
 
         this.name = name;
         this.criteria = criteria;
@@ -33,10 +33,10 @@ class Student {
 class Criteria {
     constructor(ambitions, workingAtHome, learningStyles, subjectPreference) {
 
-        typecheck.isInteger(ambitions);
-        typecheck.isInteger(workingAtHome);
-        typecheck.isInstance(learningStyles, LearningStyles);
-        typecheck.isInstance(subjectPreference, SubjectPreference);
+        typeassert.assertInteger(ambitions);
+        typeassert.assertInteger(workingAtHome);
+        typeassert.assertInstanceOf(learningStyles, LearningStyles);
+        typeassert.assertInstanceOf(subjectPreference, SubjectPreference);
 
         this.ambitions = ambitions;
         this.workingAtHome = workingAtHome;
@@ -51,9 +51,9 @@ class LearningStyles {
 
     constructor(activeReflective, visualVerbal, sensingIntuitive, sequentialGlobal) {
         function validateParameter(parameter) {
-            typecheck.isNumber(parameter);
-            typecheck.isInteger(parameter);
-            typecheck.range(parameter, -11, 11);
+            typeassert.assertNumber(parameter);
+            typeassert.assertInteger(parameter);
+            typeassert.assertRangeInclusive(parameter, -11, 11);
         }
 
         validateParameter(activeReflective);
@@ -72,8 +72,8 @@ class LearningStyles {
 
 class SubjectPreference {
     constructor(subjects) {
-        typecheck.isArray(subjects);
-        typecheck.arrayItemsIsInstance(subjects, Subject);
+        typeassert.assertArray(subjects);
+        typeassert.assertArrayItemsInstanceOf(subjects, Subject);
 
         this.subjects = subjects;
 
@@ -83,9 +83,9 @@ class SubjectPreference {
 
 class Subject {
     constructor(name, score) {
-        typecheck.isString(name);
-        typecheck.isNumber(score);
-        typecheck.range(score, 0, 1);
+        typeassert.assertString(name);
+        typeassert.assertNumber(score);
+        typeassert.assertRangeInclusive(score, 0, 1);
 
         this.name = name;
         this.score = score;
