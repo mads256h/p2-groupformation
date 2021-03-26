@@ -26,11 +26,14 @@ function plus(a, b) {
  */
 function euclidDistance(point1, point2){
     if (point1.length !== point2.length){
-        throw new Error("Mismatching dimensions");
+        throw new TypeError("Mismatching dimensions between points");
+    }
+    if (point1.length <= 0){
+        throw new TypeError("points need atleast 1 dimension");
     }
     let innerSum = 0;
     for (let i = 0; i < point1.length; i++) {
-        innerSum += Math.pow(point1-point2, 2);
+        innerSum += Math.pow(point1[i]-point2[i], 2);
     }
     return Math.sqrt(innerSum);
 }

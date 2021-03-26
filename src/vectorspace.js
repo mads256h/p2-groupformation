@@ -1,4 +1,4 @@
-const euclidDistance = require("./math.js");
+const {euclidDistance} = require("./math.js");
 
 /**
  * @summary Measures distribution of vectors in vectorspace
