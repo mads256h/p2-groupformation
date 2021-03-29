@@ -1,4 +1,4 @@
-module.exports = {Group, Student, Criteria, LearningStyles, SubjectPreference, Subject};
+
 const typeassert = require("./typeassert");
 
 
@@ -12,6 +12,9 @@ const typeassert = require("./typeassert");
 
 /**
  * @summary Represents a group of students
+ * @property {string} name The name of the group
+ * @property {number} id The ID of the group
+ * @property {Student[]} students The members of the group
  */
 class Group {
     /**
@@ -36,6 +39,8 @@ class Group {
 
 /**
  * @summary Represents a student with name and criteria
+ * @property {string} name The name of the student
+ * @property {Criteria} criteria The student's criteria
  */
 class Student {
     /**
@@ -55,6 +60,10 @@ class Student {
 
 /**
  * @summary Represents criteria for the students
+ * @property {number} ambitions The ambition of the student
+ * @property {number} workingAtHome How likely the student is to work at home
+ * @property {LearningStyles} learningStyles The student's learning styles
+ * @property {SubjectPreference} subjectPreference The student's subject preferences
  */
 class Criteria {
     /**
@@ -81,6 +90,10 @@ class Criteria {
 
 /**
  * @summary Represents the learning styles of the student
+ * @property {number} activeReflective The student's position on the active-reflective dimension
+ * @property {number} visualVerbal The student's position on the visual-verbal dimension
+ * @property {number} sensingIntuitive The student's position on the sensing-intuitive dimension
+ * @property {number} sequentialGlobal The student's position on the sequential-global dimension
  */
 class LearningStyles {
 
@@ -113,6 +126,7 @@ class LearningStyles {
 
 /**
  * @summary The subject preference of the student
+ * @property {Subject[]} subjects Subjects with score denoting preference
  */
 class SubjectPreference {
     /**
@@ -130,6 +144,8 @@ class SubjectPreference {
 
 /**
  * @summary A subject with a score denoting preference
+ * @property {string} name Name of the subject
+ * @property {number} score Score denoting the student's preference
  */
 class Subject {
     /**
@@ -147,3 +163,5 @@ class Subject {
         Object.freeze(this);
     }
 }
+
+module.exports = {Group, Student, Criteria, LearningStyles, SubjectPreference, Subject};
