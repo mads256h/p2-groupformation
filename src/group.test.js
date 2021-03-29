@@ -1,7 +1,8 @@
 const {Group, Student, Criteria, LearningStyles, SubjectPreference, Subject} = require("./group");
 
 test("Group", () => {
-    const subjectPreference = new SubjectPreference([]);
+    const subject = new Subject("IMPR", 1);
+    const subjectPreference = new SubjectPreference([subject]);
     const learningStyles = new LearningStyles(0, 0, 0, 0);
     const criteria = new Criteria(0, 0, learningStyles, subjectPreference);
     const student = new Student("test", criteria);
