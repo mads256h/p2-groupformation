@@ -1,11 +1,12 @@
 const {euclidDistance} = require("./math.js");
-
+const {inputCheck} = require("./inputCheck.js");
 /**
  * @summary Measures distribution of vectors in vectorspace
  * @param {number[][]} criteria 2d array with students and their criterias
  * @returns {number} the calculated score
  */
 function vectorSpace(criteria){
+    inputCheck(criteria);
     let score = 0;
     for (let criteria1 = 0; criteria.length; criteria1++) {
         let minDist = Infinity;

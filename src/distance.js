@@ -1,10 +1,12 @@
 module.exports = {maxDistance};
+const {inputCheck} = require("./inputCheck.js");
 /**
  * @summary Measures the max distance between all criterias.
  * @param {number[][]} criteria 2d array with students and their criterias
  * @returns {number} the calculated score
  */
 function maxDistance(criteria){
+    inputCheck(criteria);
     let value = 0;
     let max = -Infinity, min = Infinity;
 
