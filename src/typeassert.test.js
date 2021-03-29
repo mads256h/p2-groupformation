@@ -27,7 +27,10 @@ const {
     // Array
     assertArray,
     assertArrayItemsType,
-    assertArrayItemsInstanceOf
+    assertArrayItemsInstanceOf,
+    assertArrayLengthEq,
+    assertArraysOfArrayNotEmpty,
+    assertArrayNotEmpty
 } = require("./typeassert");
 
 
@@ -414,4 +417,28 @@ test("assertArrayItemsInstanceOf", () => {
     expect(() => assertArrayItemsInstanceOf(1, undefined)).toThrow(TypeError);
     expect(() => assertArrayItemsInstanceOf("test", undefined)).toThrow(TypeError);
     expect(() => assertArrayItemsInstanceOf(() => {}, undefined)).toThrow(TypeError);
+});
+
+
+test("assertArrayNotEmpty", () => {
+    expect(() => assertArrayNotEmpty([-11, 11])).not.toThrow();
+    expect(() => assertArrayNotEmpty([[-11], [11]])).not.toThrow();
+    expect(() => assertArrayNotEmpty([[], []])).not.toThrow();
+    expect(() => assertArrayNotEmpty([])).toThrow(RangeError);
+});
+
+test("assertArraysOfArrayNotEmpty", () => {
+    expect(() => assertArraysOfArrayNotEmpty([[-11], [11]])).not.toThrow();
+    expect(() => assertArraysOfArrayNotEmpty([])).not.toThrow();
+    expect(() => assertArraysOfArrayNotEmpty([-11, 11])).toThrow(TypeError);
+    expect(() => assertArraysOfArrayNotEmpty([[-11], []])).toThrow(RangeError);
+    expect(() => assertArraysOfArrayNotEmpty([[], []])).toThrow(RangeError);
+});
+
+test("assertArrayLengthEq", () => {
+    expect(() => assertArrayLengthEq([-11, 11])).not.toThrow();
+    expect(() => assertArrayLengthEq(...[[-11], [11]])).not.toThrow();
+    expect(() => assertArrayLengthEq([])).not.toThrow();
+    expect(() => assertArrayLengthEq(...[[], []])).not.toThrow();
+    expect(() => assertArrayLengthEq(...[[-11, 5], [3]])).toThrow(RangeError);
 });

@@ -28,7 +28,10 @@ module.exports =
     // Array
     assertArray,
     assertArrayItemsType,
-    assertArrayItemsInstanceOf
+    assertArrayItemsInstanceOf,
+    assertArrayLengthEq,
+    assertArraysOfArrayNotEmpty,
+    assertArrayNotEmpty
 };
 
 /**
@@ -318,8 +321,12 @@ function assertArray(value) {
     }
 }
 
-function assertArrayNotEmpty(value)
-{
+/**
+ * @summary Asserts that an array is not empty
+ * @param {any} value The value to assert that it is not an empty array
+ * @throws {RangeError} If value is empty
+ */
+function assertArrayNotEmpty(value) {
     assertArray(value);
 
     if (value.length === 0) {
@@ -327,9 +334,12 @@ function assertArrayNotEmpty(value)
     }
 }
 
-
-function assertArraysOfArrayNotEmpty(value)
-{
+/**
+ * @summary Asserts that any subarray in an array is not empty
+ * @param {any} value The value to assert there is no empty subarrays
+ * @throws {RangeError} If value is empty
+ */
+function assertArraysOfArrayNotEmpty(value) {
     assertArray(value);
     assertArrayItemsInstanceOf(value, Array);
 
@@ -368,15 +378,19 @@ function assertArrayItemsInstanceOf(value, type) {
 }
 
 
-function assertArrayLengthEq(first, ...rest)
-{
+/**
+ * @summary Asserts that any subarray in an array does not have a differing amount of elements
+ * @param {Array} first The first subarray is used to compare against the rest
+ * @param {...any} rest The rest of the subarrays
+ * @throws {RangeError} If the arrays have differing lengths
+ */
+function assertArrayLengthEq(first, ...rest) {
     assertArray(first);
     assertArrayItemsInstanceOf(rest, Array);
 
     const length = first.length;
 
-    for (let a of rest)
-    {
+    for (let a of rest) {
         if (a.length !== length) {
             throw new RangeError("Array lengths not equal");
         }
