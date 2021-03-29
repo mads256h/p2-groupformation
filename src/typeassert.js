@@ -253,6 +253,9 @@ function assertGreaterThanEq(value, min) {
  * @throws {RangeError} If value is outside of the range
  */
 function assertRangeInclusive(value, min, max) {
+    assertNumber(max);
+    assertNotNaN(max);
+
     assertGreaterThanEq(value, min);
     assertLessThanEq(value, max);
 }
@@ -265,6 +268,9 @@ function assertRangeInclusive(value, min, max) {
  * @throws {RangeError} If value is outside of the range
  */
 function assertRangeExclusive(value, min, max) {
+    assertNumber(max);
+    assertNotNaN(max);
+
     assertGreaterThan(value, min);
     assertLessThan(value, max);
 }
