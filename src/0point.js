@@ -1,3 +1,4 @@
+module.exports = {balance};
 /**
  * @summary Measures the balance of criterias in a group
  * @param {number[][]} criteria 2d array with students and their criterias
@@ -5,12 +6,12 @@
  */
 function balance(criteria){
     let score = 0;
-    for (const criterionValues of criteria) {
-        let criterionSum = 0;
-        for (const criterionValue of criterionValues) {
-            criterionSum += criterionValue;
+    for(let criterium = 0; criterium < criteria[0].length; criterium++){
+        let criteriumSum = 0;
+        for(let student = 0; student < criteria.length; student++){
+            criteriumSum += criteria[student][criterium];
         }
-        score += Math.abs(criterionSum);
+        score += Math.abs(criteriumSum);
     }
-    return score;
+    return Math.abs(score);
 }
