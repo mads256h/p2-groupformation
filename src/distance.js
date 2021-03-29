@@ -6,15 +6,14 @@ module.exports = {maxDistance};
  */
 function maxDistance(criteria){
     let value = 0;
-    let max = -Infinity, min = Infinity;
 
     for(let i = 0; i < criteria[0].length; i++){
-        
+        let max = -Infinity, min = Infinity;
         for(let student = 0; student < criteria.length; student++){
             min = Math.min(min, criteria[student][i]);
             max = Math.max(max, criteria[student][i]);
         }
-        value += max + (-min)
+        value += max + (-min);
     }
     return value/criteria[0].length;
 }
