@@ -1,5 +1,5 @@
 const {maxDistance} = require("./distance.js");
-test("Test return values of max distance", () => {
+test("return values of max distance", () => {
     let cToSeks = [[9, 7, 9, 3],[5, -3, 1, -5],[1, 5, 5, -3],[-5, -7, 3, -9],[7, -7, 11, -9],[1, 5, 5, -7],[9, 5, 5, -3]];
     let testgroup1 = [[-11],[11]];
     let testgroup2 = [[-11],[-11]];
