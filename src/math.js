@@ -22,7 +22,7 @@ function plus(a, b) {
  * @param {number[]} point1 n dimensional point in space
  * @param {number[]} point2 n dimensional point in space
  * @returns {number} the calculated euclid distance
- * @throws Throws when dimensions dont match
+ * @throws {TypeError} Throws when dimensions dont match
  */
 function euclidDistance(point1, point2){
     if (point1.length !== point2.length){
