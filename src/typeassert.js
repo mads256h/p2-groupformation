@@ -35,6 +35,7 @@ module.exports =
  * @description Type- and rangeasserting module.
  * @module typeassert
  * @see module:typeassert
+ * @author feybelle and mads256h
  */
 
 

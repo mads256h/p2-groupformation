@@ -6,6 +6,7 @@ const typeassert = require("./typeassert");
  * @description Group, student and criteria module.
  * @module group
  * @see module:group
+ * @author feybelle and mads256h
  */
 
 
