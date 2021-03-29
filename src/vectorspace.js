@@ -1,5 +1,6 @@
 module.exports = {averageVectorMinDistance, averageVectorDistance};
 
+const {inputCheck} = require("./inputCheck.js");
 const {lpDistance} = require("./math.js");
 
 /**
@@ -8,6 +9,7 @@ const {lpDistance} = require("./math.js");
  * @returns {number} the calculated score
  */
 function averageVectorMinDistance(criteria){
+    inputCheck(criteria);
     let score = 0;
     for (let criteria1 = 0; criteria.length; criteria1++) {
         let minDist = Infinity;
