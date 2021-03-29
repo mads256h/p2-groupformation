@@ -318,6 +318,27 @@ function assertArray(value) {
     }
 }
 
+function assertArrayNotEmpty(value)
+{
+    assertArray(value);
+
+    if (value.length === 0) {
+        throw new RangeError("Array is empty");
+    }
+}
+
+
+function assertArraysOfArrayNotEmpty(value)
+{
+    assertArray(value);
+    assertArrayItemsInstanceOf(value, Array);
+
+    for (let a of value) {
+        assertArrayNotEmpty(a);
+    }
+}
+
+
 /**
  * @summary Asserts that all items of the array value is the type specified by type
  * @param {any} value The array to assert that each element is of type type
@@ -343,5 +364,21 @@ function assertArrayItemsInstanceOf(value, type) {
 
     for (let item of value) {
         assertInstanceOf(item, type);
+    }
+}
+
+
+function assertArrayLengthEq(first, ...rest)
+{
+    assertArray(first);
+    assertArrayItemsInstanceOf(rest, Array);
+
+    const length = first.length;
+
+    for (let a of rest)
+    {
+        if (a.length !== length) {
+            throw new RangeError("Array lengths not equal");
+        }
     }
 }
