@@ -6,9 +6,7 @@
  * @throws {TypeError} On invalid arguments
  */
 function absoluteValueOfTwoNumbers(NumberOne, NumberTwo){
-    let absoluteValue = 0;
-    absoluteValue = Math.abs(NumberOne)+Math.abs(NumberTwo);
-    return absoluteValue;
+    return Math.abs(NumberOne)+Math.abs(NumberTwo);
 }
 
 /**
