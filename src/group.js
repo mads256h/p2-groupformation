@@ -1,4 +1,4 @@
-module.exports = {Group, Student, Criteria, LearningStyles, SubjectPreference, Subject};
+
 const typeassert = require("./typeassert");
 
 
@@ -162,3 +162,5 @@ class Subject {
         Object.freeze(this);
     }
 }
+
+module.exports = {Group, Student, Criteria, LearningStyles, SubjectPreference, Subject};
