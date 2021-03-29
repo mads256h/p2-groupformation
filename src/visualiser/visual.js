@@ -1,33 +1,18 @@
 /**
- * @summary Finds the max distance between to numbers
- * @param {number} NumberOne The number to add to NumerTwo
- * @param {number} NumberTwo The number to add to NumerOne
- * @returns {number} The result of the two numbers added togther
- * @throws {TypeError} On invalid arguments
- */
-function absoluteValueOfTwoNumbers(NumberOne, NumberTwo) {
-    return Math.abs(NumberOne) + Math.abs(NumberTwo);
-}
-
-/**
- * @summary Finds the max and min value in the array
- * @param {Array} array Array of numbers
+ * @summary Finds the distance between the min and max value in the array
+ * @param {number[]} array Array of numbers
  * @returns {number} Distance between the max and min value in the array
- * @throws {TypeError} On invalid arguments
  */
-function maxsMin(array) {
-    let newArray = array.slice();
-    newArray.sort(function (a, b) {
-        return a - b;
-    });
-    return absoluteValueOfTwoNumbers(newArray[0], newArray[newArray.length - 1]);
+function distanceBetweenExtremes(array) {
+    const min = Math.min(...array);
+    const max = Math.max(...array);
+    return Math.abs(min) + Math.abs(max);
 }
 
 /**
  * @summary Finds the sum
- * @param {Array} array Array of numbers
+ * @param {number[]} array Array of numbers
  * @returns {number} The result of the sum
- * @throws {TypeError} On invalid arguments
  */
 function sumOfArray(array){
     return array.reduce((a, b) => a + b, 0);
@@ -35,13 +20,13 @@ function sumOfArray(array){
 
 /**
  * @summary Finds the length between the numbers
- * @param {Array}array Array of numbers
+ * @param {number[]} array Array of numbers
  * @returns {number} The sum of all the lengths between the numbers
- * @throws {TypeError} On invalid arguments
+ * @throws {RangeError} On invalid arguments
  */
 function distribution(array) {
     if (array.length === 1) {
-        console.log("for få argrumenter");
+        throw new RangeError("To few arguments");
     }
     else {
         let newArray = array.slice();
@@ -51,7 +36,7 @@ function distribution(array) {
         let sum = 0;
         let pef = perfectDist(newArray.length);
         for (let index = 0; index < newArray.length; index++) {
-            sum += newArray[index] - pef[index];
+            sum += Math.abs(newArray[index] - pef[index]);
         }
         return sum;
     }
@@ -59,9 +44,8 @@ function distribution(array) {
 
 /**
  * @summary Makes the perfect array of numbers with a perfect distances between
- * @param {Array} n The number of indexs needed in the array
+ * @param {number} n The number of indexs needed in the array
  * @returns {Array} The calulated array
- * @throws {TypeError} On invalid arguments
  */
 function perfectDist(n) {
     let array = new Array();
@@ -95,7 +79,8 @@ let eksamplePef = [
 
 distribution(eksampleBad);
 distribution(eksamplePef);
-
+console.log(distribution(eksampleBad));
+console.log(distribution(eksamplePef));
 //let perfekt = [11, 3, -3 -11];
 
 //console.log(maxsMin(eksample));
