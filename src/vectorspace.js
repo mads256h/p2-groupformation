@@ -1,4 +1,4 @@
-module.exports = {averageVectorMinDistance};
+module.exports = {averageVectorMinDistance, averageVectorDistance};
 
 const {lpDistance} = require("./math.js");
 
