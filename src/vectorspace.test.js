@@ -10,9 +10,6 @@ test("Average vector distance throws", () => {
     expect(() => averageVectorDistance([[1], [2,1]], 1)).toThrow();
     expect(() => averageVectorDistance([[], []], 1)).toThrow();
     expect(() => averageVectorDistance([], 1)).toThrow();
-
-    //expect(() => averageVectorDistance().toThrow();
-    //expect(() => averageVectorDistance([[1,2],[2,1]]).toThrow();
 });
 
 test("Average vector distance values", () => {

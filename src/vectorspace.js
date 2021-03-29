@@ -4,7 +4,8 @@ const {
     assertArrayItemsInstanceOf,
     assertArrayLengthEq,
     assertArraysOfArrayNotEmpty,
-    assertArrayNotEmpty
+    assertArrayNotEmpty,
+    assertNumber
 } = require("./typeassert");
 const {lpDistance} = require("./math.js");
 
@@ -20,7 +21,6 @@ function averageVectorMinDistance(criteria, p){
     assertArrayItemsInstanceOf(criteria, Array);
     assertArraysOfArrayNotEmpty(criteria);
     assertArrayLengthEq(...criteria);
-
     let score = 0;
     for (let criteria1 = 0; criteria.length; criteria1++) {
         let minDist = Infinity;
@@ -42,7 +42,13 @@ function averageVectorMinDistance(criteria, p){
  * @returns {number} the calculated score
  */
 function averageVectorDistance(criteria, p){
-    inputCheck(criteria);
+    assertArray(criteria);
+    assertArrayNotEmpty(criteria);
+    assertArrayItemsInstanceOf(criteria, Array);
+    assertArraysOfArrayNotEmpty(criteria);
+    assertArrayLengthEq(...criteria);
+    assertNumber(p);
+
     let score = 0;
     let totalDistances = 0;
     for (let criteria1 = 0; criteria1 < criteria.length; criteria1++) {
