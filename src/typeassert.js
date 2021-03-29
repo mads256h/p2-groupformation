@@ -12,6 +12,7 @@ module.exports =
 
     // Number
     assertNumber,
+    assertNotNaN,
     assertInteger,
     assertLessThan,
     assertLessThanEq,
@@ -64,11 +65,24 @@ const Type =
  * @throws {RangeError} If type is not a valid type
  */
 function assertType(value, type) {
+    const validTypes =
+        [
+            Type.undefined,
+            Type.object,
+            Type.boolean,
+            Type.number,
+            Type.bigint,
+            Type.string,
+            Type.symbol,
+            Type.function
+        ];
+
+
     if (typeof type !== Type.string) {
         throw new TypeError("type is not a string");
     }
 
-    if (!Type.some((v) => type === v)) {
+    if (!validTypes.some((v) => type === v)) {
         throw new RangeError("type is not specifying a valid type");
     }
 
@@ -135,6 +149,19 @@ function assertNumber(value) {
 }
 
 /**
+ * @summary Asserts that value is not NaN
+ * @param {any} value The value to assert that it is not NaN
+ * @throws {TypeError} If value is NaN or not of type number
+ */
+function assertNotNaN(value) {
+    assertNumber(value);
+
+    if (Number.isNaN(value)) {
+        throw new TypeError("value is NaN");
+    }
+}
+
+/**
  * @summary Asserts that value is an integer
  * @param {any} value The value to assert that its an integer
  * @throws {TypeError} If value is not an integer
@@ -155,6 +182,10 @@ function assertInteger(value) {
 function assertLessThan(value, max) {
     assertNumber(value);
     assertNumber(max);
+
+    assertNotNaN(value);
+    assertNotNaN(max);
+
     if (value >= max) {
         throw new RangeError(`value is not less than ${max}`);
     }
@@ -169,6 +200,10 @@ function assertLessThan(value, max) {
 function assertLessThanEq(value, max) {
     assertNumber(value);
     assertNumber(max);
+
+    assertNotNaN(value);
+    assertNotNaN(max);
+
     if (value > max) {
         throw new RangeError(`value is not less than or equal to ${max}`);
     }
@@ -183,6 +218,10 @@ function assertLessThanEq(value, max) {
 function assertGreaterThan(value, min) {
     assertNumber(value);
     assertNumber(min);
+
+    assertNotNaN(value);
+    assertNotNaN(min);
+
     if (value <= min) {
         throw new RangeError(`value is not greater than ${min}`);
     }
@@ -197,6 +236,10 @@ function assertGreaterThan(value, min) {
 function assertGreaterThanEq(value, min) {
     assertNumber(value);
     assertNumber(min);
+
+    assertNotNaN(value);
+    assertNotNaN(min);
+
     if (value < min) {
         throw new RangeError(`value is not greater than or equal to ${min}`);
     }
