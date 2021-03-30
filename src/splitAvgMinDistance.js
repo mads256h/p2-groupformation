@@ -8,8 +8,8 @@ const {
     assertArrayNotEmpty
 } = require("./typeassert");
 /**
- * @summary Measures the max distance between all criterias.
- * @param {number[][]} criteria 2d array with students and their criterias
+ * @summary Rates the average 1 dimensional distance from 0 to 1
+ * @param {number[][]} criteria 2d array with students and their criterias (assumes range -1 to 1)
  * @returns {number} the calculated score
  */
 function splitAvgMinDistance(criteria){
@@ -37,11 +37,10 @@ function splitAvgMinDistance(criteria){
 }
 
 /**
- * maxScore bla bla
+ * @summary Max possible score of splitAvgMinDistance assuming range -1 to 1
  * @param {*criteria.length} nrStudents The number of students in the given group
- * @returns 1
+ * @returns Max possible score
  */
 function maxScore(nrStudents){
-    //return (nrStudents)/(nrstudents-1);
     return 2/(nrStudents-1);
 }
