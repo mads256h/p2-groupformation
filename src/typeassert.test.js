@@ -1,6 +1,6 @@
 const {
     // General functions
-    //assertType, // Add functions to this module instead of using this
+    // assertType, // Add functions to this module instead of using this
     assertInstanceOf,
 
     // Object

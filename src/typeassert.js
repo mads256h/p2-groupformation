@@ -1,7 +1,7 @@
 module.exports =
 {
     // General functions
-    //assertType, // Add functions to this module instead of using this
+    // assertType, // Add functions to this module instead of using this
     assertInstanceOf,
 
     // Object
@@ -102,7 +102,6 @@ function assertType(value, type) {
  * @throws {TypeError} value is not an instance of type or type is invalid
  */
 function assertInstanceOf(value, type) {
-
     assertObject(value);
 
     if (type === undefined || type === null) {
@@ -313,7 +312,6 @@ function assertStringNotEmpty(value) {
  * @throws {TypeError} If value is not an array
  */
 function assertArray(value) {
-
     assertType(value, Type.object);
 
     if (!Array.isArray(value)) {
