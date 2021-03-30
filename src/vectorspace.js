@@ -13,9 +13,10 @@ const {lpDistance} = require("./math.js");
  * @summary Measures distribution of vectors in vectorspace by summing minimum distances
  * @param {number[][]} criteria 2d array with students and their criterias
  * @param {number} p p value for lpdistance function
+ * @param {Function} weighted function that adds a weight
  * @returns {number} the calculated score
  */
-function averageVectorMinDistance(criteria, p){
+function averageVectorMinDistance(criteria, p, weighted){
     assertArray(criteria);
     assertArrayNotEmpty(criteria);
     assertArrayItemsInstanceOf(criteria, Array);
@@ -29,7 +30,7 @@ function averageVectorMinDistance(criteria, p){
         let minDist = Infinity;
         for (let criteria2 = 0; criteria2 < criteria.length; criteria2++) {
             if (criteria1 !== criteria2){
-                minDist = Math.min(minDist, lpDistance(criteria[criteria1], criteria[criteria2], p));
+                minDist = weighted(Math.min(minDist, lpDistance(criteria[criteria1], criteria[criteria2], p)));
             }
         }
         score += minDist;
