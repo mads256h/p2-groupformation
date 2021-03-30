@@ -1,4 +1,5 @@
 module.exports ={constant, sigmoid0to2};
+
 /**
  * @summary constant weight function
  * @param {number} number input

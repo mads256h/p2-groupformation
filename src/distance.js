@@ -6,6 +6,7 @@ const {
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
 } = require("./typeassert");
+
 /**
  * @summary Measures the max distance between all criterias.
  * @param {number[][]} criteria 2d array with students and their criterias
@@ -19,7 +20,6 @@ function maxDistance(criteria){
     assertArrayLengthEq(...criteria);
 
     let value = 0;
-
     for(let i = 0; i < criteria[0].length; i++){
         let max = -Infinity, min = Infinity;
         for(let student = 0; student < criteria.length; student++){

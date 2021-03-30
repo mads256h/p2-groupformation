@@ -6,6 +6,7 @@ const {
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
 } = require("./typeassert");
+
 /**
  * @summary Measures the balance of criterias in a group
  * @param {number[][]} criteria 2d array with students and their criterias
