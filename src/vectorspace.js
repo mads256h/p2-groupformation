@@ -21,18 +21,22 @@ function averageVectorMinDistance(criteria, p){
     assertArrayItemsInstanceOf(criteria, Array);
     assertArraysOfArrayNotEmpty(criteria);
     assertArrayLengthEq(...criteria);
+    assertNumber(p);
+
     let score = 0;
-    for (let criteria1 = 0; criteria.length; criteria1++) {
+    let totalDistances = 0;
+    for (let criteria1 = 0; criteria1 < criteria.length; criteria1++) {
         let minDist = Infinity;
         for (let criteria2 = 0; criteria2 < criteria.length; criteria2++) {
             if (criteria1 !== criteria2){
-                minDist = Math.min(
-                    minDist, lpDistance(criteria[criteria1], criteria[criteria2], p));
+                minDist = Math.min(minDist, lpDistance(criteria[criteria1], criteria[criteria2], p));
             }
         }
         score += minDist;
+        totalDistances++;
     }
-    return score;
+    return score / totalDistances;
+
 }
 
 /**

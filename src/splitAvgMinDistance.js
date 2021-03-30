@@ -43,5 +43,5 @@ function splitAvgMinDistance(criteria){
  */
 function maxScore(nrStudents){
     //return (nrStudents)/(nrstudents-1);
-    return 1;
+    return 2/(nrStudents-1);
 }
