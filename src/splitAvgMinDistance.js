@@ -38,8 +38,8 @@ function splitAvgMinDistance(criteria){
 
 /**
  * @summary Max possible score of splitAvgMinDistance assuming range -1 to 1
- * @param {*criteria.length} nrStudents The number of students in the given group
- * @returns Max possible score
+ * @param {number} nrStudents The number of students in the given group
+ * @returns {number} Max possible score
  */
 function maxScore(nrStudents){
     return 2/(nrStudents-1);
