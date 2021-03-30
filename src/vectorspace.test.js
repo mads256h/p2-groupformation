@@ -43,10 +43,37 @@ test("Average vector distance values", () => {
     //test weight function
     testGroup = [[3,3], [5,3]];
     expect(averageVectorDistance(testGroup, 2, (x)=>x*2)).toBeCloseTo(4);
-
     testGroup = [[-2,6], [-6,6], [5,-4], [10, 10], [-4, -4]];
     expect(averageVectorDistance(testGroup, 2, (x)=>x*2)).toBeCloseTo(12.43*2);
-
-
 });
 
+
+test("Average vector minimum distance throws", () => {
+    expect(() => averageVectorMinDistance([[1,2], [2,1]], 1, constant)).not.toThrow();
+    expect(() => averageVectorMinDistance([[1,2], [2,1]], 0, constant)).toThrow();
+    expect(() => averageVectorMinDistance()).toThrow();
+    expect(() => averageVectorMinDistance([[1,2],[2,1]])).toThrow();
+    expect(() => averageVectorMinDistance("haha")).toThrow();
+    expect(() => averageVectorMinDistance([[1,2],[2,1]], ":)")).toThrow();
+    expect(() => averageVectorMinDistance([[1], [2,1]], 1, constant)).toThrow();
+    expect(() => averageVectorMinDistance([[], []], 1, constant)).toThrow();
+    expect(() => averageVectorMinDistance([], 1, constant)).toThrow();
+});
+
+test("Average vector minimum distance values", () => {
+    let testGroup;
+    //test euclidean, p=2
+    testGroup = [[3,3], [5,3]];
+    expect(averageVectorMinDistance(testGroup, 2, constant)).toBeCloseTo(2);
+    testGroup = [[0,0,0,0,0], [1,1,1,1,1]];
+    expect(averageVectorMinDistance(testGroup, 2, constant)).toBeCloseTo(Math.sqrt(5));
+    testGroup = [[1,1], [3,2]];
+    expect(averageVectorMinDistance(testGroup, 0.5, constant)).toBeCloseTo(5.83);
+    testGroup = [[1,1], [3,2]];
+    expect(averageVectorMinDistance(testGroup, 0.5, constant)).toBeCloseTo(5.83);
+    testGroup = [[1,1], [3,2], [3,1]];
+    expect(averageVectorMinDistance(testGroup, 0.5, constant)).toBeCloseTo(4/3);
+    testGroup = [[3,3], [5,3]];
+    expect(averageVectorMinDistance(testGroup, 2, (x)=>x*2)).toBeCloseTo(4);
+
+});

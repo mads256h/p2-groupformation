@@ -1,5 +1,4 @@
 module.exports = {splitAvgMinDistance};
-
 const {
     assertArray,
     assertArrayItemsInstanceOf,
@@ -7,6 +6,7 @@ const {
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
 } = require("./typeassert");
+
 /**
  * @summary Rates the average 1 dimensional distance from 0 to 1
  * @param {number[][]} criteria 2d array with students and their criterias (assumes range -1 to 1)
@@ -20,7 +20,6 @@ function splitAvgMinDistance(criteria){
     assertArrayLengthEq(...criteria);
 
     let sumDist = 0;
-
     for(let i = 0; i < criteria[0].length; i++){
         for(let student1 = 0; student1 < criteria.length; student1++){
             let minDist = Infinity;
@@ -38,8 +37,8 @@ function splitAvgMinDistance(criteria){
 
 /**
  * @summary Max possible score of splitAvgMinDistance assuming range -1 to 1
- * @param {*criteria.length} nrStudents The number of students in the given group
- * @returns Max possible score
+ * @param {number} nrStudents The number of students in the given group
+ * @returns {number} Max possible score
  */
 function maxScore(nrStudents){
     return 2/(nrStudents-1);

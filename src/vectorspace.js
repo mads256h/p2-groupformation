@@ -37,7 +37,6 @@ function averageVectorMinDistance(criteria, p, weighted){
         totalDistances++;
     }
     return score / totalDistances;
-
 }
 
 /**
@@ -68,5 +67,4 @@ function averageVectorDistance(criteria, p, weighted){
         score += distanceSum;
     }
     return score / totalDistances;
-
 }
