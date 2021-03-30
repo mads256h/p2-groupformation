@@ -122,8 +122,9 @@ function createHollowCircle(cx, cy, color = "cyan", r=window.innerWidth*0.01,){
  * @summary Creates and returns a svg text element
  * @param {number} x the x position of the center of the text
  * @param {number} y the y position of the center of the text
- * @param {ntring} text the text to be displayed
- * @returns {element} text svg element?
+ * @param {string} text the text to be displayed
+ * @param {string} fontSize the text to be displayed
+ * @returns {Element} text svg element?
  */
 function createText(x, y, text, fontSize=20){
     const textSvg = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -163,6 +164,12 @@ function closeby(arrCircleSize){ //something is wrong in this function, but it s
     return A;
 }
 
+/**
+ * @summary Returns t/f whether the distance between a & b is smaller than 'afstand'
+ * @param {number} a the first number
+ * @param {number} b the second number
+ * @returns {boolean} Returns t/f whether the distance between a & b is smaller than 'afstand'
+ */
 function range(a, b){
     let afstand = 0.5;
     if (Math.abs(a-b) <= Math.abs(afstand)){
