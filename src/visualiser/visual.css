@@ -1,3 +1,13 @@
 #cssTest{
     color: blue;
 }
+
+.groupsize{
+    color:black;
+    display: inline-block;
+    vertical-align: top;
+    line-height: 100%;
+    text-align:left;
+    width: 300;
+    font-size: 100%;
+}
