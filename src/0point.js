@@ -6,6 +6,9 @@ const {
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
 } = require("./typeassert");
+
+const {transposeArray} = require("./math.js");
+
 /**
  * @summary Measures the balance of criterias in a group
  * @param {number[][]} criteria 2d array with students and their criterias
@@ -18,13 +21,8 @@ function balance(criteria){
     assertArraysOfArrayNotEmpty(criteria);
     assertArrayLengthEq(...criteria);
 
-    let score = 0;
-    for(let criterium = 0; criterium < criteria[0].length; criterium++){
-        let criteriumSum = 0;
-        for(let student = 0; student < criteria.length; student++){
-            criteriumSum += criteria[student][criterium];
-        }
-        score += Math.abs(criteriumSum);
-    }
-    return Math.abs(score);
+
+    return transposeArray(criteria)
+        // Summate the criteria
+        .reduce((a, b) => a + Math.abs(b.reduce((c, d) => c + d)), 0);
 }

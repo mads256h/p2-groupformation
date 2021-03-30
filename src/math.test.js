@@ -1,12 +1,5 @@
-const {plus, euclidDistance, lpDistance} = require("./math.js");
+const {euclidDistance, lpDistance, transposeArray} = require("./math.js");
 
-test("adds 1 + 2 to equal 3", () => {
-    expect(plus(1, 2)).toBe(3);
-});
-
-test("invalid types throw", () => {
-    expect(() => plus("1", "hej")).toThrow(TypeError);
-});
 
 test("Euclidean distance throws", () => {
     expect(() => euclidDistance([0], [1,1])).toThrow(TypeError);
@@ -31,4 +24,27 @@ test("lpDistance test values", () => {
     expect(lpDistance([0,0], [1,1], 1)).toEqual(2);
     expect(lpDistance([-1,-1], [1,1], 1)).toEqual(4);
     expect(lpDistance([-1,0,0,0,0], [1,0,0,0,0], 1)).toEqual(2);
+});
+
+
+test("transposeArray", () => {
+    const test1 = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ];
+
+    const test1Outcome = [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9]
+    ];
+
+    expect(() => transposeArray(test1)).not.toThrow();
+    expect(transposeArray(test1)).toStrictEqual(test1Outcome);
+
+    expect(() => transposeArray([])).toThrow(TypeError);
+    expect(() => transposeArray({})).toThrow(TypeError);
+    expect(() => transposeArray(1)).toThrow(TypeError);
+    expect(() => transposeArray("test")).toThrow(TypeError);
 });

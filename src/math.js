@@ -1,21 +1,6 @@
-module.exports = {plus, euclidDistance, lpDistance};
-/**
- * @summary Adds two numbers together
- * @param {number} a The number to add to b
- * @param {number} b The number to add to a
- * @returns {number} The result
- * @throws {TypeError} On invalid arguments
- */
-function plus(a, b) {
-    if (typeof a !== "number") {
-        throw new TypeError("a is not a number");
-    }
-    if (typeof b !== "number") {
-        throw new TypeError("b is not a number");
-    }
+module.exports = {euclidDistance, lpDistance, transposeArray};
 
-    return a + b;
-}
+const {assertArray, assertArrayLengthEq} = require("./typeassert");
 
 /**
  * @summary Measures the euclid distance between point1 and point2
@@ -66,4 +51,18 @@ function lpDistance(point1, point2, p){
         innerSum += Math.pow(Math.abs(point1[i]-point2[i]), p);
     }
     return Math.pow(innerSum, 1/p);
+}
+
+/**
+ * @summary Transposes a 2D array
+ * @param {any[][]} array The 2D array to transpose
+ * @returns {any[][]} The transposed array
+ * @throws {TypeError} array is not a 2D array
+ * @throws {RangeError} array is a staggered array
+ */
+function transposeArray(array) {
+    assertArray(array);
+    assertArrayLengthEq(...array);
+
+    return array[0].map((_,i) => array.map(x => x[i]));
 }
