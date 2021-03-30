@@ -37,5 +37,9 @@
     "jsdoc": "^3.6.6",
     "stylelint": "^13.12.0",
     "stylelint-config-standard": "^21.0.0"
+  },
+  "dependencies": {
+    "content-type": "^1.0.4",
+    "mime-type": "^4.0.0"
   }
 }
