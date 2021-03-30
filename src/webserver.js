@@ -49,16 +49,14 @@ class WebServer {
         }
 
         function extractForm() {
-            let ct
-            try {
-                ct = contentType.parse(request);
-            }
-            catch (e) {
-                ct = null;
+
+            if (request.headers["content-type"] === undefined) {
+                return Promise.reject(new HttpError(415, "No content type specified"));
             }
 
-            if (ct !== null && ct.type !== "application/x-www-form-urlencoded") {
-                errorResponse(415); // Unssuported media type
+            const ct = contentType.parse(request);
+
+            if (ct.type !== "application/x-www-form-urlencoded") {
                 return Promise.reject(new HttpError(415, "Unsupported content type"));
             }
             else {
@@ -116,6 +114,10 @@ class WebServer {
                     response.end("\n");
 
                 }).catch(reason => {
+                    if (!HttpError[Symbol.hasInstance](reason)) {
+                        throw reason;
+                    }
+
                     const obj = {status: "ERR", code: reason.code, message: reason.message};
                     response.statusCode = reason.code;
                     response.setHeader("Content-Type", mimeType.contentType("application/json"));
