@@ -43,9 +43,10 @@ function averageVectorMinDistance(criteria, p){
  * @summary Calculates average Lp distance between all vectors
  * @param {number[][]} criteria 2d array with students and their criterias
  * @param {number} p p value for lpdistance function
+ * @param {Function} weighted function that adds a weight
  * @returns {number} the calculated score
  */
-function averageVectorDistance(criteria, p){
+function averageVectorDistance(criteria, p, weighted){
     assertArray(criteria);
     assertArrayNotEmpty(criteria);
     assertArrayItemsInstanceOf(criteria, Array);
@@ -59,7 +60,7 @@ function averageVectorDistance(criteria, p){
         let distanceSum = 0;
         for (let criteria2 = 0; criteria2 < criteria.length; criteria2++) {
             if (criteria1 !== criteria2){
-                distanceSum += lpDistance(criteria[criteria1], criteria[criteria2], p);
+                distanceSum += weighted(lpDistance(criteria[criteria1], criteria[criteria2], p));
                 totalDistances++;
             }
         }
