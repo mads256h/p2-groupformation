@@ -3,17 +3,21 @@ const fs = require("fs");
 
 let argv = process.argv.splice(2);
 
+if (argv.length !== 3){
+    throw new RangeError("Wrong number of arguments");
+}
+
 /**
  * @summary A function used to generate a randomized student, these will be destributed into groups
- * @returns {Array} returns an array of students.
+ * @param {number} numOfStudents Number of students to be generated.
+ * @param {number} numOfSubjects Number of subjects to be generated.
+ * @returns {Student[]} returns an array of students.
  */
-function studentGenerator(){
-    let learningStyle;
-    let criteria;
+function studentGenerator(numOfStudents, numOfSubjects){
     let studentArray = [];
-    for (let index = 0; index < argv[0]; index++) {
-        learningStyle = new LearningStyles(lsGenerator(), lsGenerator(), lsGenerator(), lsGenerator());
-        criteria = new Criteria(Math.floor(Math.random()*10)+1, Math.floor(Math.random()*3), learningStyle, subjectGenerator());
+    for (let index = 0; index < numOfStudents; index++) {
+        const learningStyle = new LearningStyles(lsGenerator(), lsGenerator(), lsGenerator(), lsGenerator());
+        const criteria = new Criteria(Math.floor(Math.random()*10)+1, Math.floor(Math.random()*3), learningStyle, subjectGenerator(numOfSubjects));
         studentArray.push(new Student((index+1).toString(), criteria));
     }
     return studentArray;
@@ -30,11 +34,12 @@ function lsGenerator(){
 
 /**
  * @summary Generates an array of subjects, which is used when generating students
+ * @param {number} numOfSubjects Number of subjects to be generated.
  * @returns {SubjectPreference} Returns an array of subjects.
  */
-function subjectGenerator(){
+function subjectGenerator(numOfSubjects){
     let subjects = [];
-    for (let index = 0; index < argv[1]; index++) {
+    for (let index = 0; index < numOfSubjects; index++) {
         subjects.push(new Subject((index+1).toString(), Math.random()));
     }
     return new SubjectPreference(subjects);
@@ -43,10 +48,11 @@ function subjectGenerator(){
 /**
  * @summary Saves all of the students into a json file.
  * @param {Array} students Takes an array of students as input.
+ * @param {string} fileName Input to dictate name of file that is saved.
  */
-function saveToFile(students){
+function saveToFile(students, fileName){
     let data = JSON.stringify(students, null, 2);
-    fs.writeFile("Students.JSON", data, (err) => {
+    fs.writeFile(fileName+".JSON", data, (err) => {
         if (err) {
             throw err;
         }
@@ -56,4 +62,4 @@ function saveToFile(students){
 
 
 
-saveToFile(studentGenerator());
+saveToFile(studentGenerator(argv[0], argv[1]), argv[2]);
