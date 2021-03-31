@@ -1,3 +1,10 @@
+/**
+ * @description Math helper functions.
+ * @module math
+ * @see module:math
+ * @author Mati-AAU and thom776g and mads256h
+ */
+
 module.exports = {euclidDistance, lpDistance, transposeArray};
 
 const {
