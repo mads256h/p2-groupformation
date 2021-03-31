@@ -383,7 +383,7 @@ function assertArrayItemsInstanceOf(value, type) {
 /**
  * @summary Asserts that any subarray in an array does not have a differing amount of elements
  * @param {Array} first The first subarray is used to compare against the rest
- * @param {...any} rest The rest of the subarrays
+ * @param {...Array} rest The rest of the subarrays
  * @throws {RangeError} If the arrays have differing lengths
  */
 function assertArrayLengthEq(first, ...rest) {
