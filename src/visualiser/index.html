@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Test index</title>
-  </head>
-  <body>
-    <form action="/ls" method="POST">
-      <input type="text" name="username">
-      <input type="password" name="password">
-      <input type="submit">
-    </form>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <title>Test index</title>
+  <script src="comm.js"></script>
+  <script>
+    const {getListOfData, getData} = window.comm;
+    getListOfData().then(response => console.log(response));
+    getData("test.json").then(response => console.log(response));
+  </script>
+</head>
+
+<body>
+  <form action="/ls" method="POST">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit">
+  </form>
+</body>
+
 </html>

@@ -1,6 +1,7 @@
 #!/usr/bin/node
 
 const {WebServer, HttpError} = require("../webserver");
+const path = require("path");
 const fsp = require("fs").promises;
 
 
@@ -11,5 +12,5 @@ webserver.run();
 
 
 function lsHandler(postData, request) {
-    return fsp.readdir(__dirname);
+    return fsp.readdir(path.join(__dirname, "/data"));
 }
