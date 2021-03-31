@@ -1,4 +1,4 @@
-module.exports ={constant, sigmoid0to2};
+module.exports = {constant, sigmoid0to2};
 
 /**
  * @summary constant weight function
@@ -15,7 +15,5 @@ function constant(number){
  * @returns {number} Sigmoids funtion on number
  */
 function sigmoid0to2(number){
-    let sigmoid = 0.5*Math.tanh(number*2.5-2.5)+0.5;
-    return sigmoid;
+    return 0.5 * Math.tanh(number * 2.5 - 2.5) + 0.5;
 }
-
