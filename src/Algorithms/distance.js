@@ -12,7 +12,7 @@ const {
     assertArrayLengthEq,
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
-} = require("./typeassert");
+} = require("../typeassert");
 const {transposeArray} = require("../math.js");
 
 /**
