@@ -31,8 +31,12 @@ module.exports =
     assertArrayItemsInstanceOf,
     assertArrayLengthEq,
     assertArraysOfArrayNotEmpty,
-    assertArrayNotEmpty
+    assertArrayNotEmpty,
+
+    // Function
+    assertFunction
 };
+
 
 /**
  * @description Type- and rangeasserting module.
@@ -393,4 +397,15 @@ function assertArrayLengthEq(first, ...rest) {
             throw new RangeError("Array lengths not equal");
         }
     }
+}
+
+// Functions
+
+/**
+ * @summary Asserts that value is a number
+ * @param {any} value The value to assert that its a number
+ * @throws {TypeError} If value is not a number
+ */
+function assertFunction(value) {
+    assertType(value, Type.function);
 }

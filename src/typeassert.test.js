@@ -30,7 +30,10 @@ const {
     assertArrayItemsInstanceOf,
     assertArrayLengthEq,
     assertArraysOfArrayNotEmpty,
-    assertArrayNotEmpty
+    assertArrayNotEmpty,
+
+    // Function
+    assertFunction
 } = require("./typeassert");
 
 
@@ -441,4 +444,19 @@ test("assertArrayLengthEq", () => {
     expect(() => assertArrayLengthEq([])).not.toThrow();
     expect(() => assertArrayLengthEq(...[[], []])).not.toThrow();
     expect(() => assertArrayLengthEq(...[[-11, 5], [3]])).toThrow(RangeError);
+});
+
+// Function
+
+test("assertFunction", () => {
+    expect(() => assertFunction(assertFunction)).not.toThrow();
+    expect(() => assertFunction((a)=>a)).not.toThrow();
+
+    expect(() => assertFunction(undefined)).toThrow(TypeError);
+    expect(() => assertFunction(1)).toThrow(TypeError);
+    expect(() => assertFunction(null)).toThrow(TypeError);
+    expect(() => assertFunction(false)).toThrow(TypeError);
+    expect(() => assertFunction("test")).toThrow(TypeError);
+    expect(() => assertFunction({})).toThrow(TypeError);
+    expect(() => assertFunction([])).toThrow(TypeError);
 });
