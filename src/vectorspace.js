@@ -1,3 +1,10 @@
+/**
+ * @description Calculating the average distance between vectors, and minimum distance.
+ * @module vectorspace
+ * @see module:vectorspace
+ * @author Mati-AAU and thom776g
+ */
+
 module.exports = {averageVectorMinDistance, averageVectorDistance};
 const {
     assertArray,

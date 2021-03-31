@@ -1,3 +1,10 @@
+/**
+ * @description 0 points algorithm
+ * @module 0point
+ * @see module:0point
+ * @author Mati-AAU and thom776g
+ */
+
 module.exports = {balance};
 const {
     assertArray,

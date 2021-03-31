@@ -1,3 +1,10 @@
+/**
+ * @description A weight function for vectorspace algorithms.
+ * @module weightFunction
+ * @see module:weightFunction
+ * @author Mati-AAU and thom776g
+ */
+
 module.exports = {constant, sigmoid0to2};
 
 /**

@@ -1,3 +1,10 @@
+/**
+ * @description The distance algorithm.
+ * @module distance
+ * @see module:distance
+ * @author Mati-AAU and thom776g
+ */
+
 module.exports = {maxDistance};
 const {
     assertArray,

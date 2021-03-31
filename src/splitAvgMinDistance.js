@@ -1,3 +1,10 @@
+/**
+ * @description The Average minimum distance for each dimension algorithm.
+ * @module splitAvgMinDistance
+ * @see module:splitAvgMinDistance
+ * @author Mati-AAU and thom776g
+ */
+
 module.exports = {splitAvgMinDistance};
 const {
     assertArray,
