@@ -17,8 +17,8 @@ function studentGenerator(numOfStudents, numOfSubjects){
     let studentArray = [];
     for (let index = 0; index < numOfStudents; index++) {
         const learningStyle = new LearningStyles(lsGenerator(), lsGenerator(), lsGenerator(), lsGenerator());
-        const criteria = new Criteria(Math.floor(Math.random()*10)+1, Math.floor(Math.random()*3), learningStyle, subjectGenerator(numOfSubjects));
-        studentArray.push(new Student((index+1).toString(), criteria));
+        const criteria = new Criteria(Math.floor(Math.random() * 10) + 1, Math.floor(Math.random() * 3), learningStyle, subjectGenerator(numOfSubjects));
+        studentArray.push(new Student((index + 1).toString(), criteria));
     }
     return studentArray;
 }
@@ -29,7 +29,7 @@ function studentGenerator(numOfStudents, numOfSubjects){
  */
 function lsGenerator(){
     let ls = [-11, -9, -7, -5, -3, -1, 1, 3, 5, 7, 9, 11];
-    return ls[Math.floor(Math.random()*12)];
+    return ls[Math.floor(Math.random() * 12)];
 }
 
 /**
@@ -40,7 +40,7 @@ function lsGenerator(){
 function subjectGenerator(numOfSubjects){
     let subjects = [];
     for (let index = 0; index < numOfSubjects; index++) {
-        subjects.push(new Subject((index+1).toString(), Math.random()));
+        subjects.push(new Subject((index + 1).toString(), Math.random()));
     }
     return new SubjectPreference(subjects);
 }
@@ -52,14 +52,12 @@ function subjectGenerator(numOfSubjects){
  */
 function saveToFile(students, fileName){
     let data = JSON.stringify(students, null, 2);
-    fs.writeFile(fileName+".JSON", data, (err) => {
+    fs.writeFile(fileName + ".JSON", data, (err) => {
         if (err) {
             throw err;
         }
         console.log("The file has been saved!");
     });
 }
-
-
 
 saveToFile(studentGenerator(argv[0], argv[1]), argv[2]);
