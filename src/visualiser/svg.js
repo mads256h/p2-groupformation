@@ -1,20 +1,21 @@
-// Mess made by Henneboy :)
+//Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
 (function(){
 
-    //Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
     // Declaration of global consts, which are layout settings of the svg
     const RANGEWIDTH = 22;
     const svgWidth = window.innerWidth/2; // width of the svg is half the browser size
     const svgLineSpace = svgWidth*0.04; // the amount of space between each line, by the width of the svg
-    const svgLineWidth = window.innerWidth*0.005;
+    const svgLineWidth = svgWidth*0.01;
     const svgTextSize = svgLineSpace*0.5;
     const svgHeight = 2*4*svgLineSpace; // height of the svg, 4 lines, double linespace between lines, +2 for top&bottom
     const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
     const learningStyles = 4; // antal læringsstile
 
-    // This function is run after the html is loaded
+    // This function is run after the html is loaded ->run on buttonclick
     document.addEventListener("DOMContentLoaded", () =>{
+        //use data from file instead:
         let arr2d =[[-11,5,6,3], [-11,6,6,3.1], [-11,2.5,2.5,3.2], [-10.5,3,3,3.3], [4,3.1,6,3.5]]; //test array med læringsstile, first idx is student, second idx is learningsstyle
+        // run in a forloop:
         visualiseGroup(arr2d, "0");
     });
 
@@ -56,11 +57,9 @@
 
             //Create the circles
             let arrCircleSize = closeby(arrayBySecondIndex(groupArray, LearnStyle));
-            //arrCircleSize.forEach(circleSize);
             for (let student = 0; student < groupArray.length; student++) {
-
                 // Create & append one circle by the info:
-                svg1.appendChild(createCircle(cirXVal(groupArray[student][LearnStyle-1]), yValue, colorArr[student], arrCircleSize[student]));
+                svg1.appendChild(createCircle(circleXValue(groupArray[student][LearnStyle-1]), yValue, colorArr[student], arrCircleSize[student]));
                 arrCircleSize[groupArray[student][LearnStyle-1]]--;
             }
             arrCircleSize.length=0;
@@ -143,16 +142,16 @@
     }
     //--------------------------------------------------- End of SVG constructors ----------------------------
 
-    function cirXVal(value){
-        let x = svgLineSpace; //add the ofset from the left of the svg (the lines start some length inside the grey)
-        x+=((window.innerWidth/2)-(2*svgLineSpace))*((value+11)/RANGEWIDTH);
+    function circleXValue(value){
+        let x = svgLineSpace; //add the ofset from the left of the svg (the lines start some length inside the grey) this is equal to the -11 position
+        let percent = (value+11)/RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
+        let lineLength = svgWidth-(2*svgLineSpace); // the length of the line
+        x += lineLength*percent; // how far into the line must the center of the circle be placed
         return x;
     }
 
     function closeby(arrCircleSize){ //something is wrong in this function, but it still kinda works, derfor console.log
         let A = new Array();
-        console.log("A input: ");
-        console.log(...arrCircleSize);
         for (let i = 0; i < arrCircleSize.length; i++) {
             A[i]=0;
             for (let j = i; j < arrCircleSize.length; j++) {
@@ -165,26 +164,21 @@
             }
             A[i]++; //add sig selv, så kan vi gange med det, ellers ganger vi med 0 og så kommer der problemer
         }
-        console.log("A output: ");
-        console.log(...arrCircleSize);
-        console.log("A: ");
-        console.log(...A);
-        // calc the circlesize by the size e.g. 1, 2, 3... depends on how many values are close to eachother
+        // calc the circlesize in pixels by the size e.g. 1, 2, 3... depends on how many values are close to eachother
         A.forEach((size, idx, arr) => {
             arr[idx] = 0.25*svgLineSpace*Math.pow(size, 0.6);
         });
         return A;
     }
     /**
-     * @summary Returns t/f whether the distance between a & b is smaller than 'afstand'
+     * @summary Returns boolean whether the distance between a & b is smaller than 'afstand'
      * @param {number} a the first number
      * @param {number} b the second number
-     * @returns {boolean} Returns t/f whether the distance between a & b is smaller than 'afstand'
+     * @returns {boolean} Returns boolean whether the distance between a & b is smaller than 'afstand'
      */
     function range(a, b){
         let afstand = 0.5;
         if (Math.abs(a-b) <= Math.abs(afstand)){
-            console.log("True:" + a + " " + b);
             return true;
         }
         else{
@@ -193,7 +187,7 @@
     }
 
     /**
-     * @summary Creates and return an array by the second index e.g.: A[[1,2],[3,4]] with idx=1 becomes [2,4]
+     * @summary Creates and return a new array by the second index e.g.: A[[1,2],[3,4]] with idx=1 becomes [2,4]
      * @param {Array} arr the array from which to create the sub-array
      * @param {number} idx the index to use as second index
      * @returns {Array} return an array
