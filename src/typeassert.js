@@ -402,9 +402,9 @@ function assertArrayLengthEq(first, ...rest) {
 // Functions
 
 /**
- * @summary Asserts that value is a number
- * @param {any} value The value to assert that its a number
- * @throws {TypeError} If value is not a number
+ * @summary Asserts that value is a function
+ * @param {any} value The value to assert that its a function
+ * @throws {TypeError} If value is not a function
  */
 function assertFunction(value) {
     assertType(value, Type.function);
