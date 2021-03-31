@@ -19,11 +19,11 @@ function maxDistance(criteria){
     assertArrayItemsInstanceOf(criteria, Array);
     assertArraysOfArrayNotEmpty(criteria);
     assertArrayLengthEq(...criteria);
-    let transposedCriteria = transposeArray(criteria);
+    const transposedCriteria = transposeArray(criteria);
     let value = 0;
     for (let i = 0; i < transposedCriteria.length; i++){
-        let min = Math.min(...transposedCriteria[i]);
-        let max = Math.max(...transposedCriteria[i]);
+        const min = Math.min(...transposedCriteria[i]);
+        const max = Math.max(...transposedCriteria[i]);
         value += max - min;
     }
     return value / criteria[0].length;
