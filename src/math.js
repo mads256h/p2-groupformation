@@ -5,6 +5,7 @@ const {
     assertArrayLengthEq,
     assertArrayNotEmpty,
     assertGreaterThan,
+    assertArrayItemsType
 
 } = require("./typeassert");
 
@@ -32,11 +33,9 @@ function lpDistance(point1, point2, p){
     assertArrayNotEmpty(point1);
     assertArrayLengthEq(point1, point2);
     assertGreaterThan(p, 0);
-
-    if (p === 0){
-        throw new RangeError("p must not be 0 to avoid infinities!");
-    }
-
+    assertArrayItemsType(point1, "number");
+    assertArrayItemsType(point2, "number");
+    
     let innerSum = 0;
     for (let i = 0; i < point1.length; i++) {
         innerSum += Math.pow(Math.abs(point1[i] - point2[i]), p);

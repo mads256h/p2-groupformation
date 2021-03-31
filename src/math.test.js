@@ -5,6 +5,8 @@ test("Euclidean distance throws", () => {
     expect(() => euclidDistance([0], [1, 1])).toThrow(RangeError);
     expect(() => euclidDistance([], [])).toThrow(RangeError);
     expect(() => euclidDistance([], [2])).toThrow(RangeError);
+    expect(() => lpDistance([[2, 2], 0], [2, 4], 1)).toThrow(TypeError);
+    expect(() => lpDistance([2, 0], [2, "cake"], 1)).toThrow(TypeError);
 });
 test("Euclidean distance test values", () => {
     expect(euclidDistance([0,0], [1,1])).toEqual(Math.sqrt(2));
@@ -16,6 +18,8 @@ test("lpDistance throws", () => {
     expect(() => lpDistance([], [], 1)).toThrow(RangeError);
     expect(() => lpDistance([], [2], 1)).toThrow(RangeError);
     expect(() => lpDistance([2, 0], [2, 4], 0)).toThrow(RangeError);
+    expect(() => lpDistance([[2, 2], 0], [2, 4], 1)).toThrow(TypeError);
+    expect(() => lpDistance([2, 0], [2, "cake"], 1)).toThrow(TypeError);
 });
 test("lpDistance test values", () => {
     expect(lpDistance([0, 0], [1, 1], 2)).toBeCloseTo(Math.sqrt(2));
