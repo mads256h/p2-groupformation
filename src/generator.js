@@ -31,8 +31,7 @@ function studentGenerator(numOfStudents, numOfSubjects){
  * @returns {number} The return is a random learning style number
  */
 function lsGenerator(){
-    const ls = [-11, -9, -7, -5, -3, -1, 1, 3, 5, 7, 9, 11];
-    return ls[Math.floor(Math.random() * 12)];
+    return (Math.floor(Math.random() * 12) * 2)  - 11;
 }
 
 /**
