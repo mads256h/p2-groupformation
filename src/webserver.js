@@ -49,9 +49,8 @@ class WebServer {
         }
 
         function extractForm() {
-
             if (request.headers["content-type"] === undefined) {
-                return Promise.reject(new HttpError(415, "No content type specified"));
+                return Promise.resolve(null);
             }
 
             const ct = contentType.parse(request);
