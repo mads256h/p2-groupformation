@@ -1,7 +1,7 @@
 const {splitAvgMinDistance} = require("./splitAvgMinDistance.js");
 
 test("Return values of splitAvgMinDistance", () => {
-    let cTwoSix = [
+    const cTwoSix = [
         [9 / 11, 7 / 11, 9 / 11, 3 / 11],
         [5 / 11, -3 / 11, 1 / 11, -5 / 11],
         [1 / 11, 5 / 11, 5 / 11, -3 / 11],
@@ -9,8 +9,8 @@ test("Return values of splitAvgMinDistance", () => {
         [7 / 11, -7 / 11, 11 / 11, -9 / 11],
         [1 / 11, 5 / 11, 5 / 11, -7 / 11],
         [9 / 11, 5 / 11, 5 / 11, -3 / 11]];
-    let testGroup1 = [[7 / 11],[-4 / 11]];
-    let testGroup2 = [
+    const testGroup1 = [[7 / 11],[-4 / 11]];
+    const testGroup2 = [
         [7 / 11, 9 / 11, -10 / 11, 7 / 11],
         [-4 / 11, 10 / 11, -9 / 11, 1 / 11],
         [9 / 11, 9 / 11, 9 / 11, 9 / 11],
