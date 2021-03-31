@@ -21,10 +21,10 @@ function maxDistance(criteria){
     assertArrayLengthEq(...criteria);
     let transposedCriteria = transposeArray(criteria);
     let value = 0;
-    for (let i = 0; i < criteria[0].length; i++){
+    for (let i = 0; i < transposedCriteria.length; i++){
         let min = Math.min(...transposedCriteria[i]);
         let max = Math.max(...transposedCriteria[i]);
-        value += max + (-min);
+        value += max - min;
     }
     return value / criteria[0].length;
 }
