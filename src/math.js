@@ -1,6 +1,12 @@
 module.exports = {euclidDistance, lpDistance, transposeArray};
 
-const {assertArray, assertArrayLengthEq} = require("./typeassert");
+const {
+    assertArray,
+    assertArrayLengthEq,
+    assertArrayNotEmpty,
+    assertGreaterThan,
+
+} = require("./typeassert");
 
 /**
  * @summary Measures the euclid distance between point1 and point2
@@ -23,21 +29,19 @@ function euclidDistance(point1, point2){
  * @throws {RangeError} Throws when p=0
  */
 function lpDistance(point1, point2, p){
-    if (point1.length !== point2.length){
-        throw new TypeError("Mismatching dimensions between points");
-    }
-    if (point1.length <= 0){
-        throw new TypeError("points need atleast 1 dimension");
-    }
+    assertArrayNotEmpty(point1);
+    assertArrayLengthEq(point1, point2);
+    assertGreaterThan(p, 0);
+
     if (p === 0){
         throw new RangeError("p must not be 0 to avoid infinities!");
     }
 
     let innerSum = 0;
     for (let i = 0; i < point1.length; i++) {
-        innerSum += Math.pow(Math.abs(point1[i]-point2[i]), p);
+        innerSum += Math.pow(Math.abs(point1[i] - point2[i]), p);
     }
-    return Math.pow(innerSum, 1/p);
+    return Math.pow(innerSum, 1 / p);
 }
 
 /**

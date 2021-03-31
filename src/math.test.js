@@ -2,9 +2,9 @@ const {euclidDistance, lpDistance, transposeArray} = require("./math.js");
 
 
 test("Euclidean distance throws", () => {
-    expect(() => euclidDistance([0], [1,1])).toThrow(TypeError);
-    expect(() => euclidDistance([], [])).toThrow(TypeError);
-    expect(() => euclidDistance([], [2])).toThrow(TypeError);
+    expect(() => euclidDistance([0], [1, 1])).toThrow(RangeError);
+    expect(() => euclidDistance([], [])).toThrow(RangeError);
+    expect(() => euclidDistance([], [2])).toThrow(RangeError);
 });
 test("Euclidean distance test values", () => {
     expect(euclidDistance([0,0], [1,1])).toEqual(Math.sqrt(2));
@@ -12,9 +12,9 @@ test("Euclidean distance test values", () => {
     expect(euclidDistance([-1,0,0,0,0], [1,0,0,0,0])).toEqual(2);
 });
 test("lpDistance throws", () => {
-    expect(() => lpDistance([0], [1,1], 1)).toThrow(TypeError);
-    expect(() => lpDistance([], [], 1)).toThrow(TypeError);
-    expect(() => lpDistance([], [2], 1)).toThrow(TypeError);
+    expect(() => lpDistance([0], [1,1], 1)).toThrow(RangeError);
+    expect(() => lpDistance([], [], 1)).toThrow(RangeError);
+    expect(() => lpDistance([], [2], 1)).toThrow(RangeError);
     expect(() => lpDistance([2,0], [2,4], 0)).toThrow(RangeError);
 });
 test("lpDistance test values", () => {
