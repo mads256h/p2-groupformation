@@ -12,7 +12,7 @@ const {
     assertArrayLengthEq,
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
-} = require("./typeassert");
+} = require("../typeassert");
 
 /**
  * @summary Rates the average 1 dimensional distance from 0 to 1
