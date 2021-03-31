@@ -73,7 +73,6 @@ class Criteria {
      * @param {SubjectPreference} subjectPreference The student's subject preferences
      */
     constructor(ambitions, workingAtHome, learningStyles, subjectPreference) {
-
         typeassert.assertInteger(ambitions);
         typeassert.assertInteger(workingAtHome);
         typeassert.assertInstanceOf(learningStyles, LearningStyles);
@@ -96,7 +95,6 @@ class Criteria {
  * @property {number} sequentialGlobal The student's position on the sequential-global dimension
  */
 class LearningStyles {
-
     /**
      * @param {number} activeReflective The student's position on the active-reflective dimension
      * @param {number} visualVerbal The student's position on the visual-verbal dimension

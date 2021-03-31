@@ -1,6 +1,6 @@
 const {
     // General functions
-    //assertType, // Add functions to this module instead of using this
+    // assertType, // Add functions to this module instead of using this
     assertInstanceOf,
 
     // Object
@@ -27,7 +27,13 @@ const {
     // Array
     assertArray,
     assertArrayItemsType,
-    assertArrayItemsInstanceOf
+    assertArrayItemsInstanceOf,
+    assertArrayLengthEq,
+    assertArraysOfArrayNotEmpty,
+    assertArrayNotEmpty,
+
+    // Function
+    assertFunction
 } = require("./typeassert");
 
 
@@ -414,4 +420,43 @@ test("assertArrayItemsInstanceOf", () => {
     expect(() => assertArrayItemsInstanceOf(1, undefined)).toThrow(TypeError);
     expect(() => assertArrayItemsInstanceOf("test", undefined)).toThrow(TypeError);
     expect(() => assertArrayItemsInstanceOf(() => {}, undefined)).toThrow(TypeError);
+});
+
+
+test("assertArrayNotEmpty", () => {
+    expect(() => assertArrayNotEmpty([-11, 11])).not.toThrow();
+    expect(() => assertArrayNotEmpty([[-11], [11]])).not.toThrow();
+    expect(() => assertArrayNotEmpty([[], []])).not.toThrow();
+    expect(() => assertArrayNotEmpty([])).toThrow(RangeError);
+});
+
+test("assertArraysOfArrayNotEmpty", () => {
+    expect(() => assertArraysOfArrayNotEmpty([[-11], [11]])).not.toThrow();
+    expect(() => assertArraysOfArrayNotEmpty([])).not.toThrow();
+    expect(() => assertArraysOfArrayNotEmpty([-11, 11])).toThrow(TypeError);
+    expect(() => assertArraysOfArrayNotEmpty([[-11], []])).toThrow(RangeError);
+    expect(() => assertArraysOfArrayNotEmpty([[], []])).toThrow(RangeError);
+});
+
+test("assertArrayLengthEq", () => {
+    expect(() => assertArrayLengthEq([-11, 11])).not.toThrow();
+    expect(() => assertArrayLengthEq(...[[-11], [11]])).not.toThrow();
+    expect(() => assertArrayLengthEq([])).not.toThrow();
+    expect(() => assertArrayLengthEq(...[[], []])).not.toThrow();
+    expect(() => assertArrayLengthEq(...[[-11, 5], [3]])).toThrow(RangeError);
+});
+
+// Function
+
+test("assertFunction", () => {
+    expect(() => assertFunction(assertFunction)).not.toThrow();
+    expect(() => assertFunction((a)=>a)).not.toThrow();
+
+    expect(() => assertFunction(undefined)).toThrow(TypeError);
+    expect(() => assertFunction(1)).toThrow(TypeError);
+    expect(() => assertFunction(null)).toThrow(TypeError);
+    expect(() => assertFunction(false)).toThrow(TypeError);
+    expect(() => assertFunction("test")).toThrow(TypeError);
+    expect(() => assertFunction({})).toThrow(TypeError);
+    expect(() => assertFunction([])).toThrow(TypeError);
 });
