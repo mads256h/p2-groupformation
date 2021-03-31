@@ -12,8 +12,8 @@ const {
     assertArrayLengthEq,
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
-} = require("./typeassert");
-const {transposeArray} = require("./math.js");
+} = require("../typeassert");
+const {transposeArray} = require("../math.js");
 
 /**
  * @summary Measures the max distance between all criterias.

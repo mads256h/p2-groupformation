@@ -14,8 +14,8 @@ const {
     assertArrayNotEmpty,
     assertNumber,
     assertFunction
-} = require("./typeassert");
-const {lpDistance} = require("./math.js");
+} = require("../typeassert");
+const {lpDistance} = require("../math.js");
 
 /**
  * @summary Measures distribution of vectors in vectorspace by summing minimum distances

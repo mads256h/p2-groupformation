@@ -12,9 +12,9 @@ const {
     assertArrayLengthEq,
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
-} = require("./typeassert");
+} = require("../typeassert");
 
-const {transposeArray} = require("./math.js");
+const {transposeArray} = require("../math.js");
 
 /**
  * @summary Measures the balance of criterias in a group
