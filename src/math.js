@@ -35,7 +35,7 @@ function lpDistance(point1, point2, p){
     assertGreaterThan(p, 0);
     assertArrayItemsType(point1, "number");
     assertArrayItemsType(point2, "number");
-    
+
     let innerSum = 0;
     for (let i = 0; i < point1.length; i++) {
         innerSum += Math.pow(Math.abs(point1[i] - point2[i]), p);
