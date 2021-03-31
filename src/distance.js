@@ -33,5 +33,5 @@ function maxDistance(criteria){
         const max = Math.max(...transposedCriteria[i]);
         value += max - min;
     }
-    return value / criteria[0].length;
+    return value / transposedCriteria.length;
 }
