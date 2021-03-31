@@ -6,6 +6,7 @@ const {
     assertArraysOfArrayNotEmpty,
     assertArrayNotEmpty
 } = require("./typeassert");
+const {transposeArray} = require("./math.js");
 
 /**
  * @summary Measures the max distance between all criterias.
@@ -18,14 +19,11 @@ function maxDistance(criteria){
     assertArrayItemsInstanceOf(criteria, Array);
     assertArraysOfArrayNotEmpty(criteria);
     assertArrayLengthEq(...criteria);
-
+    let transposedCriteria = transposeArray(criteria);
     let value = 0;
     for (let i = 0; i < criteria[0].length; i++){
-        let max = -Infinity, min = Infinity;
-        for (let student = 0; student < criteria.length; student++){
-            min = Math.min(min, criteria[student][i]);
-            max = Math.max(max, criteria[student][i]);
-        }
+        let min = Math.min(...transposedCriteria[i]);
+        let max = Math.max(...transposedCriteria[i]);
         value += max + (-min);
     }
     return value / criteria[0].length;

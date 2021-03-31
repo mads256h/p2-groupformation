@@ -26,11 +26,11 @@ function averageVectorMinDistance(criteria, p, weighted){
 
     let score = 0;
     let totalDistances = 0;
-    for (let criteria1 = 0; criteria1 < criteria.length; criteria1++) {
+    for (let i = 0; i < criteria.length; i++) {
         let minDist = Infinity;
-        for (let criteria2 = 0; criteria2 < criteria.length; criteria2++) {
-            if (criteria1 !== criteria2){
-                minDist = weighted(Math.min(minDist, lpDistance(criteria[criteria1], criteria[criteria2], p)));
+        for (let j = 0; j < criteria.length; j++) {
+            if (i !== j){
+                minDist = weighted(Math.min(minDist, lpDistance(criteria[i], criteria[j], p)));
             }
         }
         score += minDist;
@@ -38,6 +38,9 @@ function averageVectorMinDistance(criteria, p, weighted){
     }
     return score / totalDistances;
 }
+
+
+
 
 /**
  * @summary Calculates average Lp distance between all vectors
