@@ -1,7 +1,7 @@
 module.exports =
 {
     // General functions
-    //assertType, // Add functions to this module instead of using this
+    // assertType, // Add functions to this module instead of using this
     assertInstanceOf,
 
     // Object
@@ -28,8 +28,15 @@ module.exports =
     // Array
     assertArray,
     assertArrayItemsType,
-    assertArrayItemsInstanceOf
+    assertArrayItemsInstanceOf,
+    assertArrayLengthEq,
+    assertArraysOfArrayNotEmpty,
+    assertArrayNotEmpty,
+
+    // Function
+    assertFunction
 };
+
 
 /**
  * @description Type- and rangeasserting module.
@@ -99,7 +106,6 @@ function assertType(value, type) {
  * @throws {TypeError} value is not an instance of type or type is invalid
  */
 function assertInstanceOf(value, type) {
-
     assertObject(value);
 
     if (type === undefined || type === null) {
@@ -310,13 +316,40 @@ function assertStringNotEmpty(value) {
  * @throws {TypeError} If value is not an array
  */
 function assertArray(value) {
-
     assertType(value, Type.object);
 
     if (!Array.isArray(value)) {
         throw new TypeError("value is not an array");
     }
 }
+
+/**
+ * @summary Asserts that an array is not empty
+ * @param {any} value The value to assert that it is not an empty array
+ * @throws {RangeError} If value is empty
+ */
+function assertArrayNotEmpty(value) {
+    assertArray(value);
+
+    if (value.length === 0) {
+        throw new RangeError("Array is empty");
+    }
+}
+
+/**
+ * @summary Asserts that any subarray in an array is not empty
+ * @param {any} value The value to assert there is no empty subarrays
+ * @throws {RangeError} If value is empty
+ */
+function assertArraysOfArrayNotEmpty(value) {
+    assertArray(value);
+    assertArrayItemsInstanceOf(value, Array);
+
+    for (let a of value) {
+        assertArrayNotEmpty(a);
+    }
+}
+
 
 /**
  * @summary Asserts that all items of the array value is the type specified by type
@@ -344,4 +377,35 @@ function assertArrayItemsInstanceOf(value, type) {
     for (let item of value) {
         assertInstanceOf(item, type);
     }
+}
+
+
+/**
+ * @summary Asserts that any subarray in an array does not have a differing amount of elements
+ * @param {Array} first The first subarray is used to compare against the rest
+ * @param {...Array} rest The rest of the subarrays
+ * @throws {RangeError} If the arrays have differing lengths
+ */
+function assertArrayLengthEq(first, ...rest) {
+    assertArray(first);
+    assertArrayItemsInstanceOf(rest, Array);
+
+    const length = first.length;
+
+    for (let a of rest) {
+        if (a.length !== length) {
+            throw new RangeError("Array lengths not equal");
+        }
+    }
+}
+
+// Functions
+
+/**
+ * @summary Asserts that value is a number
+ * @param {any} value The value to assert that its a number
+ * @throws {TypeError} If value is not a number
+ */
+function assertFunction(value) {
+    assertType(value, Type.function);
 }
