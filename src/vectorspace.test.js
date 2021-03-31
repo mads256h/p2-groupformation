@@ -31,7 +31,7 @@ test("Average vector distance values", () => {
     testGroup = [[0, 0, 0], [1, 1, 1]];
     expect(averageVectorDistance(testGroup, 1, constant)).toBeCloseTo(3);
     testGroup = [[1, -2], [-1, 3], [5, 1]];
-    expect(averageVectorDistance(testGroup, 1, constant)).toBeCloseTo(44/6);
+    expect(averageVectorDistance(testGroup, 1, constant)).toBeCloseTo(44 / 6);
 
     // test henriks wonderful p=0.5
     testGroup = [[1, 1], [3, 2]];
@@ -42,9 +42,9 @@ test("Average vector distance values", () => {
 
     // est weight function
     testGroup = [[3, 3], [5, 3]];
-    expect(averageVectorDistance(testGroup, 2, (x)=>x*2)).toBeCloseTo(4);
+    expect(averageVectorDistance(testGroup, 2, (x)=>x * 2)).toBeCloseTo(4);
     testGroup = [[-2, 6], [-6, 6], [5, -4], [10, 10], [-4, -4]];
-    expect(averageVectorDistance(testGroup, 2, (x)=>x*2)).toBeCloseTo(12.43*2);
+    expect(averageVectorDistance(testGroup, 2, (x)=>x * 2)).toBeCloseTo(12.43 * 2);
 });
 
 

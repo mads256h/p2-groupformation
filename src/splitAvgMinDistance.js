@@ -20,11 +20,11 @@ function splitAvgMinDistance(criteria){
     assertArrayLengthEq(...criteria);
 
     let sumDist = 0;
-    for(let i = 0; i < criteria[0].length; i++){
-        for(let student1 = 0; student1 < criteria.length; student1++){
+    for (let i = 0; i < criteria[0].length; i++){
+        for (let student1 = 0; student1 < criteria.length; student1++){
             let minDist = Infinity;
-            for(let student2 = 0; student2 < criteria.length; student2++){
-                if(student1 !== student2){
+            for (let student2 = 0; student2 < criteria.length; student2++){
+                if (student1 !== student2){
                     let curDist = Math.abs(criteria[student1][i] - criteria[student2][i]);
                     minDist = Math.min(curDist, minDist);
                 }
@@ -32,7 +32,7 @@ function splitAvgMinDistance(criteria){
             sumDist += minDist;
         }
     }
-    return ((sumDist/criteria[0].length)/criteria.length)/maxScore(criteria.length);
+    return ((sumDist / criteria[0].length) / criteria.length) / maxScore(criteria.length);
 }
 
 /**
@@ -41,5 +41,5 @@ function splitAvgMinDistance(criteria){
  * @returns {number} Max possible score
  */
 function maxScore(nrStudents){
-    return 2/(nrStudents-1);
+    return 2 / (nrStudents - 1);
 }
