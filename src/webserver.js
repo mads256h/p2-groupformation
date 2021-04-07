@@ -222,6 +222,9 @@ class WebServer {
                     response.end("\n");
                 });
             }
+            else {
+                errorResponse(404);
+            }
         }
         // Method is not GET OR POST
         else {
