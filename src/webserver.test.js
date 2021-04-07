@@ -36,45 +36,56 @@ afterAll(() => {
 it("WebServer get ok status 200", () => {
     expect.assertions(1);
 
-    return get("/getok").then(response => expect(response.status).toEqual(200));
+    return get("/getok")
+        .then(response => expect(response.status).toEqual(200));
 });
 
 it("WebServer get ok", () => {
     expect.assertions(1);
 
-    return get("/getok").then(response => response.json()).then(response => expect(response.status).toEqual("OK"));
+    return get("/getok")
+        .then(response => response.json())
+        .then(response => expect(response.status).toEqual("OK"));
 });
 
 
 it("WebServer get err status 403", () => {
     expect.assertions(1);
 
-    return get("/geterr").then(response => expect(response.status).toEqual(403));
+    return get("/geterr")
+        .then(response => expect(response.status).toEqual(403));
 });
 
 it("WebServer get err", () => {
     expect.assertions(1);
 
-    return get("/geterr").then(response => response.json()).then(response => expect(response.status).toEqual("ERR"));
+    return get("/geterr")
+        .then(response => response.json())
+        .then(response => expect(response.status).toEqual("ERR"));
 });
 
 it("WebServer get echo status 200", () => {
     expect.assertions(1);
 
-    return get("/getecho").then(response => expect(response.status).toEqual(200));
+    return get("/getecho")
+        .then(response => expect(response.status).toEqual(200));
 });
 
 
 it("WebServer get echo", () => {
     expect.assertions(1);
 
-    return get("/getecho?test=1").then(response => response.json()).then(response => expect(response.status).toEqual("OK"));
+    return get("/getecho?test=1")
+        .then(response => response.json())
+        .then(response => expect(response.status).toEqual("OK"));
 });
 
 it("WebServer get echo param", () => {
     expect.assertions(1);
 
-    return get("/getecho?test=1").then(response => response.json()).then(response => expect(response.response).toEqual({"test": "1"}));
+    return get("/getecho?test=1")
+        .then(response => response.json())
+        .then(response => expect(response.response).toEqual({"test": "1"}));
 });
 
 
@@ -115,28 +126,29 @@ it("WebServer post echo param", () => {
     return post("/postecho", {test: 1}).then(response => response.json()).then(response => expect(response.response).toEqual({"test": "1"}));
 });
 
-function getHandlerOk(getParams, request) {
+
+function getHandlerOk() {
     return "";
 }
 
-function getHandlerErr(getParams, request) {
+function getHandlerErr() {
     throw new HttpError(403, "Access forbidden");
 }
 
-function getHandlerEcho(getParams, request) {
+function getHandlerEcho(getParams) {
     return paramsToObject(getParams);
 }
 
 
-function postHandlerOk(postBody, request) {
+function postHandlerOk() {
     return "";
 }
 
-function postHandlerErr(postBody, request) {
+function postHandlerErr() {
     throw new HttpError(403, "Access forbidden");
 }
 
-function postHandlerEcho(postBody, request) {
+function postHandlerEcho(postBody) {
     return paramsToObject(postBody);
 }
 
@@ -145,12 +157,17 @@ function get(url) {
 }
 
 function post(url, data = {}) {
-    return fetch(`http://localhost:${server.port}${url}`, {method: "POST", body: new URLSearchParams(data).toString(), headers: {"Content-Type": "application/x-www-form-urlencoded"}});
+    return fetch(`http://localhost:${server.port}${url}`,
+        {
+            method: "POST",
+            body: new URLSearchParams(data).toString(),
+            headers: {"Content-Type": "application/x-www-form-urlencoded"}
+        });
 }
 
 function paramsToObject(entries) {
-    const result = {}
-    for (const [key, value] of entries) { // each 'entry' is a [key, value] tupple
+    const result = {};
+    for (const [key, value] of entries) {
         result[key] = value;
     }
     return result;

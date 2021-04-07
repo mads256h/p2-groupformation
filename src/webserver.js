@@ -89,13 +89,13 @@ class WebServer {
      * @summary Run the server
      */
     run() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.server.listen(this.port, this.hostname, () => resolve());
         });
     }
 
     stop() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.server.close(() => resolve());
         });
     }
@@ -185,7 +185,7 @@ class WebServer {
                 const handler = thiz.getHandlers.get(url.pathname);
 
                 try {
-                    const resp = handler(url.searchParams, request)
+                    const resp = handler(url.searchParams, request);
                     const obj = {status: "OK", response: resp};
                     response.statusCode = 200;
                     response.setHeader("Content-Type", mimeType.contentType("application/json"));
