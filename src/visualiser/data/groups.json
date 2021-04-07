@@ -1,0 +1,364 @@
+[
+    {
+        "name": "0",
+        "id": 1,
+        "students": [
+            {
+                "name": "1",
+                "criteria": {
+                    "ambitions": 3,
+                    "workingAtHome": 0,
+                    "learningStyles": {
+                        "activeReflective": -9,
+                        "visualVerbal": -1,
+                        "sensingIntuitive": 3,
+                        "sequentialGlobal": -5
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.8776577159751369
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.1736230734870432
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "2",
+                "criteria": {
+                    "ambitions": 2,
+                    "workingAtHome": 2,
+                    "learningStyles": {
+                        "activeReflective": 3,
+                        "visualVerbal": -1,
+                        "sensingIntuitive": 9,
+                        "sequentialGlobal": -3
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.6096485088540318
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.3172588454948795
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "3",
+                "criteria": {
+                    "ambitions": 4,
+                    "workingAtHome": 1,
+                    "learningStyles": {
+                        "activeReflective": 9,
+                        "visualVerbal": -3,
+                        "sensingIntuitive": 5,
+                        "sequentialGlobal": 3
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.9016863228902583
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.017848524754722428
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "4",
+                "criteria": {
+                    "ambitions": 9,
+                    "workingAtHome": 0,
+                    "learningStyles": {
+                        "activeReflective": -1,
+                        "visualVerbal": 5,
+                        "sensingIntuitive": -11,
+                        "sequentialGlobal": -5
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.9844905365910834
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.20359275683752887
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "5",
+                "criteria": {
+                    "ambitions": 5,
+                    "workingAtHome": 0,
+                    "learningStyles": {
+                        "activeReflective": -9,
+                        "visualVerbal": -3,
+                        "sensingIntuitive": -9,
+                        "sequentialGlobal": 9
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.4885915759121635
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.5118822867502164
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "6",
+                "criteria": {
+                    "ambitions": 4,
+                    "workingAtHome": 1,
+                    "learningStyles": {
+                        "activeReflective": 11,
+                        "visualVerbal": -3,
+                        "sensingIntuitive": 7,
+                        "sequentialGlobal": 9
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.6524242618662517
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.275515367330629
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "7",
+                "criteria": {
+                    "ambitions": 7,
+                    "workingAtHome": 1,
+                    "learningStyles": {
+                        "activeReflective": 11,
+                        "visualVerbal": 9,
+                        "sensingIntuitive": -9,
+                        "sequentialGlobal": 3
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.7384013257579543
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.19665513413513436
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "name": "1",
+        "id": 2,
+        "students": [
+            {
+                "name": "8",
+                "criteria": {
+                    "ambitions": 10,
+                    "workingAtHome": 1,
+                    "learningStyles": {
+                        "activeReflective": 1,
+                        "visualVerbal": -3,
+                        "sensingIntuitive": 7,
+                        "sequentialGlobal": -3
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.04170818220312711
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.17862955377889356
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "9",
+                "criteria": {
+                    "ambitions": 5,
+                    "workingAtHome": 1,
+                    "learningStyles": {
+                        "activeReflective": 7,
+                        "visualVerbal": 11,
+                        "sensingIntuitive": -7,
+                        "sequentialGlobal": 9
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.9073312270311493
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.029987158032876104
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "10",
+                "criteria": {
+                    "ambitions": 6,
+                    "workingAtHome": 2,
+                    "learningStyles": {
+                        "activeReflective": 7,
+                        "visualVerbal": -3,
+                        "sensingIntuitive": -9,
+                        "sequentialGlobal": 1
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.45144320263055615
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.47881805203735284
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "11",
+                "criteria": {
+                    "ambitions": 6,
+                    "workingAtHome": 0,
+                    "learningStyles": {
+                        "activeReflective": 11,
+                        "visualVerbal": -1,
+                        "sensingIntuitive": -7,
+                        "sequentialGlobal": -11
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.4895196869773506
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.7984462514135342
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "12",
+                "criteria": {
+                    "ambitions": 8,
+                    "workingAtHome": 0,
+                    "learningStyles": {
+                        "activeReflective": -5,
+                        "visualVerbal": 5,
+                        "sensingIntuitive": 11,
+                        "sequentialGlobal": 7
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.618593705244151
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.6401814278975257
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "13",
+                "criteria": {
+                    "ambitions": 4,
+                    "workingAtHome": 2,
+                    "learningStyles": {
+                        "activeReflective": 3,
+                        "visualVerbal": -7,
+                        "sensingIntuitive": 5,
+                        "sequentialGlobal": -11
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.49474833411405594
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.9529988122793833
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "14",
+                "criteria": {
+                    "ambitions": 4,
+                    "workingAtHome": 1,
+                    "learningStyles": {
+                        "activeReflective": 1,
+                        "visualVerbal": 3,
+                        "sensingIntuitive": -9,
+                        "sequentialGlobal": 1
+                    },
+                    "subjectPreference": {
+                        "subjects": [
+                            {
+                                "name": "1",
+                                "score": 0.5433924821567799
+                            },
+                            {
+                                "name": "2",
+                                "score": 0.4506313418387293
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+]

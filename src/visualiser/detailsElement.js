@@ -7,20 +7,19 @@
 
     window.detailsElement = {createVisualInfo};
     document.addEventListener("DOMContentLoaded", () => {
-        createVisualInfo(groupTest, exsampleBad);
+        // createVisualInfo(groupTest, exsampleBad);
     });
 
     /**
      * @summary Creates the html code for the information in the groups
      * @param {object} group The class with all the groups
      * @param {number[]} array Array of the students learningstyles
+     * @returns {HTMLElement} return a html element with info about the groups
      */
     function createVisualInfo(group, array) {
         // The div element that are placed to the right in the svg div
         let divElement = document.createElement("div");
-        const rightToSvg = document.querySelector("div > svg");
         divElement.className = "groupsize";
-        rightToSvg.after(divElement);
 
         // The maxMine functions output inserted in the groupsize class
         let maxMine = document.createElement("P");
@@ -43,7 +42,10 @@
         summary.innerText = "Students";
         details.appendChild(summary);
         details.appendChild(printStudents(group));
-        divElement.after(details);
+        divElement.appendChild(details);
+
+        // Returns the div element in which all info is stored
+        return divElement;
     }
 
     /**
@@ -60,29 +62,5 @@
         }
         return list;
     }
-    let groupTest = {
-        name: "Group 1",
-        id: 1,
-        students: [
-            {
-                name: "Morten"
-            },
-            {
-                name: "Mads"
-            },
-            {
-                name: "Sven"
-            }
-        ]
-    };
-    let exsampleBad = [
-        -1,
-        -7.333333333333334,
-        -3.666666666666667,
-        0,
-        3.666666666666666,
-        7.333333333333332,
-        11
-    ];
 }());
 
