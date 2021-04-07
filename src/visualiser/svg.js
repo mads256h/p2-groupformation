@@ -5,7 +5,7 @@
 // Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
 
 (function(){
-    window.svg = {visualiseGroup};
+    window.svg = {createGroupSvg};
     // Declaration of global consts, which are layout settings of the svg
     const RANGEWIDTH = 22;
     const svgWidth = window.innerWidth / 2; // width of the svg is half the browser size
@@ -16,50 +16,25 @@
     const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
     const learningStyles = 4; // antal læringsstile
 
-    // This function is run after the html is loaded ->run on buttonclick
-    document.addEventListener("DOMContentLoaded", () =>{
-        // use data from file instead:
-        let arr2d = [[-11,5,6,3], [-11,6,6,3.1], [-11,2.5,2.5,3.2], [-10.5,3,3,3.3], [4,3.1,6,3.5]]; // test array med læringsstile, first idx is student, second idx is learningsstyle
-        // run in a forloop:
-        visualiseGroup(arr2d, "0");
-    });
 
     /**
      * @summary Creates and appends a div element with and id to the body of the html-doc, and runs and appends the result of createGroupSvg to this div
      * @param {Array} groupArray the group array with students
-     * @param {number} divID the id of the div, this could be the position of the group in the groupformation array, this id should be unique
-     * @param {element} masterDiv the id of the div, this could be the position of the group in the groupformation array, this id should be unique
+     * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
-    function visualiseGroup(groupArray, divID, masterDiv){
-        // create a div element for this group
-        let svgDiv = document.createElement("DIV");
-        svgDiv.setAttribute("id", divID);
-        // attach the master svg to the element on page
-        masterDiv.appendChild(svgDiv);
-        // create and append the group svg element to the groups svgDiv
-        svgDiv.appendChild(createGroupSvg(svgWidth, svgHeight, groupArray));
-    }
-
-    /**
-     * @summary Creates and appends a div element with and id to the body of the html-doc, and runs and appends the result of createGroupSvg to this div
-     * @param {number} width the width of the svg element
-     * @param {number} height the height of the svg element
-     * @param {Array} groupArray the group array with students
-     * @returns {Element} rectangle svg element?
-     */
-    function createGroupSvg(width, height, groupArray){
+    function createGroupSvg(groupArray){
         const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg1.setAttribute("width", width);
-        svg1.setAttribute("height", height);
-        svg1.appendChild(createRect(0, 0, width, height)); // create a lightgrey rect that fills the whole svg to show it in browser.
+        svg1.setAttribute("width", svgWidth);
+        svg1.setAttribute("height", svgHeight);
+        svg1.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
         let yValue = svgLineSpace;
         for (let LearnStyle = 1; LearnStyle <= learningStyles; LearnStyle++) {
             // Create the -11 and 11 text
             svg1.appendChild(createText(svgLineSpace * 0.25, yValue + 6, "-11"));
-            svg1.appendChild(createText(width - svgLineSpace, yValue + 6, "11"));
+            svg1.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, "11"));
 
             // Create the horisontal lines
-            svg1.appendChild(createLine(svgLineSpace, yValue, width - svgLineSpace));
+            svg1.appendChild(createLine(svgLineSpace, yValue, svgWidth - svgLineSpace));
 
             // Create the circles
             let arrCircleSize = closeby(arrayBySecondIndex(groupArray, LearnStyle));
@@ -81,7 +56,7 @@
      * @param {number} width the widthe of the rectangle
      * @param {number} height the height of the rectangle
      * @param {string} color the fill color of the rectangle, default: "grey"
-     * @returns {Element} rectangle svg element?
+     * @returns {SVGRectElement} A rectangle svg element with the width, height, color provided as arguments, starts in the x,y coordinates
      */
     function createRect(x, y, width, height, color = "lightgrey"){
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -100,7 +75,7 @@
      * @param {number} x2 the x position of the end of the line
      * @param {number} y2 the y position of the end of the line, y1 by default
      * @param {number} width the width of the line, default is determined by the browser size
-     * @returns {Element} line svg element?
+     * @returns {SVGLineElement} A line with the coordinates and with provided as arguments
      */
     function createLine(x1, y1, x2, y2 = y1, width = svgLineWidth){
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -119,7 +94,7 @@
      * @param {number} cy the y position of the center of the circle
      * @param {color} color the color of the circle
      * @param {number} r the radius of the circle
-     * @returns {Element} circle svg element?
+     * @returns {SVGCircleElement} SVGCicleElement with the color and radius provided as arguments
      */
     function createCircle(cx, cy, color, r){
         const cir = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -136,7 +111,7 @@
      * @param {number} y the y position of the center of the text
      * @param {string} text the text to be displayed
      * @param {string} fontSize the text to be displayed, default is determinded by svgLineSpace
-     * @returns {Element} text svg element?
+     * @returns {SVGTextElement} SVGTextElement with the text given as argument
      */
     function createText(x, y, text, fontSize = svgTextSize){
         const textSvg = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -165,7 +140,7 @@
      * @param {Array} arrCircleSize the input array, this contains
      * @returns {Array} Returns an array with the radius(size) of the circles to be made, so alle the circles can be seen
      */
-    function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works, derfor console.log
+    function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works
         let A = new Array();
         for (let i = 0; i < arrCircleSize.length; i++) {
             A[i] = 0;

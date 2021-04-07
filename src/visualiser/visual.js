@@ -1,4 +1,4 @@
-(function (){
+(function(){
     /**
      * @summary Finds the distance between the min and max value in the array
      * @param {number[]} array Array of numbers
@@ -31,7 +31,7 @@
         }
         else {
             let newArray = array.slice();
-            newArray.sort(function (a, b) {
+            newArray.sort(function(a, b) {
                 return a - b;
             });
             let sum = 0;
@@ -57,35 +57,6 @@
         }
         return array;
     }
-
-    console.log(perfectDist(7));
-    let eksampleBad = [
-        -1,
-        -7.333333333333334,
-        -3.666666666666667,
-        0,
-        3.666666666666666,
-        7.333333333333332,
-        11
-    ];
-    let eksamplePef = [
-        -11,
-        -7.333333333333334,
-        -3.666666666666667,
-        0,
-        3.666666666666666,
-        7.333333333333332,
-        11
-    ];
-
-    distribution(eksampleBad);
-    distribution(eksamplePef);
-    console.log(distribution(eksampleBad));
-    console.log(distribution(eksamplePef));
-    //let perfekt = [11, 3, -3 -11];
-
-    //console.log(maxsMin(eksample));
-    //console.log(sum(eksample));
 
     window.visualjs = {
         distribution,
