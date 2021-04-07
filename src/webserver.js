@@ -184,15 +184,13 @@ class WebServer {
             if (thiz.getHandlers.has(url.pathname)) {
                 const handler = thiz.getHandlers.get(url.pathname);
 
-                try {
-                    const resp = handler(url.searchParams, request);
+                Promise.resolve().then(() => handler(url.searchParams, request)).then(resp => {
                     const obj = {status: "OK", response: resp};
                     response.statusCode = 200;
                     response.setHeader("Content-Type", mimeType.contentType("application/json"));
                     response.write(JSON.stringify(obj));
                     response.end("\n");
-                }
-                catch (reason) {
+                }).catch(reason => {
                     if (!HttpError[Symbol.hasInstance](reason)) {
                         throw reason;
                     }
@@ -202,7 +200,7 @@ class WebServer {
                     response.setHeader("Content-Type", mimeType.contentType("application/json"));
                     response.write(JSON.stringify(obj));
                     response.end("\n");
-                }
+                });
             }
             else {
                 // Serve file
