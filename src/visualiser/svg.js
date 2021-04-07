@@ -28,13 +28,14 @@
      * @summary Creates and appends a div element with and id to the body of the html-doc, and runs and appends the result of createGroupSvg to this div
      * @param {Array} groupArray the group array with students
      * @param {number} divID the id of the div, this could be the position of the group in the groupformation array, this id should be unique
+     * @param {element} masterDiv the id of the div, this could be the position of the group in the groupformation array, this id should be unique
      */
-    function visualiseGroup(groupArray, divID){
+    function visualiseGroup(groupArray, divID, masterDiv){
         // create a div element for this group
         let svgDiv = document.createElement("DIV");
         svgDiv.setAttribute("id", divID);
         // attach the master svg to the element on page
-        document.body.appendChild(svgDiv);
+        masterDiv.appendChild(svgDiv);
         // create and append the group svg element to the groups svgDiv
         svgDiv.appendChild(createGroupSvg(svgWidth, svgHeight, groupArray));
     }
@@ -161,7 +162,7 @@
 
     /**
      * @summary finds how many elements are close to each other and increases their size accordingly
-     * @param {Array} arrCircleSize the input array, this contains 
+     * @param {Array} arrCircleSize the input array, this contains
      * @returns {Array} Returns an array with the radius(size) of the circles to be made, so alle the circles can be seen
      */
     function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works, derfor console.log

@@ -27,8 +27,12 @@
 
     function makeFromFilename(filename) {
         console.log("Creating from file: " + filename);
+        let masterDiv = document.createElement("DIV");
+        masterDiv.setAttribute("id", "MasterDiv");
+        // attach the master svg to the element on page
+        document.body.appendChild(masterDiv);
         createVisualInfo(groupTest, exsampleBad);
-        visualiseGroup(arr2d);
+        visualiseGroup(arr2d, masterDiv);
     }
 
     getData("test2.json").then(e => {
