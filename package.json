@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "content-type": "^1.0.4",
-    "mime-type": "^4.0.0"
+    "mime-type": "^4.0.0",
+    "node-fetch": "^2.6.1"
   }
 }

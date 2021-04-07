@@ -89,7 +89,15 @@ class WebServer {
      * @summary Run the server
      */
     run() {
-        this.server.listen(this.port, this.hostname, () => console.log(`Server listening at http://${this.hostname}:${this.port}/`));
+        return new Promise((resolve, reject) => {
+            this.server.listen(this.port, this.hostname, () => resolve());
+        });
+    }
+
+    stop() {
+        return new Promise((resolve, reject) => {
+            this.server.close(() => resolve());
+        });
     }
 
 
@@ -170,19 +178,21 @@ class WebServer {
             });
         }
 
+        const url = new URL(request.url, `http://${request.headers.host}`);
 
         if (request.method === "GET") {
-            if (thiz.getHandlers.has(request.url)) {
-                const handler = thiz.getHandlers.get(request.url);
-                const urlParams = new URLSearchParams(request.url);
+            if (thiz.getHandlers.has(url.pathname)) {
+                const handler = thiz.getHandlers.get(url.pathname);
 
-                handler(urlParams, request).then(resp => {
+                try {
+                    const resp = handler(url.searchParams, request)
                     const obj = {status: "OK", response: resp};
                     response.statusCode = 200;
                     response.setHeader("Content-Type", mimeType.contentType("application/json"));
                     response.write(JSON.stringify(obj));
                     response.end("\n");
-                }).catch(reason => {
+                }
+                catch (reason) {
                     if (!HttpError[Symbol.hasInstance](reason)) {
                         throw reason;
                     }
@@ -192,17 +202,17 @@ class WebServer {
                     response.setHeader("Content-Type", mimeType.contentType("application/json"));
                     response.write(JSON.stringify(obj));
                     response.end("\n");
-                });
+                }
             }
             else {
                 // Serve file
-                fileResponse(request.url);
+                fileResponse(url.pathname);
             }
         }
         else if (request.method === "POST") {
             // Parse post body
-            if (thiz.postHandlers.has(request.url)) {
-                const handler = thiz.postHandlers.get(request.url);
+            if (thiz.postHandlers.has(url.pathname)) {
+                const handler = thiz.postHandlers.get(url.pathname);
 
                 extractForm().then(postData => handler(postData, request)).then(resp => {
                     const obj = {status: "OK", response: resp};
