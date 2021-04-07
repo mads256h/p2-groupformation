@@ -7,10 +7,10 @@ const fsp = require("fs").promises;
 
 const webserver = new WebServer("localhost", 3000, __dirname);
 
-webserver.addPostHandler("/ls", lsHandler);
+webserver.addGetHandler("/ls", lsHandler);
 webserver.run();
 
 
-function lsHandler(postData, request) {
+function lsHandler(getParams, request) {
     return fsp.readdir(path.join(__dirname, "/data"));
 }

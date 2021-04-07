@@ -9,7 +9,8 @@
     "html-lint": "html-validate src/www/",
     "css-lint": "stylelint --aei src/www/**/*.css",
     "test": "jest",
-    "doc": "jsdoc -r src/"
+    "doc": "jsdoc -r src/",
+    "vis": "node src/visualiser/server.js"
   },
   "repository": {
     "type": "git",
