@@ -2,7 +2,7 @@
     "use strict";
 
     function getListOfData() {
-        return fetch("/ls", {method: "POST"}).then(response => response.json()).then(response => {
+        return fetch("/ls").then(response => response.json()).then(response => {
             if (response.status !== "OK") {
                 throw new Error(response.message);
             }
