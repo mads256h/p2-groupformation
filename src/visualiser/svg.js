@@ -41,7 +41,7 @@
             for (let student = 0; student < groupArray.length; student++) {
                 // Create & append one circle by the info:
                 svg.appendChild(createCircle(circleXValue(groupArray[student][learnStyle]), yValue, colorArr[student], arrCircleSize[student]));
-                arrCircleSize[groupArray[student][learnStyle - 1]]--;
+                arrCircleSize[groupArray[student][learnStyle]]--;
             }
             arrCircleSize.length = 0;
             yValue += 2 * svgLineSpace;
