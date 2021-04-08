@@ -5,7 +5,7 @@
         distanceBetweenExtremes
     } = window.visualjs;
 
-    window.detailsElement = {createVisualInfo};
+    window.detailsElement = {displayGroupInfo};
     document.addEventListener("DOMContentLoaded", () => {
         // createVisualInfo(groupTest, exsampleBad);
     });
@@ -16,15 +16,15 @@
      * @param {number[]} array Array of the students learningstyles
      * @returns {HTMLElement} return a html element with info about the groups
      */
-    function createVisualInfo(group, array) {
+    function displayGroupInfo(group, array) {
         // The div element that are placed to the right in the svg div
         const divElement = document.createElement("div");
         divElement.className = "groupsize";
 
         // The maxMine functions output inserted in the groupsize class
-        const maxMine = document.createElement("P");
-        maxMine.innerText = "MaxMine: " + distanceBetweenExtremes(array).toString();
-        divElement.appendChild(maxMine);
+        const maxMin = document.createElement("P");
+        maxMin.innerText = "MaxMine: " + distanceBetweenExtremes(array).toString();
+        divElement.appendChild(maxMin);
 
         // The sum functions output inserted in the groupsize class under maxMine
         const sum = document.createElement("P");
@@ -49,9 +49,9 @@
     }
 
     /**
-     * @summary Prints the names of the students in a group
+     * @summary Creates a list as a html element
      * @param {object} group Takes a class of groups with all the students in the class
-     * @returns {string} A string with the names in a unorded list
+     * @returns {HTMLElement} Returns a list as a html element
      */
     function printStudents(group) {
         const list = document.createElement("ul");
