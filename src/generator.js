@@ -44,7 +44,11 @@ function studentGenerator(name, numSubjects) {
  * @returns {Criteria} A randomized criteria object
  */
 function criteriaGenerator(numSubjects) {
-    return new Criteria(Math.floor(Math.random() * 10) + 1, Math.floor(Math.random() * 3), learningStylesGenerator(), subjectPreferenceGenerator(numSubjects));
+    return new Criteria(
+        Math.floor(Math.random() * 10) + 1, // ambitions
+        Math.floor(Math.random() * 3), // workingAtHome
+        learningStylesGenerator(),
+        subjectPreferenceGenerator(numSubjects));
 }
 
 
