@@ -30,7 +30,7 @@
             throw new RangeError("To few arguments");
         }
         else {
-            let newArray = array.slice();
+            const newArray = array.slice();
             newArray.sort(function(a, b) {
                 return a - b;
             });
