@@ -12,9 +12,9 @@
     const svgLineSpace = svgWidth * 0.04; // the amount of space between each line, by the width of the svg
     const svgLineWidth = svgWidth * 0.01;
     const svgTextSize = svgLineSpace * 0.5;
-    const svgHeight = 2 * 4 * svgLineSpace; // height of the svg, 4 lines, double linespace between lines, +2 for top&bottom
-    const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
     const learningStyles = 4; // antal læringsstile
+    const svgHeight = 2 * learningStyles * svgLineSpace; // height of the svg, 4 lines, double linespace between lines, +2 for top&bottom
+    const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
 
 
     /**
@@ -23,30 +23,30 @@
      * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
     function createGroupSvg(groupArray){
-        const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg1.setAttribute("width", svgWidth);
-        svg1.setAttribute("height", svgHeight);
-        svg1.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("width", svgWidth);
+        svg.setAttribute("height", svgHeight);
+        svg.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
         let yValue = svgLineSpace;
-        for (let LearnStyle = 1; LearnStyle <= learningStyles; LearnStyle++) {
+        for (let learnStyle = 1; learnStyle <= learningStyles; learnStyle++) {
             // Create the -11 and 11 text
-            svg1.appendChild(createText(svgLineSpace * 0.25, yValue + 6, "-11"));
-            svg1.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, "11"));
+            svg.appendChild(createText(svgLineSpace * 0.25, yValue + 6, "-11"));
+            svg.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, "11"));
 
             // Create the horisontal lines
-            svg1.appendChild(createLine(svgLineSpace, yValue, svgWidth - svgLineSpace));
+            svg.appendChild(createLine(svgLineSpace, yValue, svgWidth - svgLineSpace));
 
             // Create the circles
-            let arrCircleSize = closeby(arrayBySecondIndex(groupArray, LearnStyle));
+            let arrCircleSize = closeby(arrayBySecondIndex(groupArray, learnStyle));
             for (let student = 0; student < groupArray.length; student++) {
                 // Create & append one circle by the info:
-                svg1.appendChild(createCircle(circleXValue(groupArray[student][LearnStyle - 1]), yValue, colorArr[student], arrCircleSize[student]));
-                arrCircleSize[groupArray[student][LearnStyle - 1]]--;
+                svg.appendChild(createCircle(circleXValue(groupArray[student][learnStyle - 1]), yValue, colorArr[student], arrCircleSize[student]));
+                arrCircleSize[groupArray[student][learnStyle - 1]]--;
             }
             arrCircleSize.length = 0;
             yValue += 2 * svgLineSpace;
         }
-        return svg1;
+        return svg;
     }
     // --------------------------------------------------- SVG constructors -----------------------------------
     /**
@@ -124,12 +124,12 @@
     // --------------------------------------------------- End of SVG constructors ----------------------------
     /**
      * @summary calculates the x coordinate of the circle's center from the LearningStyleValue(from -11 to 11) to a x coordinate on the line
-     * @param {number} LSvalue the LearningStyleValue form which to calculate the x value of the circle
+     * @param {number} learnStyleValue the LearningStyleValue form which to calculate the x value of the circle
      * @returns {number} Returns the x coordinate of the circle
      */
-    function circleXValue(LSvalue){
+    function circleXValue(learnStyleValue){
         let xPos = svgLineSpace; // add the ofset from the left of the svg (the lines start some length inside the grey) this is equal to the -11 position
-        let percent = (LSvalue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
+        let percent = (learnStyleValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
         let lineLength = svgWidth - (2 * svgLineSpace); // the length of the line
         xPos += lineLength * percent; // how far into the line must the center of the circle be placed
         return xPos;
@@ -152,7 +152,7 @@
                     }
                 }
             }
-            A[i]++; // add sig selv, så kan vi gange med det, ellers ganger vi med 0 og så kommer der problemer
+            A[i]++; // adds itself, so we can multiply, so we dont multiply with 0, because that would be a problem
         }
         // calc the circlesize in pixels by the size e.g. 1, 2, 3... depends on how many values are close to eachother
         A.forEach((size, idx, arr) => {
@@ -161,14 +161,14 @@
         return A;
     }
     /**
-     * @summary Returns boolean whether the distance between a & b is smaller than 'afstand'
+     * @summary Returns boolean whether the distance between a & b is smaller than 'distance'
      * @param {number} a the first number
      * @param {number} b the second number
-     * @returns {boolean} Returns boolean whether the distance between a & b is smaller than 'afstand'
+     * @returns {boolean} Returns boolean whether the distance between a & b is smaller than 'distance'
      */
     function range(a, b){
-        let afstand = 0.5;
-        if (Math.abs(a - b) <= Math.abs(afstand)){
+        let distance = 0.5;
+        if (Math.abs(a - b) <= Math.abs(distance)){
             return true;
         }
         else {

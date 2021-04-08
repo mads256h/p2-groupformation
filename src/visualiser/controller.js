@@ -20,9 +20,8 @@
      * @param {Array} array this is an array with the names of the files in the data folder
      */
     function createButtons(array) {
-        let buttonElement;
         for (let i = 0; i < array.length; i++) {
-            buttonElement = document.createElement("BUTTON");
+            const buttonElement = document.createElement("BUTTON");
             buttonElement.innerText = "Filename: " + array[i];
             buttonElement.addEventListener("click", () => makeFromFilename(array[i]));
             document.body.appendChild(buttonElement);
@@ -36,10 +35,10 @@
     function makeFromFilename(filename) {
         console.log("Creating html from file: " + filename);
         // Creates a master div element, under which alle the info will be displayed, this is overwritten by each buttonpress
-        let master = makeMasterDiv();
-        let groupDiv;
+        const masterDiv = makeMasterDiv();
+        document.body.appendChild(masterDiv);
         for (let i = 0; i < arrTest.length; i++) {
-            groupDiv = document.createElement("div");
+            const groupDiv = document.createElement("div");
             groupDiv.setAttribute("id", "DIV" + i);
 
             // Lav de elementer der skal appendes til groupdiv
@@ -47,7 +46,7 @@
             groupDiv.appendChild(createVisualInfo(groupTest, exsampleBad, i));
 
             // Tilføj groupDiv til vores master element
-            master.appendChild(groupDiv);
+            masterDiv.appendChild(groupDiv);
         }
     }
     /**
@@ -55,13 +54,12 @@
      * @returns {HTMLElement} an empty html master div element
      */
     function makeMasterDiv(){
-        let element = document.getElementById("MasterDiv");
+        const element = document.getElementById("MasterDiv");
         if (element !== null){
             element.remove();
         }
-        let masterDiv = document.createElement("DIV");
+        const masterDiv = document.createElement("DIV");
         masterDiv.setAttribute("id", "MasterDiv");
-        document.body.appendChild(masterDiv);
         return masterDiv;
     }
 
