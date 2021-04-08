@@ -18,27 +18,27 @@
      */
     function createVisualInfo(group, array) {
         // The div element that are placed to the right in the svg div
-        let divElement = document.createElement("div");
+        const divElement = document.createElement("div");
         divElement.className = "groupsize";
 
         // The maxMine functions output inserted in the groupsize class
-        let maxMine = document.createElement("P");
+        const maxMine = document.createElement("P");
         maxMine.innerText = "MaxMine: " + distanceBetweenExtremes(array).toString();
         divElement.appendChild(maxMine);
 
         // The sum functions output inserted in the groupsize class under maxMine
-        let sum = document.createElement("P");
+        const sum = document.createElement("P");
         sum.innerText = "The sum: " + sumOfArray(array).toString();
         divElement.appendChild(sum);
 
         // The linearDist function output inserted in the groupsize class under sum
-        let linearDist = document.createElement("P");
+        const linearDist = document.createElement("P");
         linearDist.innerText = "Linear distribution: " + distribution(array).toString();
         divElement.appendChild(linearDist);
 
         // Details element
-        let details = document.createElement("details");
-        let summary = document.createElement("summary");
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
         summary.innerText = "Students";
         details.appendChild(summary);
         details.appendChild(printStudents(group));
