@@ -4,7 +4,7 @@
         getData
     } = window.comm;
     const {
-        displayGroupInfo
+        createGroupInfoElement
     } = window.detailsElement;
     const {
         createGroupSvg
@@ -43,7 +43,7 @@
 
             // Lav de elementer der skal appendes til groupdiv
             groupDiv.appendChild(createGroupSvg(arrTest[i]));
-            groupDiv.appendChild(displayGroupInfo(groupTest, exsampleBad, i));
+            groupDiv.appendChild(createGroupInfoElement(groupTest, exsampleBad, i));
 
             // Tilføj groupDiv til vores master element
             masterDiv.appendChild(groupDiv);

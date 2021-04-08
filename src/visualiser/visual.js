@@ -35,7 +35,7 @@
                 return a - b;
             });
             let sum = 0;
-            let pef = perfectDist(newArray.length);
+            const pef = perfectDist(newArray.length);
             for (let index = 0; index < newArray.length; index++) {
                 sum += Math.abs(newArray[index] - pef[index]);
             }
