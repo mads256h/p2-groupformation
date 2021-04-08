@@ -4,7 +4,7 @@ const {averageVectorMinDistance, averageVectorDistance} = require("./Algorithms/
 const {Group, Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("./group");
 const fs = require("fs");
 
-let studentArray = JSON.parse(fs.readFileSync("testData.JSON"));
+let studentArray = JSON.parse(fs.readFileSync("testData.JSON")).map((s) => studentToStudent(s));
 let groupCounter = studentArray.length;
 
 /**
@@ -15,22 +15,24 @@ let groupCounter = studentArray.length;
 function groupMaker(students){
     const groupArray = [];
     for (let index = 0; index < groupCounter; index++) {
-        groupArray.push(new Group(index.toString(), index, new Array(students[index])));
+        groupArray.push(new Group(index.toString(), index, students.splice(0, 1)));
     }
     return groupArray;
 }
 
 /**
- * @summary Merges two groups into one.
+ * @summary Merges two groups into one and removes the two groups from the array.
+ * @param {Array} groupArr The array containing the groups.
  * @param {Group} g1 The group to be merged.
  * @param {Group} g2 The group to be merged.
- * @returns {Group} Returns a merged group
  */
-function mergeGroup(g1, g2){
+function mergeGroup(groupArr, g1, g2){
     groupCounter++;
     const students = (g1.students).concat(g2.students);
     const group = new Group(groupCounter.toString(), groupCounter, students);
-    return group;
+    arrayRemove(groupArr, g1);
+    arrayRemove(groupArr, g2);
+    groupArr.push(group);
 }
 
 /**
@@ -45,6 +47,44 @@ function arrayRemove(arr, value) {
 
 let groups = groupMaker(studentArray);
 
+mergeGroup(groups, groups[0], groups[1]);
+
 for (const group of groups) {
     console.log(group.name);
+}
+
+
+/**
+ * @param {Student} student
+ */
+function studentToStudent(student){
+    return new Student(student.name, criteriaToCriteria(student.criteria));
+}
+
+/**
+ * @param {Criteria} criteria
+ */
+function criteriaToCriteria(criteria) {
+    return new Criteria(criteria.ambitions, criteria.workingAtHome, learningStylesToLearningStyles(criteria.learningStyles), subjectPreferenceToSubjectPreference(criteria.subjectPreference));
+}
+
+/**
+ * @param {LearningStyles} learningStyles
+ */
+function learningStylesToLearningStyles(learningStyles) {
+    return new LearningStyles(learningStyles.activeReflective, learningStyles.visualVerbal, learningStyles.sensingIntuitive, learningStyles.sequentialGlobal);
+}
+
+/**
+ * @param {SubjectPreference} subjectPreference
+ */
+function subjectPreferenceToSubjectPreference(subjectPreference) {
+    return new SubjectPreference(subjectPreference.subjects.map((s) => subjectToSubject(s)));
+}
+
+/**
+ * @param {Subject} subject
+ */
+function subjectToSubject(subject) {
+    return new Subject(subject.name, subject.score);
 }
