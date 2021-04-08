@@ -50,11 +50,12 @@
      */
     function perfectDist(n) {
         let array = new Array();
-        array[0] = -11;
         const rangeWidth = 22;
-        for (let i = 1; i <= n - 1; i++) {
+        for (let i = 0; i <= n - 1; i++) {
             array[i] = ((rangeWidth / (n - 1)) * i) - 11;
         }
+        console.log("Perfect dist:");
+        console.log(...array);
         return array;
     }
 
