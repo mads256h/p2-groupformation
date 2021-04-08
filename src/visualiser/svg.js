@@ -167,7 +167,7 @@
      * @returns {boolean} Returns boolean whether the distance between a & b is smaller than 'distance'
      */
     function range(a, b){
-        let distance = 0.5;
+        const distance = 0.5;
         if (Math.abs(a - b) <= Math.abs(distance)){
             return true;
         }
