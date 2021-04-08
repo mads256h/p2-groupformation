@@ -28,7 +28,7 @@
         svg.setAttribute("height", svgHeight);
         svg.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
         let yValue = svgLineSpace;
-        for (let learnStyle = 10; learnStyle < learningStyles; learnStyle++) {
+        for (let learnStyle = 0; learnStyle < learningStyles; learnStyle++) {
             // Create the -11 and 11 text
             svg.appendChild(createText(svgLineSpace * 0.25, yValue + 6, "-11"));
             svg.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, "11"));
@@ -40,7 +40,7 @@
             let arrCircleSize = closeby(arrayBySecondIndex(groupArray, learnStyle));
             for (let student = 0; student < groupArray.length; student++) {
                 // Create & append one circle by the info:
-                svg.appendChild(createCircle(circleXValue(groupArray[student][learnStyle - 1]), yValue, colorArr[student], arrCircleSize[student]));
+                svg.appendChild(createCircle(circleXValue(groupArray[student][learnStyle]), yValue, colorArr[student], arrCircleSize[student]));
                 arrCircleSize[groupArray[student][learnStyle - 1]]--;
             }
             arrCircleSize.length = 0;
