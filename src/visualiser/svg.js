@@ -28,7 +28,7 @@
         svg.setAttribute("height", svgHeight);
         svg.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
         let yValue = svgLineSpace;
-        for (let learnStyle = 1; learnStyle <= learningStyles; learnStyle++) {
+        for (let learnStyle = 10; learnStyle < learningStyles; learnStyle++) {
             // Create the -11 and 11 text
             svg.appendChild(createText(svgLineSpace * 0.25, yValue + 6, "-11"));
             svg.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, "11"));
@@ -185,7 +185,7 @@
     function arrayBySecondIndex(arr, idx){
         let resArray = new Array();
         for (let q = 0; q < arr.length; q++) {
-            resArray[q] = arr[q][idx - 1];
+            resArray[q] = arr[q][idx];
         }
         return resArray;
     }
