@@ -63,9 +63,14 @@
         return masterDiv;
     }
 
+    
     getData("groups.json").then(e => {
-        console.log(e);
-    });
+      console.log(e);
+      });
+
+    function findStudentsLearningsstyles(filename){      
+  
+    }
 
 
     let groupTest = {
