@@ -1,6 +1,4 @@
-(function () {
-    "use strict";
-
+(function() {
     function getListOfData() {
         return fetch("/ls").then(response => response.json()).then(response => {
             if (response.status !== "OK") {

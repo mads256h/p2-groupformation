@@ -63,7 +63,7 @@
         return masterDiv;
     }
 
-    getData("test2.json").then(e => {
+    getData("groups.json").then(e => {
         console.log(e);
     });
 
