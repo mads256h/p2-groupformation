@@ -141,24 +141,24 @@
      * @returns {Array} Returns an array with the radius(size) of the circles to be made, so alle the circles can be seen
      */
     function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works
-        let A = new Array();
+        const arr = new Array();
         for (let i = 0; i < arrCircleSize.length; i++) {
-            A[i] = 0;
+            arr[i] = 0;
             for (let j = i; j < arrCircleSize.length; j++) {
                 if (i !== j){
                     if (range(arrCircleSize[i], arrCircleSize[j])){
-                        A[i]++;
-                        A[j]++;
+                        arr[i]++;
+                        arr[j]++;
                     }
                 }
             }
-            A[i]++; // adds itself, so we can multiply, so we dont multiply with 0, because that would be a problem
+            arr[i]++; // adds itself, so we can multiply, so we dont multiply with 0, because that would be a problem
         }
         // calc the circlesize in pixels by the size e.g. 1, 2, 3... depends on how many values are close to eachother
-        A.forEach((size, idx, arr) => {
-            arr[idx] = 0.25 * svgLineSpace * Math.pow(size, 0.6);
-        });
-        return A;
+        for (let idx in arr) {
+            arr[idx] = 0.25 * svgLineSpace * Math.pow(arr[idx], 0.6);
+        }
+        return arr;
     }
     /**
      * @summary Returns boolean whether the distance between a & b is smaller than 'distance'
@@ -177,13 +177,13 @@
     }
 
     /**
-     * @summary Creates and return a new array by the second index e.g.: A[[1,2],[3,4]] with idx=1 becomes [2,4]
+     * @summary Creates and return a new array by the second index e.g.: arr[[1,2],[3,4]] with idx=1 becomes [2,4]
      * @param {Array} arr the array from which to create the sub-array
      * @param {number} idx the index to use as second index
      * @returns {Array} return an array
      */
     function arrayBySecondIndex(arr, idx){
-        let resArray = new Array();
+        const resArray = new Array();
         for (let q = 0; q < arr.length; q++) {
             resArray[q] = arr[q][idx];
         }
