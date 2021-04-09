@@ -3,6 +3,7 @@ const {maxDistance} = require("./Algorithms/distance");
 const {averageVectorMinDistance, averageVectorDistance} = require("./Algorithms/vectorspace");
 const {Group, Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("./group");
 const fs = require("fs");
+const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require("constants");
 
 let studentArray = JSON.parse(fs.readFileSync("testData.JSON")).map((s) => studentToStudent(s));
 let groupCounter = studentArray.length;
@@ -35,23 +36,64 @@ function mergeGroup(groupArr, g1, g2){
     groupArr.push(group);
 }
 
-/**
- * @summary Removes elements from an array
- * @param {Array} arr The array you are removing elements from.
- * @param {any} value The element that needs to be removed.
- * @returns {Array} returns the new array with the element removed.
- */
-function arrayRemove(arr, value) {
-    return arr.filter((element) => {return element !== value;});
+function mergeTest(g1, g2){
+    const students = (g1.students).concat(g2.students);
+    return new Group(groupCounter.toString(), groupCounter, students);
+}
+
+function createBestGroups(groups, algorithm){
+    let done = false;
+    while(!done){
+        let group;
+        group = selectRndGroup(groups);
+        let candidateScores = [];
+        candidateScores = groupCandidates(group, groups, algorithm);
+        let bestCandidate;
+        bestCandidate = sortCandidate(candidateScores);
+        mergeGroup(groups, group, groups[bestCandidate]);
+    }
+}
+
+function groupCandidates(g, groups, algorithm){
+    const groupScores = [];
+    for (let j = 0; j < groups.length; j++) {
+        if (g !== j) {
+            const group = mergeTest(groups[g], groups[j]);
+            const testyBoi = [];
+            for (let k = 0; k < group.students.length; k++) {
+                testyBoi.push(convertLS(group.students[k].criteria.learningStyles));
+            }
+            groupScores.push([j, algorithm(testyBoi)]);
+        }
+    }
+    return groupScores;
+}
+
+function mapRange(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+
+function convertLS(LS){
+    const lsArray = [];
+    for (const [key, value] of Object.entries(LS)) {
+        lsArray.push(mapRange(value, -11, 11, -1, 1));
+    }
+    return lsArray;
 }
 
 let groups = groupMaker(studentArray);
 
+let scores = testAlgorithm(groups, balance);
+
+for (const score of scores) {
+    console.log(score);
+}
+
 mergeGroup(groups, groups[0], groups[1]);
 
-for (const group of groups) {
-    console.log(group.name);
-}
+
+
+
 
 
 /**
