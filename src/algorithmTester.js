@@ -15,7 +15,7 @@ let groupCounter = studentArray.length;
 function groupMaker(students){
     const groupArray = [];
     for (let index = 0; index < groupCounter; index++) {
-        groupArray.push(new Group(index.toString(), index, students.splice(0, 1)));
+        groupArray.push(new Group((index + 1).toString(), (index + 1), students.splice(0, 1)));
     }
     return groupArray;
 }
@@ -30,8 +30,8 @@ function mergeGroup(groupArr, g1, g2){
     groupCounter++;
     const students = (g1.students).concat(g2.students);
     const group = new Group(groupCounter.toString(), groupCounter, students);
-    arrayRemove(groupArr, g1);
-    arrayRemove(groupArr, g2);
+    groupArr.splice(groupArr.indexOf(g1), 1);
+    groupArr.splice(groupArr.indexOf(g2), 1);
     groupArr.push(group);
 }
 
