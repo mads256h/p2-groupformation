@@ -1,3 +1,10 @@
++/**
+ * @description Tests the algorithms
+ * @module algorithmTester.js
+ * @see module:algorithmTester
+ * @author Mati-AAU, thom776g, mads256h og CasperNS
+ */
+
 const {balance} = require("./Algorithms/0point");
 const {maxDistance} = require("./Algorithms/distance");
 const {averageVectorMinDistance, averageVectorDistance} = require("./Algorithms/vectorspace");
@@ -24,23 +31,33 @@ const doneGroups = groupFormation.groups.map((g) => g.toGroup());
 
 saveToFile(doneGroups, argv[2]);
 
+/**
+ * @summary Creates a list of groups
+ */
 function createBestGroups(){
     let done = false;
-    while (!done) {
+    while (!isDone()) {
         const group = selectRndGroup();
         const candidates = group.valueGroups(group.candidates());
         const bestCan = bestCandidate(candidates);
         groupFormation.mergeGroup(group, bestCan);
-        done = checkGroups();
     }
 }
 
+/**
+ * @summary Chooses a random group from the group array
+ * @returns {Array} A random group from the array
+ */
 function selectRndGroup(){
     const groupsWithCandidates = groupFormation.groups.filter((g) => g.candidates().length > 0);
     return groupsWithCandidates[Math.floor(Math.random() * groupsWithCandidates.length)];
 }
 
-function checkGroups() {
+/**
+ * @summary The function checks if every group has been made
+ * @returns {boolean} Returns true when every group is made else false
+ */
+function isDone() {
     return groupFormation.groups.every((g) => g.candidates().length === 0);
 }
 
@@ -62,6 +79,12 @@ function bestCandidate(candidateScores){
     return g;
 }
 
+
+/**
+ * @summary Function to save and name a file, containing all the created groups
+ * @param {Array} groups array of all the groups
+ * @param {String} fileName the name of the file created 
+ */
 function saveToFile(groups, fileName){
     const data = JSON.stringify(groups, null, 2);
     fs.writeFile(fileName, data, (err) => {

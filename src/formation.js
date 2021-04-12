@@ -11,16 +11,16 @@ const typeassert = require("./typeassert");
 
 /**
  * @summary Represents the group formation process
- * @property {number} maxGroupSize
- * @property {number} nextGroupId
- * @property {FMStudent[]} students
- * @property {FMGroup[]} groups
+ * @property {number} maxGroupSize The maximum number of students allowed in a group
+ * @property {number} nextGroupId The next group ID
+ * @property {FMStudent[]} students An array of students
+ * @property {FMGroup[]} groups An array of groups
  */
 class GroupFormation {
     /**
-     * @param {Student[]} students
-     * @param {number} maxGroupSize
-     * @param {WeightedCriteria} weightedCriteria
+     * @param {Student[]} students Array of students
+     * @param {number} maxGroupSize The maximum number of students allowed in a group
+     * @param {WeightedCriteria} weightedCriteria How much a criteria is weighted
      */
     constructor(students, maxGroupSize, weightedCriteria) {
         typeassert.assertArray(students);
@@ -37,7 +37,7 @@ class GroupFormation {
     }
 
     /**
-     * @summary Remvoe as student from a group
+     * @summary Removes a student from a group
      * @param {FMStudent} student The student to remove from a group
      * @param {FMGroup} group The group to remove the student from
      */
@@ -150,7 +150,6 @@ class WeightedCriteria {
  * @property {FMGroup} invitations
  */
 class FMGroup extends Group {
-
     constructor(name, id, students, groupFormation, isUsed = false) {
         super(name, id, students);
 
@@ -175,6 +174,7 @@ class FMGroup extends Group {
     /**
      * @summary Merge this group with another without modifying either
      * @param {FMGroup} group The group to merge with
+     * @param {boolean} isUsed Makes sure that the merged gruop, isn't actually merged
      * @returns {FMGroup} A new group that is a result of merging this group and group
      */
     merge(group, isUsed = false) {
@@ -210,7 +210,7 @@ class FMGroup extends Group {
 
     /**
      * @summary A list of groups with a score dertermining the value of the merge with this group and the group in the list
-     * @param {FMGroup[]} candidates
+     * @param {FMGroup[]} candidates Array of candidates
      * @returns {Map.<FMGroup,number>} Valued groups
      */
     valueGroups(candidates) {
@@ -223,6 +223,10 @@ class FMGroup extends Group {
         return valueMap;
     }
 
+    /**
+     * Makes FMGroup to a non FM group
+     * @returns {group} A non FM group
+     */
     toGroup() {
         return new Group(this.name, this.id, this.students.map((s) => s.toStudent()));
     }
@@ -232,7 +236,7 @@ class FMGroup extends Group {
 
 /**
  * @summary An extended Student class used in the group formation process
- * @property {GroupFormation} groupformation
+ * @property {GroupFormation} groupformation the groupFormation object
  */
 class FMStudent extends Student {
     constructor(student, groupFormation) {
