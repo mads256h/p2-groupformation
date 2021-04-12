@@ -1,4 +1,4 @@
-+/**
+/**
  * @description Tests the algorithms
  * @module algorithmTester.js
  * @see module:algorithmTester
@@ -8,8 +8,8 @@
 const {balance} = require("./Algorithms/0point");
 const {maxDistance} = require("./Algorithms/distance");
 const {averageVectorMinDistance, averageVectorDistance} = require("./Algorithms/vectorspace");
-const {Group, Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("./group");
-const {GroupFormation, WeightedCriteria, FMGroup, FMStudent} = require("./formation");
+const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("./group");
+const {GroupFormation, WeightedCriteria, FMGroup} = require("./formation");
 const fs = require("fs");
 
 
@@ -35,7 +35,6 @@ saveToFile(doneGroups, argv[2]);
  * @summary Creates a list of groups
  */
 function createBestGroups(){
-    let done = false;
     while (!isDone()) {
         const group = selectRndGroup();
         const candidates = group.valueGroups(group.candidates());
@@ -46,7 +45,7 @@ function createBestGroups(){
 
 /**
  * @summary Chooses a random group from the group array
- * @returns {Array} A random group from the array
+ * @returns {FMGroup} A random group from the array
  */
 function selectRndGroup(){
     const groupsWithCandidates = groupFormation.groups.filter((g) => g.candidates().length > 0);
@@ -63,8 +62,8 @@ function isDone() {
 
 /**
  * @summary Returns the group with the higest score in a map from groups to values
- * @param {map} candidateScores Map from group to scoreS
- * @returns {group} best possible group
+ * @param {Map.<FMGroup,number>} candidateScores Map from group to scoreS
+ * @returns {FMGroup} best possible group
  */
 function bestCandidate(candidateScores){
     let g;
@@ -82,8 +81,8 @@ function bestCandidate(candidateScores){
 
 /**
  * @summary Function to save and name a file, containing all the created groups
- * @param {Array} groups array of all the groups
- * @param {String} fileName the name of the file created 
+ * @param {FMGroup[]} groups array of all the groups
+ * @param {string} fileName the name of the file created
  */
 function saveToFile(groups, fileName){
     const data = JSON.stringify(groups, null, 2);

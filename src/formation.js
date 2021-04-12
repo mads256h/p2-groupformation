@@ -105,7 +105,7 @@ class WeightedCriteria {
      * @returns {number} The score of the set of criteria
      */
     score(criteria) {
-        const {homogenous, heteogenius} = this.asNumberArrays(criteria);
+        const {heteogenius} = this.asNumberArrays(criteria);
 
         return this.algorithm(heteogenius);
     }
@@ -142,18 +142,17 @@ class WeightedCriteria {
 
         return {homogenous: [[]], heteogenius};
     }
-
 }
 
 /**
  * @summary An extension of group for use in the group formation process
- * @property {FMGroup} invitations
+ * @property {FMGroup} invitations Array of groups that has invited this group
  */
 class FMGroup extends Group {
     constructor(name, id, students, groupFormation, isUsed = false) {
         super(name, id, students);
 
-        this.groupFormation = groupFormation
+        this.groupFormation = groupFormation;
 
         if (isUsed) {
             students.forEach((s) => s.group = this);
@@ -224,13 +223,12 @@ class FMGroup extends Group {
     }
 
     /**
-     * Makes FMGroup to a non FM group
+     * @summary Makes FMGroup to a non FM group
      * @returns {group} A non FM group
      */
     toGroup() {
         return new Group(this.name, this.id, this.students.map((s) => s.toStudent()));
     }
-
 }
 
 
