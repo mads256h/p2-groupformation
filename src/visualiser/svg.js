@@ -5,7 +5,7 @@
 // Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
 
 (function(){
-    window.svg = {createGroupSvg};
+    window.svg = {createGroupSvg, arrayBySecondIndex};
     // Declaration of global consts, which are layout settings of the svg
     const RANGEWIDTH = 22;
     const svgWidth = window.innerWidth / 2; // width of the svg is half the browser size

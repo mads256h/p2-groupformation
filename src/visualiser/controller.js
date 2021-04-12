@@ -23,7 +23,7 @@
         for (let i = 0; i < array.length; i++) {
             const buttonElement = document.createElement("BUTTON");
             buttonElement.innerText = "Filename: " + array[i];
-            buttonElement.addEventListener("click", () => makeFromFilename(array[i]));
+            buttonElement.addEventListener("click", () => callData(array[i]));
             document.body.appendChild(buttonElement);
         }
     }
@@ -32,18 +32,17 @@
      * @summary Displays the info of the file provided as parameter
      * @param {string} filename the name of the file
      */
-    function makeFromFilename(filename) {
-        console.log("Creating html from file: " + filename);
+    function makeAllGroups(allGroupLSarr, allGroupsInfo) {
         // Creates a master div element, under which alle the info will be displayed, this is overwritten by each buttonpress
         const masterDiv = makeMasterDiv();
         document.body.appendChild(masterDiv);
-        for (let i = 0; i < arrTest.length; i++) {
+        for (let i = 0; i < allGroupLSarr.length; i++) {
             const groupDiv = document.createElement("div");
             groupDiv.setAttribute("id", "DIV" + i);
 
             // Lav de elementer der skal appendes til groupdiv
-            groupDiv.appendChild(createGroupSvg(arrTest[i]));
-            groupDiv.appendChild(createGroupInfoElement(groupTest, exsampleBad, i));
+            groupDiv.appendChild(createGroupSvg(allGroupLSarr[i]));
+            groupDiv.appendChild(createGroupInfoElement(allGroupsInfo[i], allGroupLSarr[i]));
 
             // Tilføj groupDiv til vores master element
             masterDiv.appendChild(groupDiv);
@@ -63,43 +62,38 @@
         return masterDiv;
     }
 
-    
-    getData("groups.json").then(e => {
-      console.log(e);
-      });
-
-    function findStudentsLearningsstyles(filename){      
-  
+    function callData(filename){
+        console.log("Creating html from file: " + filename);
+        getData(filename).then(content=>useData(content));
     }
 
-
-    let groupTest = {
-        name: "Group 1",
-        id: 1,
-        students: [
-            {
-                name: "Morten"
-            },
-            {
-                name: "Mads"
-            },
-            {
-                name: "Sven"
+    function useData(content){
+        console.log(content);
+        let allGroupsLSarr = [];
+        let allGroupsInfo = [];
+        for (const group of content) {
+            console.log(group);
+            let groupLSarr = [];
+            for (const student of group.students) {
+                // console.log(student);
+                groupLSarr.push(getStudentLS(student));
             }
-        ]
-    };
-    let exsampleBad = [
-        -1,
-        -7.333333333333334,
-        -3.666666666666667,
-        0,
-        3.666666666666666,
-        7.333333333333332,
-        11
-    ];
-    let arr2d = [[-11,5,6,3], [-11,6,6,3.1], [-11,2.5,2.5,3.2], [-10.5,3,3,3.3], [4,3.1,6,3.5]]; // test array med læringsstile, first idx is student, second idx is learningsstyle
-    let arr2d1 = [[-1,5,6,3], [-11,6,3,3.1], [-11,2.5,2.5,3.2], [-10.5,3,1,3.3], [4,3.1,6,3.5]]; // test array med læringsstile, first idx is student, second idx is learningsstyle
-    let arrTest = [arr2d, arr2d1];
+            allGroupsInfo.push(group);
+            allGroupsLSarr.push(groupLSarr);
+        }
+        makeAllGroups(allGroupsLSarr, allGroupsInfo);
+    }
+    function getStudentLS(student){
+        const studentLS = student.criteria.learningStyles;
+        let arr = [];
+        for (const learningStyle in studentLS) {
+            // if (Object.hasOwnProperty.call(studentLS, learningStyle)) { // necessary?????
+            arr.push(parseInt(studentLS[learningStyle]));
+            // }
+        }
+        // console.log(...arr);
+        return arr;
+    }
 }());
 
 

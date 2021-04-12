@@ -54,8 +54,8 @@
         for (let i = 0; i <= n - 1; i++) {
             array[i] = ((rangeWidth / (n - 1)) * i) - 11;
         }
-        console.log("Perfect dist:");
-        console.log(...array);
+        // console.log("Perfect dist:");
+        // console.log(...array);
         return array;
     }
 
