@@ -50,8 +50,12 @@ function createBestGroups(groups, algorithm){
         let bestCandidate;
         bestCandidate = sortCandidate(candidateScores);
         mergeGroup(groups, group, groups[bestCandidate]);
-        done = checkGroups(groups);
+        done = checkGroups(groups, maxSize);
     }
+}
+
+function selectRndGroup(groups){
+    return groups[Math.floor(Math.random() * groups.length())];
 }
 
 function groupCandidates(g, groups, algorithm){
