@@ -40,11 +40,11 @@ function mergeTest(g1, g2){
     return new Group(groupCounter.toString(), groupCounter, students);
 }
 
-function createBestGroups(groups, algorithm){
+function createBestGroups(groups, algorithm, maxSize){
     let done = false;
     while (!done) {
         let group;
-        group = selectRndGroup(groups);
+        group = selectRndGroup(groups, maxSize);
         let candidateScores = [];
         candidateScores = groupCandidates(group, groups, algorithm);
         let bestCandidate;
@@ -55,7 +55,11 @@ function createBestGroups(groups, algorithm){
 }
 
 function selectRndGroup(groups){
-    return groups[Math.floor(Math.random() * groups.length())];
+    let group = groups[Math.floor(Math.random() * groups.length())].students;
+    while (group.students >= maxSize) {
+        group = groups[Math.floor(Math.random() * groups.length())].students;
+    }
+    return group;
 }
 
 function groupCandidates(g, groups, algorithm){

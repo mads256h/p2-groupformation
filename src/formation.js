@@ -109,7 +109,7 @@ class WeightedCriteria {
     score(criteria) {
         const {homogenous, heteogenius} = this.asNumberArrays(criteria);
 
-        return algorithm(homogenous);
+        return this.algorithm(homogenous);
     }
 
     /**
