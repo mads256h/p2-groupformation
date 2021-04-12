@@ -3,7 +3,6 @@ const {maxDistance} = require("./Algorithms/distance");
 const {averageVectorMinDistance, averageVectorDistance} = require("./Algorithms/vectorspace");
 const {Group, Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("./group");
 const fs = require("fs");
-const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require("constants");
 
 let studentArray = JSON.parse(fs.readFileSync("testData.JSON")).map((s) => studentToStudent(s));
 let groupCounter = studentArray.length;
@@ -43,7 +42,7 @@ function mergeTest(g1, g2){
 
 function createBestGroups(groups, algorithm){
     let done = false;
-    while(!done){
+    while (!done) {
         let group;
         group = selectRndGroup(groups);
         let candidateScores = [];
@@ -51,6 +50,7 @@ function createBestGroups(groups, algorithm){
         let bestCandidate;
         bestCandidate = sortCandidate(candidateScores);
         mergeGroup(groups, group, groups[bestCandidate]);
+        done = checkGroups(groups);
     }
 }
 
