@@ -5,7 +5,7 @@
  * @author Mati-AAU and thom776g and mads256h
  */
 
-module.exports = {euclidDistance, lpDistance, transposeArray};
+module.exports = {euclidDistance, lpDistance, transposeArray, removeItemFromArray};
 
 const {
     assertArray,
@@ -62,4 +62,17 @@ function transposeArray(array) {
     assertArrayLengthEq(...array);
 
     return array[0].map((_,i) => array.map(x => x[i]));
+}
+
+/**
+ * @summary Remove item from array
+ * @param {any} item The item to remove
+ * @param {any[]} array The array to remove the item from
+ * @throws {TypeError} The array's items is not the same type as item
+ */
+function removeItemFromArray(item, array) {
+    assertArray(array);
+    assertArrayItemsType(array, typeof item);
+
+    array.splice(array.indexOf(item), 1);
 }
