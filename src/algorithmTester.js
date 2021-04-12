@@ -5,24 +5,31 @@ const {Group, Student, Criteria, LearningStyles, Subject, SubjectPreference} = r
 const {GroupFormation, WeightedCriteria, FMGroup, FMStudent} = require("./formation");
 const fs = require("fs");
 
-const studentArray = JSON.parse(fs.readFileSync("testData.JSON")).map((s) => studentToStudent(s));
 
+const argv = process.argv.splice(2);
+
+if (argv.length !== 3){
+    console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <num students> <num subjects> <filename>`);
+    process.exit(1);
+}
+
+const studentArray = JSON.parse(fs.readFileSync(argv[1])).map((s) => studentToStudent(s));
 
 const weightedCriteria = new WeightedCriteria(null, balance);
-const groupFormation = new GroupFormation(studentArray, 7, weightedCriteria);
+const groupFormation = new GroupFormation(studentArray, argv[0], weightedCriteria);
 
 createBestGroups();
 
 const doneGroups = groupFormation.groups.map((g) => g.toGroup());
 
-console.log(JSON.stringify(doneGroups, null, 2));
+saveToFile(doneGroups, argv[2]);
 
 function createBestGroups(){
     let done = false;
     while (!done) {
         const group = selectRndGroup();
         const candidates = group.valueGroups(group.candidates());
-        const bestCan= bestCandidate(candidates);
+        const bestCan = bestCandidate(candidates);
         groupFormation.mergeGroup(group, bestCan);
         done = checkGroups();
     }
@@ -55,7 +62,15 @@ function bestCandidate(candidateScores){
     return g;
 }
 
-
+function saveToFile(groups, fileName){
+    const data = JSON.stringify(groups, null, 2);
+    fs.writeFile(fileName, data, (err) => {
+        if (err) {
+            throw err;
+        }
+        console.log("The file has been saved!");
+    });
+}
 
 
 /**
