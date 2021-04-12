@@ -9,7 +9,7 @@ const fs = require("fs");
 const argv = process.argv.splice(2);
 
 if (argv.length !== 3){
-    console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <num students> <num subjects> <filename>`);
+    console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <Max size of group> <input filename> <output filename>`);
     process.exit(1);
 }
 
