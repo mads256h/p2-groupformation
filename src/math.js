@@ -12,8 +12,11 @@ const {
     assertArrayLengthEq,
     assertArrayNotEmpty,
     assertGreaterThan,
-    assertArrayItemsType
+    assertArrayItemsType,
 
+    assertNumber,
+    assertLessThanEq,
+    assertRangeInclusive
 } = require("./typeassert");
 
 /**
@@ -68,6 +71,7 @@ function transposeArray(array) {
  * @summary Remove item from array
  * @param {any} item The item to remove
  * @param {any[]} array The array to remove the item from
+ * @returns {any[]} The array
  * @throws {TypeError} The array's items is not the same type as item
  */
 function removeItemFromArray(item, array) {
@@ -75,8 +79,32 @@ function removeItemFromArray(item, array) {
     assertArrayItemsType(array, typeof item);
 
     array.splice(array.indexOf(item), 1);
+
+    return array;
 }
 
-function mapRange(value, low1, high1, low2, high2) {
-    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+
+/**
+ * @summary Maps a value from a range to another range
+ * @param {number} value The value to map to another range
+ * @param {number} inMin The minimum value of the starting range
+ * @param {number} inMax The maximum value of the starting range
+ * @param {number} outMin The minimum value of the resulting range
+ * @param {number} outMax The maximum value of the resulting range
+ * @returns {number} Value mapped from the starting range to the resulting range
+ */
+function mapRange(value, inMin, inMax, outMin, outMax) {
+    assertNumber(value);
+    assertNumber(inMin);
+    assertNumber(inMax);
+    assertNumber(outMin);
+    assertNumber(outMax);
+
+    assertRangeInclusive(value, inMin, inMax);
+
+    assertLessThanEq(inMin, inMax);
+    assertLessThanEq(outMin, outMax);
+
+
+    return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
 }

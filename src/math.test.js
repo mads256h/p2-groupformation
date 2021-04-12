@@ -1,4 +1,4 @@
-const {euclidDistance, lpDistance, transposeArray} = require("./math.js");
+const {euclidDistance, lpDistance, transposeArray, removeItemFromArray, mapRange} = require("./math.js");
 
 
 test("Euclidean distance throws", () => {
@@ -60,4 +60,31 @@ test("transposeArray", () => {
     expect(() => transposeArray({})).toThrow(TypeError);
     expect(() => transposeArray(1)).toThrow(TypeError);
     expect(() => transposeArray("test")).toThrow(TypeError);
+});
+
+test("removeItemFromArray", () => {
+    expect(() => removeItemFromArray(null, [0])).toThrow(TypeError);
+    expect(() => removeItemFromArray("", [0])).toThrow(TypeError);
+
+
+    expect(() => removeItemFromArray("", [])).not.toThrow();
+
+    expect(removeItemFromArray("", [""])).toStrictEqual([]);
+    expect(removeItemFromArray("", ["", "yo"])).toStrictEqual(["yo"]);
+    expect(removeItemFromArray(7, [5, 7, 8])).toStrictEqual([5, 8]);
+});
+
+test("mapRange", () => {
+    expect(() => mapRange(null, 0, 0, 0, 0)).toThrow(TypeError);
+    expect(() => mapRange(0, null, 0, 0, 0)).toThrow(TypeError);
+    expect(() => mapRange(0, 0, null, 0, 0)).toThrow(TypeError);
+    expect(() => mapRange(0, 0, 0, null, 0)).toThrow(TypeError);
+    expect(() => mapRange(0, 0, 0, 0, null)).toThrow(TypeError);
+
+    expect(() => mapRange(2, 1, 0, 1, 0)).toThrow(RangeError);
+    expect(() => mapRange(-1, 1, 0, 1, 0)).toThrow(RangeError);
+    expect(() => mapRange(1, 0, 2, 1, 0)).toThrow(RangeError);
+    expect(() => mapRange(1, 2, 0, 0, 1)).toThrow(RangeError);
+
+    expect(mapRange(10, 0, 100, 0, 10)).toBe(1);
 });
