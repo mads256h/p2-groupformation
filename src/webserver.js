@@ -50,12 +50,17 @@ class WebServer {
         this.port = port;
 
 
+        this.requestListenerData = {
+            wwwPath: wwwPath,
+            getHandlers: new Map(),
+            postHandlers: new Map(),
+            indexFile: indexFile
+        }
 
-        this.server = http.createServer(this.requestListener);
-        this.server.wwwPath = wwwPath;
-        this.server.getHandlers = new Map();
-        this.server.postHandlers = new Map();
-        this.server.indexFile = indexFile;
+        Object.freeze(this.requestListenerData);
+
+
+        this.server = http.createServer(this.requestListener.bind(this.requestListenerData));
 
         Object.freeze(this);
     }
@@ -69,7 +74,7 @@ class WebServer {
         typeassert.assertStringNotEmpty(url);
         typeassert.assertFunction(handler);
 
-        this.server.getHandlers.set(url, handler);
+        this.requestListenerData.getHandlers.set(url, handler);
     }
 
     /**
@@ -81,7 +86,7 @@ class WebServer {
         typeassert.assertStringNotEmpty(url);
         typeassert.assertFunction(handler);
 
-        this.server.postHandlers.set(url, handler);
+        this.requestListenerData.postHandlers.set(url, handler);
     }
 
 
@@ -89,11 +94,16 @@ class WebServer {
      * @summary Run the server
      */
     run() {
-        return new Promise((resolve) => {
-            this.server.listen(this.port, this.hostname, () => resolve());
+        return new Promise((resolve, reject) => {
+            this.server.on("error", (e) => {reject(e)});
+            this.server.on("listening", () => {resolve()});
+            this.server.listen(this.port, this.hostname);
         });
     }
 
+    /**
+     * @summary Stop the server
+     */
     stop() {
         return new Promise((resolve) => {
             this.server.close(() => resolve());
@@ -178,6 +188,23 @@ class WebServer {
             });
         }
 
+        /**
+         * @param {number} code The status code of the response
+         * @param {any} obj The json response
+         */
+        function jsonResponse(code, obj) {
+            typeassert.assertInteger(code);
+
+            response.statusCode = code;
+            response.setHeader("Content-Type", mimeType.contentType("application/json"));
+            response.write(JSON.stringify(obj));
+            response.end("\n");
+        }
+
+        if (request.headers.host === undefined || request.headers.host === null) {
+            errorResponse(405);
+        }
+
         const url = new URL(request.url, `http://${request.headers.host}`);
 
         if (request.method === "GET") {
@@ -186,20 +213,14 @@ class WebServer {
 
                 Promise.resolve().then(() => handler(url.searchParams, request)).then(resp => {
                     const obj = {status: "OK", response: resp};
-                    response.statusCode = 200;
-                    response.setHeader("Content-Type", mimeType.contentType("application/json"));
-                    response.write(JSON.stringify(obj));
-                    response.end("\n");
+                    jsonResponse(200, obj);
                 }).catch(reason => {
                     if (!HttpError[Symbol.hasInstance](reason)) {
                         throw reason;
                     }
 
                     const obj = {status: "ERR", code: reason.code, message: reason.message};
-                    response.statusCode = reason.code;
-                    response.setHeader("Content-Type", mimeType.contentType("application/json"));
-                    response.write(JSON.stringify(obj));
-                    response.end("\n");
+                    jsonResponse(reason.code, obj);
                 });
             }
             else {
@@ -214,20 +235,14 @@ class WebServer {
 
                 extractForm().then(postData => handler(postData, request)).then(resp => {
                     const obj = {status: "OK", response: resp};
-                    response.statusCode = 200;
-                    response.setHeader("Content-Type", mimeType.contentType("application/json"));
-                    response.write(JSON.stringify(obj));
-                    response.end("\n");
+                    jsonResponse(200, obj);
                 }).catch(reason => {
                     if (!HttpError[Symbol.hasInstance](reason)) {
                         throw reason;
                     }
 
                     const obj = {status: "ERR", code: reason.code, message: reason.message};
-                    response.statusCode = reason.code;
-                    response.setHeader("Content-Type", mimeType.contentType("application/json"));
-                    response.write(JSON.stringify(obj));
-                    response.end("\n");
+                    jsonResponse(reason.code, obj);
                 });
             }
             else {
