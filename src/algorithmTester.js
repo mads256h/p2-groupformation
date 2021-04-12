@@ -2,104 +2,58 @@ const {balance} = require("./Algorithms/0point");
 const {maxDistance} = require("./Algorithms/distance");
 const {averageVectorMinDistance, averageVectorDistance} = require("./Algorithms/vectorspace");
 const {Group, Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("./group");
+const {GroupFormation, WeightedCriteria, FMGroup, FMStudent} = require("./formation");
 const fs = require("fs");
 
-let studentArray = JSON.parse(fs.readFileSync("testData.JSON")).map((s) => studentToStudent(s));
-let groupCounter = studentArray.length;
+const studentArray = JSON.parse(fs.readFileSync("testData.JSON")).map((s) => studentToStudent(s));
 
-/**
- * @summary Takes an array of students and outputs an equivalent array of groups, with 1 student in each.
- * @param {Array} students Takes an array of students as input.
- * @returns {Array} Returns an array of groups with 1 student in each.
- */
-function groupMaker(students){
-    const groupArray = [];
-    for (let index = 0; index < groupCounter; index++) {
-        groupArray.push(new Group((index + 1).toString(), (index + 1), students.splice(0, 1)));
-    }
-    return groupArray;
-}
 
-/**
- * @summary Merges two groups into one and removes the two groups from the array.
- * @param {Array} groupArr The array containing the groups.
- * @param {Group} g1 The group to be merged.
- * @param {Group} g2 The group to be merged.
- */
-function mergeGroup(groupArr, g1, g2){
-    groupCounter++;
-    const students = (g1.students).concat(g2.students);
-    const group = new Group(groupCounter.toString(), groupCounter, students);
-    groupArr.splice(groupArr.indexOf(g1), 1);
-    groupArr.splice(groupArr.indexOf(g2), 1);
-    groupArr.push(group);
-}
+const weightedCriteria = new WeightedCriteria(null, balance);
+const groupFormation = new GroupFormation(studentArray, 7, weightedCriteria);
 
-function mergeTest(g1, g2){
-    const students = (g1.students).concat(g2.students);
-    return new Group(groupCounter.toString(), groupCounter, students);
-}
+createBestGroups();
 
-function createBestGroups(groups, algorithm, maxSize){
+const doneGroups = groupFormation.groups.map((g) => g.toGroup());
+
+console.log(JSON.stringify(doneGroups, null, 2));
+
+function createBestGroups(){
     let done = false;
     while (!done) {
-        let group;
-        group = selectRndGroup(groups, maxSize);
-        let candidateScores = [];
-        candidateScores = groupCandidates(group, groups, algorithm);
-        let bestCandidate;
-        bestCandidate = sortCandidate(candidateScores);
-        mergeGroup(groups, group, groups[bestCandidate]);
-        done = checkGroups(groups, maxSize);
+        const group = selectRndGroup();
+        const candidates = group.valueGroups(group.candidates());
+        const bestCan= bestCandidate(candidates);
+        groupFormation.mergeGroup(group, bestCan);
+        done = checkGroups();
     }
 }
 
-function selectRndGroup(groups){
-    let group = groups[Math.floor(Math.random() * groups.length())].students;
-    while (group.students >= maxSize) {
-        group = groups[Math.floor(Math.random() * groups.length())].students;
-    }
-    return group;
+function selectRndGroup(){
+    const groupsWithCandidates = groupFormation.groups.filter((g) => g.candidates().length > 0);
+    return groupsWithCandidates[Math.floor(Math.random() * groupsWithCandidates.length)];
 }
 
-function groupCandidates(g, groups, algorithm){
-    const groupScores = [];
-    for (let j = 0; j < groups.length; j++) {
-        if (g !== j) {
-            const group = mergeTest(groups[g], groups[j]);
-            const testyBoi = [];
-            for (let k = 0; k < group.students.length; k++) {
-                testyBoi.push(convertLS(group.students[k].criteria.learningStyles));
-            }
-            groupScores.push([j, algorithm(testyBoi)]);
+function checkGroups() {
+    return groupFormation.groups.every((g) => g.candidates().length === 0);
+}
+
+/**
+ * @summary Returns the group with the higest score in a map from groups to values
+ * @param {map} candidateScores Map from group to scoreS
+ * @returns {group} best possible group
+ */
+function bestCandidate(candidateScores){
+    let g;
+    let v = -Infinity;
+    for (let [group, value] of candidateScores) {
+        if (v < value) {
+            g = group;
+            v = value;
         }
     }
-    return groupScores;
+
+    return g;
 }
-
-function mapRange(value, low1, high1, low2, high2) {
-    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-}
-
-function convertLS(LS){
-    const lsArray = [];
-    for (const [key, value] of Object.entries(LS)) {
-        lsArray.push(mapRange(value, -11, 11, -1, 1));
-    }
-    return lsArray;
-}
-
-let groups = groupMaker(studentArray);
-
-let scores = testAlgorithm(groups, balance);
-
-for (const score of scores) {
-    console.log(score);
-}
-
-mergeGroup(groups, groups[0], groups[1]);
-
-
 
 
 

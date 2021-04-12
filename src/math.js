@@ -5,7 +5,7 @@
  * @author Mati-AAU and thom776g and mads256h
  */
 
-module.exports = {euclidDistance, lpDistance, transposeArray, removeItemFromArray};
+module.exports = {euclidDistance, lpDistance, transposeArray, removeItemFromArray, mapRange};
 
 const {
     assertArray,
@@ -23,7 +23,7 @@ const {
  * @returns {number} the calculated euclid distance
  * @throws {TypeError} Throws when dimensions dont match
  */
-function euclidDistance(point1, point2){
+function euclidDistance(point1, point2) {
     return lpDistance(point1, point2, 2);
 }
 
@@ -36,7 +36,7 @@ function euclidDistance(point1, point2){
  * @throws {TypeError} Throws when dimensions dont match or less than 1 dimensions
  * @throws {RangeError} Throws when p=0
  */
-function lpDistance(point1, point2, p){
+function lpDistance(point1, point2, p) {
     assertArrayNotEmpty(point1);
     assertArrayLengthEq(point1, point2);
     assertGreaterThan(p, 0);
@@ -61,7 +61,7 @@ function transposeArray(array) {
     assertArray(array);
     assertArrayLengthEq(...array);
 
-    return array[0].map((_,i) => array.map(x => x[i]));
+    return array[0].map((_, i) => array.map(x => x[i]));
 }
 
 /**
@@ -75,4 +75,8 @@ function removeItemFromArray(item, array) {
     assertArrayItemsType(array, typeof item);
 
     array.splice(array.indexOf(item), 1);
+}
+
+function mapRange(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }

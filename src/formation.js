@@ -1,5 +1,5 @@
 const {Group, Student, Criteria} = require("./group");
-const {removeItemFromArray} = require("./math");
+const {removeItemFromArray, mapRange} = require("./math");
 const typeassert = require("./typeassert");
 
 /**
@@ -20,22 +20,20 @@ class GroupFormation {
     /**
      * @param {Student[]} students
      * @param {number} maxGroupSize
-     * @param {weightedCriteria}
+     * @param {WeightedCriteria} weightedCriteria
      */
-    constuctor(students, maxGroupSize, weightedCriteria) {
+    constructor(students, maxGroupSize, weightedCriteria) {
         typeassert.assertArray(students);
         typeassert.assertArrayItemsInstanceOf(students, Student);
         typeassert.assertInstanceOf(weightedCriteria, WeightedCriteria);
 
-
+        this.weightedCriteria = weightedCriteria;
         this.maxGroupSize = maxGroupSize;
         this.nextGroupId = 0;
 
         // Make every student a FM student and save it in an array
         this.students = this.makeStudents(students);
         this.groups = this.makeGroups(this.students);
-
-        Object.freeze(this);
     }
 
     /**
@@ -49,7 +47,7 @@ class GroupFormation {
 
         removeItemFromArray(student, group.students);
 
-        this.groups.push(new FMGroup(student.name, 1 /* fix me */, [student]));
+        this.groups.push(new FMGroup(student.name, this.nextGroupId++, [student], this, true));
     }
 
     /**
@@ -84,7 +82,7 @@ class GroupFormation {
      * @returns {FMGroup[]} The groups
      */
     makeGroups(students) {
-        return students.map((s) => new FMGroup(s.name, this.nextGroupId++, [s], true));
+        return students.map((s) => new FMGroup(s.name, this.nextGroupId++, [s], this, true));
     }
 }
 
@@ -109,7 +107,7 @@ class WeightedCriteria {
     score(criteria) {
         const {homogenous, heteogenius} = this.asNumberArrays(criteria);
 
-        return this.algorithm(homogenous);
+        return this.algorithm(heteogenius);
     }
 
     /**
@@ -133,15 +131,16 @@ class WeightedCriteria {
      * @returns {Array} The criteria as numbers
      */
     asNumberArrays(criteria) {
-        const homogenous = criteria.map((c) =>
+        const heteogenius = criteria.map((c) =>
             [
                 c.learningStyles.activeReflective,
                 c.learningStyles.visualVerbal,
                 c.learningStyles.sensingIntuitive,
                 c.learningStyles.sequentialGlobal
-            ]);
+            ])
+            .map((c) => c.map((a) => mapRange(a, -11, 11, -1, 1)));
 
-        return {homogenous, heteogenius: [[]]};
+        return {homogenous: [[]], heteogenius};
     }
 
 }
@@ -152,8 +151,10 @@ class WeightedCriteria {
  */
 class FMGroup extends Group {
 
-    constructor(name, id, students, isUsed) {
+    constructor(name, id, students, groupFormation, isUsed = false) {
         super(name, id, students);
+
+        this.groupFormation = groupFormation
 
         if (isUsed) {
             students.forEach((s) => s.group = this);
@@ -179,8 +180,9 @@ class FMGroup extends Group {
     merge(group, isUsed = false) {
         return new FMGroup(
             this.name + group.name,
-            this.id + group.id, // TODO: This is really bad fix this
+            this.groupFormation.nextGroupId++,
             this.students.concat(group.students),
+            this.groupFormation,
             isUsed
         );
     }
@@ -209,13 +211,20 @@ class FMGroup extends Group {
     /**
      * @summary A list of groups with a score dertermining the value of the merge with this group and the group in the list
      * @param {FMGroup[]} candidates
-     * @returns {FMGroup[]} Valued groups
+     * @returns {Map.<FMGroup,number>} Valued groups
      */
     valueGroups(candidates) {
         typeassert.assertArray(candidates);
         typeassert.assertArrayItemsInstanceOf(candidates, FMGroup);
 
-        candidates.forEach((g) => g.value = this.merge(g).score());
+        const valueMap = new Map();
+        candidates.forEach((g) => valueMap.set(g, this.merge(g).score()));
+
+        return valueMap;
+    }
+
+    toGroup() {
+        return new Group(this.name, this.id, this.students.map((s) => s.toStudent()));
     }
 
 }
@@ -235,10 +244,12 @@ class FMStudent extends Student {
         this.groupFormation = groupFormation;
     }
 
-    leave(group) {
-        typeassert.assertInstanceOf(group, FMGroup);
+    leave() {
+        this.groupFormation.removeStudentFromGroup(this, this.group);
+    }
 
-        this.groupFormation.removeStudentFromGroup(this, group);
+    toStudent() {
+        return new Student(this.name, this.criteria);
     }
 }
 
