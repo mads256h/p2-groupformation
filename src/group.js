@@ -96,6 +96,9 @@ class LearningStyles {
      * @param {number} sequentialGlobal The student's position on the sequential-global dimension
      */
     constructor(activeReflective, visualVerbal, sensingIntuitive, sequentialGlobal) {
+        /**
+         * @param {number} parameter score for LS criteria
+         */
         function validateParameter(parameter) {
             typeassert.assertNumber(parameter);
             typeassert.assertInteger(parameter);
