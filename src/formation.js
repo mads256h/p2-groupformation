@@ -137,8 +137,8 @@ class WeightedCriteria {
                 c.learningStyles.visualVerbal,
                 c.learningStyles.sensingIntuitive,
                 c.learningStyles.sequentialGlobal
-            ])
-            .map((c) => c.map((a) => mapRange(a, -11, 11, -1, 1)));
+            ]
+                .map((a) => mapRange(a, -11, 11, -1, 1)));
 
         return {homogenous: [[]], heteogenius};
     }
