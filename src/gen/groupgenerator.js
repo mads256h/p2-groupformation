@@ -11,20 +11,27 @@ const fs = require("fs");
 const argv = process.argv.splice(2);
 
 if (argv.length !== 3){
-    console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <max groupsize> <input filename> <output filename>`);
+    console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <algorithm> <max groupsize> <input filename> <output filename>`);
     process.exit(1);
 }
 
-const studentArray = JSON.parse(fs.readFileSync(argv[1])).map((s) => studentToStudent(s));
+const studentArray = JSON.parse(fs.readFileSync(argv[2])).map((s) => studentToStudent(s));
 
-const weightedCriteria = new WeightedCriteria(null, balance);
-const groupFormation = new GroupFormation(studentArray, argv[0], weightedCriteria);
+const algorithm = getAlgorithm(argv[0]);
+if (algorithm === null) {
+    // Then you done did it
+    console.error("Thats not a valid algorithm there partner");
+    process.exit(1);
+}
+
+const weightedCriteria = new WeightedCriteria(null, algorithm);
+const groupFormation = new GroupFormation(studentArray, argv[1], weightedCriteria);
 
 createBestGroups();
 
 const doneGroups = groupFormation.groups.map((g) => g.toGroup());
 
-saveToFile(doneGroups, argv[2]);
+saveToFile(doneGroups, argv[3]);
 
 /**
  * @summary Creates a list of groups
@@ -89,37 +96,65 @@ function saveToFile(groups, fileName){
     });
 }
 
+/**
+ * @summary Get an algorithm function by name
+ * @param {string} name The name of the algorithm
+ * @returns {Function} The algorithm function
+ */
+function getAlgorithm(name) {
+    if (name === "0point") {
+        return balance;
+    }
+    else if (name === "distance") {
+        return maxDistance;
+    }
+    else if (name === "vectorspace") {
+        return averageVectorDistance;
+    }
+    else if (name === "vectorspacemin") {
+        return averageVectorMinDistance;
+    }
+
+    // bruh you done did it
+    return null;
+}
+
 
 /**
- * @param {Student} student
+ * @param {Student} student A foreign student object
+ * @returns {Student} A student object that is an instance of Student
  */
 function studentToStudent(student){
     return new Student(student.name, criteriaToCriteria(student.criteria));
 }
 
 /**
- * @param {Criteria} criteria
+ * @param {Criteria} criteria A foreign criteria object
+ * @returns {Criteria} A criteria object that is an instance of Criteria
  */
 function criteriaToCriteria(criteria) {
     return new Criteria(criteria.ambitions, criteria.workingAtHome, learningStylesToLearningStyles(criteria.learningStyles), subjectPreferenceToSubjectPreference(criteria.subjectPreference));
 }
 
 /**
- * @param {LearningStyles} learningStyles
+ * @param {LearningStyles} learningStyles A foreign learningStyles object
+ * @returns {LearningStyles} A learningStyles object that is an instance of LearningStyles
  */
 function learningStylesToLearningStyles(learningStyles) {
     return new LearningStyles(learningStyles.activeReflective, learningStyles.visualVerbal, learningStyles.sensingIntuitive, learningStyles.sequentialGlobal);
 }
 
 /**
- * @param {SubjectPreference} subjectPreference
+ * @param {SubjectPreference} subjectPreference A foreign subjectPreference object
+ * @returns {SubjectPreference} A subjectPreference object that is an instance of SubjectPreference
  */
 function subjectPreferenceToSubjectPreference(subjectPreference) {
     return new SubjectPreference(subjectPreference.subjects.map((s) => subjectToSubject(s)));
 }
 
 /**
- * @param {Subject} subject
+ * @param {Subject} subject A foreign subject object
+ * @returns {Subject} A subject object that is an instance of Subject
  */
 function subjectToSubject(subject) {
     return new Subject(subject.name, subject.score);
