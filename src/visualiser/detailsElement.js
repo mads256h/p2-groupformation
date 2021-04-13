@@ -23,9 +23,8 @@
     function createGroupInfoElement(group, array) {
         const masterDivElement = document.createElement("div");
         masterDivElement.className = "groupsize";
-        let superSum = 0;
+        let superSum = [0, 0, 0];
         const table = document.createElement("table");
-        table.className = "Table";
         // start
         const tableHeader = createTableHeader();
         table.appendChild(tableHeader);
@@ -39,45 +38,27 @@
             lSarray = arrayBySecondIndex(array, i);
 
             const tr = document.createElement("tr");
-            console.log(group.students[0].criteria.learningStyles);
             tr.appendChild(createTableTd(learningStyleNames[i]));
             tr.appendChild(createTableTd(distanceBetweenExtremes(lSarray).toString()));
             tr.appendChild(createTableTd(sumOfArray(lSarray).toString()));
-            tr.appendChild(createTableTd(distribution(lSarray).toString()));
+            tr.appendChild(createTableTd(distribution(lSarray).toFixed(2).toString()));
             table.appendChild(tr);
 
-
-            // The div element that are placed to the right in the svg div
-            const divElement = document.createElement("div");
-            divElement.className = "groupsize";
-
-/*             // The maxMine functions output inserted in the groupsize class
-            const maxMin = document.createElement("span");
-            maxMin.innerText = "MaxMin: " + distanceBetweenExtremes(lSarray).toString() + " ";
-            divElement.appendChild(maxMin);
-
-            // The sum functions output inserted in the groupsize class under maxMine
-            const sum = document.createElement("span");
-            sum.innerText = "The sum: " + sumOfArray(lSarray).toString() + " ";
-            divElement.appendChild(sum);
-
-            // The linearDist function output inserted in the groupsize class under sum
-            const linearDist = document.createElement("span");
-            linearDist.innerText = "Linear distribution: " + distribution(lSarray).toString() + " ";
-            divElement.appendChild(linearDist); */
-
-            // Returns the div element in which all info is stored
-            masterDivElement.appendChild(divElement);
-            const lineBreak = document.createElement("br");
-            masterDivElement.appendChild(lineBreak);
-            superSum += Number(Math.abs(sumOfArray(lSarray)));
+            superSum[0] += Number(Math.abs(distanceBetweenExtremes(lSarray)));
+            superSum[1] += Number(Math.abs(sumOfArray(lSarray)));
+            superSum[2] += Number(Math.abs(distribution(lSarray)));
         }
-
-        const superSumElement = document.createElement("span");
-        superSumElement.innerText = "The total sum: " + superSum.toString();
-        masterDivElement.appendChild(superSumElement);
+        const tr = document.createElement("tr");
+        tr.appendChild(createTableTd("Sum:"));
+        tr.appendChild(createTableTd(superSum[0]));
+        tr.appendChild(createTableTd(superSum[1]));
+        tr.appendChild(createTableTd(superSum[2].toFixed(2)));
+        table.appendChild(tr);
         // Rest
         masterDivElement.appendChild(table);
+        const displayGroupSize = document.createElement("span");
+        displayGroupSize.innerText = "Group-size: " + group.students.length;
+        masterDivElement.appendChild(displayGroupSize);
         masterDivElement.appendChild(createGroupElement(group));
         return masterDivElement;
     }
