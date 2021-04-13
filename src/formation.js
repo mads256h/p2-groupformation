@@ -25,6 +25,8 @@ class GroupFormation {
     constructor(students, maxGroupSize, weightedCriteria) {
         typeassert.assertArray(students);
         typeassert.assertArrayItemsInstanceOf(students, Student);
+        typeassert.assertInteger(maxGroupSize);
+        typeassert.assertGreaterThanEq(maxGroupSize, 1);
         typeassert.assertInstanceOf(weightedCriteria, WeightedCriteria);
 
         this.weightedCriteria = weightedCriteria;
