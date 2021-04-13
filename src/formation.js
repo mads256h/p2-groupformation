@@ -11,6 +11,7 @@ const typeassert = require("./typeassert");
 
 /**
  * @summary Represents the group formation process
+ * @property {WeightedCriteria} weightedCriteria The object used to weigh criteria
  * @property {number} maxGroupSize The maximum number of students allowed in a group
  * @property {number} nextGroupId The next group ID
  * @property {FMStudent[]} students An array of students
@@ -90,9 +91,14 @@ class GroupFormation {
 
 
 /**
- * @summary Weighś criteria and gives them a score
+ * @summary Weighs criteria and gives them a score
+ * @property {Function} algorithm The algorithm to use
  */
 class WeightedCriteria {
+    /**
+     * @param {any} config An object that specifies how the criteria should be weighted
+     * @param {Function} algorithm The algorithm to use
+     */
     constructor(config, algorithm) {
         typeassert.assertFunction(algorithm);
 
@@ -130,7 +136,7 @@ class WeightedCriteria {
      * @private
      * @summary Get criteria as number arrays
      * @param {Criteria[]} criteria The criteria to get as number arrays
-     * @returns {Array} The criteria as numbers
+     * @returns {any} The criteria as numbers
      */
     asNumberArrays(criteria) {
         const heteogenius = criteria.map((c) =>
@@ -148,9 +154,17 @@ class WeightedCriteria {
 
 /**
  * @summary An extension of group for use in the group formation process
- * @property {FMGroup} invitations Array of groups that has invited this group
+ * @property {GroupFormation} groupFormation The groupFormation object
+ * @property {FMGroup[]} invitations Array of groups that has invited this group
  */
 class FMGroup extends Group {
+    /**
+     * @param {string} name The name of the group
+     * @param {number} id The id of the group
+     * @param {FMStudent[]} students The groups members
+     * @param {GroupFormation} groupFormation The groupFormation object
+     * @param {boolean} isUsed If true the students group property gets updated to this group
+     */
     constructor(name, id, students, groupFormation, isUsed = false) {
         super(name, id, students);
 
@@ -175,7 +189,7 @@ class FMGroup extends Group {
     /**
      * @summary Merge this group with another without modifying either
      * @param {FMGroup} group The group to merge with
-     * @param {boolean} isUsed Makes sure that the merged gruop, isn't actually merged
+     * @param {boolean} isUsed If true the students group property gets updated to this group
      * @returns {FMGroup} A new group that is a result of merging this group and group
      */
     merge(group, isUsed = false) {
@@ -225,8 +239,8 @@ class FMGroup extends Group {
     }
 
     /**
-     * @summary Makes FMGroup to a non FM group
-     * @returns {group} A non FM group
+     * @summary Converts this FMGroup to Group
+     * @returns {group} The converted Group
      */
     toGroup() {
         return new Group(this.name, this.id, this.students.map((s) => s.toStudent()));
@@ -239,6 +253,10 @@ class FMGroup extends Group {
  * @property {GroupFormation} groupformation the groupFormation object
  */
 class FMStudent extends Student {
+    /**
+     * @param {Student} student The student to create this FMStudent from
+     * @param {GroupFormation} groupFormation The groupFormation object
+     */
     constructor(student, groupFormation) {
         typeassert.assertInstanceOf(student, Student);
         typeassert.assertInstanceOf(groupFormation, GroupFormation);
@@ -248,10 +266,17 @@ class FMStudent extends Student {
         this.groupFormation = groupFormation;
     }
 
+    /**
+     * @summary Leave the current group
+     */
     leave() {
         this.groupFormation.removeStudentFromGroup(this, this.group);
     }
 
+    /**
+     * @summary Converts this FMStudent to Student
+     * @returns {Student} The converted student
+     */
     toStudent() {
         return new Student(this.name, this.criteria);
     }
