@@ -21,34 +21,38 @@
      */
     function createButtons(array) {
         for (let i = 0; i < array.length; i++) {
-            const buttonElement = document.createElement("BUTTON");
-            buttonElement.innerText = "Filename: " + array[i];
-            buttonElement.addEventListener("click", () => callData(array[i]));
-            document.body.appendChild(buttonElement);
+            if (array[i] !== ".gitkeep"){
+                const buttonElement = document.createElement("BUTTON");
+                buttonElement.innerText = "Filename: " + array[i];
+                buttonElement.addEventListener("click", () => callData(array[i]));
+                document.body.appendChild(buttonElement);
+            }
         }
     }
 
     /**
-     * @summary Displays the info of the file provided as parameter
-     * @param {string} filename the name of the file
+     * @summary Displays the info of the allGroupLSarr and allGroupsInfo arrays
+     * @param {Array} allGroupLSArr The array with the learningstyles from all the groups
+     * @param {Array} allGroupsInfoArr The array with the info from all the groups
      */
-    function makeAllGroups(allGroupLSarr, allGroupsInfo) {
+    function displayGroups(allGroupLSArr, allGroupsInfoArr) {
         // Creates a master div element, under which alle the info will be displayed, this is overwritten by each buttonpress
         const masterDiv = makeMasterDiv();
         document.body.appendChild(masterDiv);
-        for (let i = 0; i < allGroupLSarr.length; i++) {
+        for (let i = 0; i < allGroupLSArr.length; i++) {
             const groupDiv = document.createElement("div");
             groupDiv.setAttribute("id", "DIV" + i);
 
             // Lav de elementer der skal appendes til groupdiv
-            groupDiv.appendChild(createGroupSvg(allGroupLSarr[i]));
-            groupDiv.appendChild(createGroupInfoElement(allGroupsInfo[i], allGroupLSarr[i]));
+            groupDiv.appendChild(createGroupSvg(allGroupLSArr[i]));
+            groupDiv.appendChild(createGroupInfoElement(allGroupsInfoArr[i], allGroupLSArr[i]));
             const line = document.createElement("hr");
             groupDiv.appendChild(line);
             // Tilføj groupDiv til vores master element
             masterDiv.appendChild(groupDiv);
         }
     }
+
     /**
      * @summary Creates/overwrites the master div element
      * @returns {HTMLElement} an empty html master div element
@@ -63,13 +67,21 @@
         return masterDiv;
     }
 
+    /**
+     * @summary Changes the header and calls the getData promise
+     * @param {string} filename the name of the file from which to get the data
+     */
     function callData(filename){
-        console.log("Creating html from file: " + filename);
+        const header = document.querySelector("h1");
+        header.innerText = "Now showing the content of: " + filename;
         getData(filename).then(content=>useData(content));
     }
 
+    /**
+     * @summary Uses the content of the file and picks out the info needed and iserts it into arrays, which is used in the displayGroups function
+     * @param {object} content The content of the file, all stored into an object
+     */
     function useData(content){
-        console.log(content);
         let allGroupsLSarr = [];
         let allGroupsInfo = [];
         for (const group of content) {
@@ -81,17 +93,19 @@
             allGroupsInfo.push(group);
             allGroupsLSarr.push(groupLSarr);
         }
-        makeAllGroups(allGroupsLSarr, allGroupsInfo);
+        displayGroups(allGroupsLSarr, allGroupsInfo);
     }
+    /**
+     * @summary Uses the content of the file and picks out the info needed and iserts it into arrays, which is used in the displayGroups function
+     * @param {object} student The student from which to get the learningstyles from
+     * @returns {Array} an array with the learningstyles of the student
+     */
     function getStudentLS(student){
         const studentLS = student.criteria.learningStyles;
         let arr = [];
         for (const learningStyle in studentLS) {
-            // if (Object.hasOwnProperty.call(studentLS, learningStyle)) { // necessary?????
             arr.push(parseInt(studentLS[learningStyle]));
-            // }
         }
-        // console.log(...arr);
         return arr;
     }
 }());
