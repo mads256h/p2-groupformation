@@ -10,7 +10,7 @@ const fs = require("fs");
 
 const argv = process.argv.splice(2);
 
-if (argv.length !== 3){
+if (argv.length !== 4){
     console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <algorithm> <max groupsize> <input filename> <output filename>`);
     process.exit(1);
 }
