@@ -6,8 +6,8 @@
   "scripts": {
     "main": "node src/index.js",
     "js-lint": "eslint src/",
-    "html-lint": "html-validate src/www/",
-    "css-lint": "stylelint --aei src/www/**/*.css",
+    "html-lint": "html-validate src/{www,visualiser}/",
+    "css-lint": "stylelint --aei src/{www/**,visualiser}/*.css",
     "test": "jest",
     "doc": "jsdoc -r src/",
     "vis": "node src/visualiser/server.js"
