@@ -5,15 +5,18 @@
  * @author Mati-AAU and thom776g and mads256h
  */
 
-module.exports = {euclidDistance, lpDistance, transposeArray};
+module.exports = {euclidDistance, lpDistance, transposeArray, removeItemFromArray, mapRange};
 
 const {
     assertArray,
     assertArrayLengthEq,
     assertArrayNotEmpty,
     assertGreaterThan,
-    assertArrayItemsType
+    assertArrayItemsType,
 
+    assertNumber,
+    assertLessThanEq,
+    assertRangeInclusive
 } = require("./typeassert");
 
 /**
@@ -23,7 +26,7 @@ const {
  * @returns {number} the calculated euclid distance
  * @throws {TypeError} Throws when dimensions dont match
  */
-function euclidDistance(point1, point2){
+function euclidDistance(point1, point2) {
     return lpDistance(point1, point2, 2);
 }
 
@@ -36,7 +39,7 @@ function euclidDistance(point1, point2){
  * @throws {TypeError} Throws when dimensions dont match or less than 1 dimensions
  * @throws {RangeError} Throws when p=0
  */
-function lpDistance(point1, point2, p){
+function lpDistance(point1, point2, p) {
     assertArrayNotEmpty(point1);
     assertArrayLengthEq(point1, point2);
     assertGreaterThan(p, 0);
@@ -61,5 +64,47 @@ function transposeArray(array) {
     assertArray(array);
     assertArrayLengthEq(...array);
 
-    return array[0].map((_,i) => array.map(x => x[i]));
+    return array[0].map((_, i) => array.map(x => x[i]));
+}
+
+/**
+ * @summary Remove item from array
+ * @param {any} item The item to remove
+ * @param {any[]} array The array to remove the item from
+ * @returns {any[]} The array
+ * @throws {TypeError} The array's items is not the same type as item
+ */
+function removeItemFromArray(item, array) {
+    assertArray(array);
+    assertArrayItemsType(array, typeof item);
+
+    array.splice(array.indexOf(item), 1);
+
+    return array;
+}
+
+
+/**
+ * @summary Maps a value from a range to another range
+ * @param {number} value The value to map to another range
+ * @param {number} inMin The minimum value of the starting range
+ * @param {number} inMax The maximum value of the starting range
+ * @param {number} outMin The minimum value of the resulting range
+ * @param {number} outMax The maximum value of the resulting range
+ * @returns {number} Value mapped from the starting range to the resulting range
+ */
+function mapRange(value, inMin, inMax, outMin, outMax) {
+    assertNumber(value);
+    assertNumber(inMin);
+    assertNumber(inMax);
+    assertNumber(outMin);
+    assertNumber(outMax);
+
+    assertRangeInclusive(value, inMin, inMax);
+
+    assertLessThanEq(inMin, inMax);
+    assertLessThanEq(outMin, outMax);
+
+
+    return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
 }

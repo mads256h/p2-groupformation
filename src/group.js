@@ -32,8 +32,6 @@ class Group {
         this.name = name;
         this.id = id;
         this.students = students;
-
-        Object.freeze(this);
     }
 }
 
@@ -53,8 +51,6 @@ class Student {
 
         this.name = name;
         this.criteria = criteria;
-
-        Object.freeze(this);
     }
 }
 
@@ -82,8 +78,6 @@ class Criteria {
         this.workingAtHome = workingAtHome;
         this.learningStyles = learningStyles;
         this.subjectPreference = subjectPreference;
-
-        Object.freeze(this);
     }
 }
 
@@ -102,6 +96,9 @@ class LearningStyles {
      * @param {number} sequentialGlobal The student's position on the sequential-global dimension
      */
     constructor(activeReflective, visualVerbal, sensingIntuitive, sequentialGlobal) {
+        /**
+         * @param {number} parameter score for LS criteria
+         */
         function validateParameter(parameter) {
             typeassert.assertNumber(parameter);
             typeassert.assertInteger(parameter);
@@ -117,8 +114,6 @@ class LearningStyles {
         this.visualVerbal = visualVerbal;
         this.sensingIntuitive = sensingIntuitive;
         this.sequentialGlobal = sequentialGlobal;
-
-        Object.freeze(this);
     }
 }
 
@@ -135,8 +130,6 @@ class SubjectPreference {
         typeassert.assertArrayItemsInstanceOf(subjects, Subject);
 
         this.subjects = subjects;
-
-        Object.freeze(this);
     }
 }
 
@@ -157,8 +150,6 @@ class Subject {
 
         this.name = name;
         this.score = score;
-
-        Object.freeze(this);
     }
 }
 
