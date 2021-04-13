@@ -1,4 +1,4 @@
-(function() {
+(function(){
     const {
         distribution,
         sumOfArray,
@@ -22,6 +22,8 @@
      */
     function createGroupInfoElement(group, array) {
         const masterDivElement = document.createElement("div");
+        masterDivElement.className = "groupsize";
+        let superSum = 0;
         for (let i = 0; i < array[0].length; i++) {
             let lSarray = [];
             lSarray = arrayBySecondIndex(array, i);
@@ -49,11 +51,12 @@
             masterDivElement.appendChild(divElement);
             const lineBreak = document.createElement("br");
             masterDivElement.appendChild(lineBreak);
+            superSum += Number(Math.abs(sumOfArray(lSarray)));
         }
-
+        const superSumElement = document.createElement("span");
+        superSumElement.innerText = "The total sum: " + superSum.toString();
+        masterDivElement.appendChild(superSumElement);
         masterDivElement.appendChild(createGroupElement(group));
-        const line = document.createElement("hr");
-        masterDivElement.appendChild(line);
         return masterDivElement;
     }
     /**
@@ -107,7 +110,9 @@
         const studentList = document.createElement("ul");
         for (let criterias in criteria) {
             if (typeof criteria[criterias] === "object"){
-                studentList.appendChild(createCriteriaElement(criteria[criterias], criterias));
+                if (criterias === "subjects"){
+                    studentList.appendChild(createSubjectElement(criteria[criterias], criterias));
+                }
             }
             else {
                 const listItem = document.createElement("li");
@@ -116,6 +121,37 @@
             }
         }
         details.appendChild(studentList);
+        return details;
+    }
+    function createSubjectElement(subject, subjectName) {
+        console.log();
+        const details = document.createElement("details");
+        details.setAttribute("open", 1);
+        const summary = document.createElement("summary");
+        summary.innerText = subjectName;
+        details.appendChild(summary);
+        details.setAttribute("id", "subject");
+        const subjectScore = document.createElement("ul");
+        for (const subjects of subject){
+            console.log(subjects.name);
+            const detailsSubject = document.createElement("details");
+            const summarySubject = document.createElement("summary");
+            summarySubject.innerText = subjects.name;
+            detailsSubject.appendChild(summary);
+            detailsSubject.setAttribute("open", 1);
+            const listItem = document.createElement("li");
+            listItem.innerText = subjects.score;
+            detailsSubject.appendChild(listItem);
+            details.appendChild(detailsSubject);
+        }
+        /* for (let criterias in criteria) {
+                if (typeof criteria[criterias] === "object"){
+                    studentList.appendChild(createCriteriaElement(criteria[criterias], criterias));
+            }
+            else {
+            }
+        } */
+        details.appendChild(subjectScore);
         return details;
     }
 
