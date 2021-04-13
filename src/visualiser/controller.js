@@ -43,7 +43,8 @@
             // Lav de elementer der skal appendes til groupdiv
             groupDiv.appendChild(createGroupSvg(allGroupLSarr[i]));
             groupDiv.appendChild(createGroupInfoElement(allGroupsInfo[i], allGroupLSarr[i]));
-
+            const line = document.createElement("hr");
+            groupDiv.appendChild(line);
             // Tilføj groupDiv til vores master element
             masterDiv.appendChild(groupDiv);
         }
@@ -75,7 +76,6 @@
             console.log(group);
             let groupLSarr = [];
             for (const student of group.students) {
-                // console.log(student);
                 groupLSarr.push(getStudentLS(student));
             }
             allGroupsInfo.push(group);
