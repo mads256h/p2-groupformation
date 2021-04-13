@@ -7,50 +7,95 @@ const fs = require("fs");
 const argv = process.argv.splice(2);
 
 if (argv.length !== 3){
-    throw new RangeError("Wrong number of arguments");
+    console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <num students> <num subjects> <filename>`);
+    process.exit(1);
 }
 
 /**
- * @summary A function used to generate a randomized student, these will be destributed into groups
- * @param {number} numOfStudents Number of students to be generated.
- * @param {number} numOfSubjects Number of subjects to be generated.
- * @returns {Student[]} returns an array of students.
+ * @summary Generate randomized students
+ * @param {number} numStudents Number of students to be generated
+ * @param {number} numSubjects Number of subjects to be generated
+ * @returns {Student[]} An array of students
  */
-function studentGenerator(numOfStudents, numOfSubjects){
+function generateStudents(numStudents, numSubjects){
     const studentArray = [];
-    for (let index = 0; index < numOfStudents; index++) {
-        const learningStyle = new LearningStyles(lsGenerator(), lsGenerator(), lsGenerator(), lsGenerator());
-        const criteria = new Criteria(Math.floor(Math.random() * 10) + 1, Math.floor(Math.random() * 3), learningStyle, subjectGenerator(numOfSubjects));
-        studentArray.push(new Student((index + 1).toString(), criteria));
+    for (let i = 0; i < numStudents; i++) {
+        studentArray.push(studentGenerator(i.toString(), numSubjects));
     }
+
     return studentArray;
 }
 
+
 /**
- * @summary A function to generate proper random learning style numbers for testing purposes
- * @returns {number} The return is a random learning style number
+ * @summary Generate a randomized student
+ * @param {string} name The students name
+ * @param {number} numSubjects The number of subjects
+ * @returns {Student} A randomized student
+ */
+function studentGenerator(name, numSubjects) {
+    return new Student(name, criteriaGenerator(numSubjects));
+}
+
+
+/**
+ * @summary Generate a randomized criteria object
+ * @param {number} numSubjects The number of subjects
+ * @returns {Criteria} A randomized criteria object
+ */
+function criteriaGenerator(numSubjects) {
+    return new Criteria(
+        Math.floor(Math.random() * 10) + 1, // ambitions
+        Math.floor(Math.random() * 3), // workingAtHome
+        learningStylesGenerator(),
+        subjectPreferenceGenerator(numSubjects));
+}
+
+
+/**
+ * @summary Generate randomized learningstyles
+ * @returns {LearningStyles} Randomized learningstyles
+ */
+function learningStylesGenerator() {
+    return new LearningStyles(lsGenerator(), lsGenerator(), lsGenerator(), lsGenerator());
+}
+
+/**
+ * @summary Generate an odd number between -11 and 11 inclusive
+ * @returns {number} The generated number
  */
 function lsGenerator(){
     return (Math.floor(Math.random() * 12) * 2)  - 11;
 }
 
+
 /**
- * @summary Generates an array of subjects, which is used when generating students
- * @param {number} numOfSubjects Number of subjects to be generated.
- * @returns {SubjectPreference} Returns an array of subjects.
+ * @summary Generate randomized subjectpreferences
+ * @param {number} numSubjects The number of subjects
+ * @returns {SubjectPreference} Randomized subjectpreferences
  */
-function subjectGenerator(numOfSubjects){
+function subjectPreferenceGenerator(numSubjects){
     const subjects = [];
-    for (let index = 0; index < numOfSubjects; index++) {
-        subjects.push(new Subject((index + 1).toString(), Math.random()));
+    for (let i = 0; i < numSubjects; i++) {
+        subjects.push(subjectGenerator(i.toString()));
     }
     return new SubjectPreference(subjects);
 }
 
 /**
- * @summary Saves all of the students into a json file.
- * @param {Student[]} students Takes an array of students as input.
- * @param {string} fileName Input to dictate name of file that is saved.
+ * @summary Generate a random subject
+ * @param {string} name The name of the subject
+ * @returns {Subject} Randomized subject
+ */
+function subjectGenerator(name) {
+    return new Subject(name, Math.random());
+}
+
+
+/**
+ * @summary Saves students to file
+ * @param {Student[]} students The students to save
+ * @param {string} fileName The output filename
  */
 function saveToFile(students, fileName){
     assertArray(students);
@@ -67,4 +112,4 @@ function saveToFile(students, fileName){
     });
 }
 
-saveToFile(studentGenerator(argv[0], argv[1]), argv[2]);
+saveToFile(generateStudents(argv[0], argv[1]), argv[2]);
