@@ -25,7 +25,7 @@ if (algorithm === null) {
 }
 
 const weightedCriteria = new WeightedCriteria(null, algorithm);
-const groupFormation = new GroupFormation(studentArray, argv[1], weightedCriteria);
+const groupFormation = new GroupFormation(studentArray, Number(argv[1]), weightedCriteria);
 
 createBestGroups();
 
