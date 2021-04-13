@@ -1,8 +1,10 @@
 #!/usr/bin/node
 
-const {balance} = require("../Algorithms/0point");
-const {maxDistance} = require("../Algorithms/distance");
-const {averageVectorMinDistance, averageVectorDistance} = require("../Algorithms/vectorspace");
+const {balance} = require("../algorithms/0point");
+const {maxDistance} = require("../algorithms/distance");
+const {splitAvgMinDistance} = require("../algorithms/splitAvgMinDistance");
+const {averageVectorMinDistance, averageVectorDistance} = require("../algorithms/vectorspace");
+const weightFunctions = require("../algorithms/weightFunction");
 const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("../group");
 const {GroupFormation, WeightedCriteria, FMGroup} = require("../formation");
 const fs = require("fs");
@@ -10,21 +12,48 @@ const fs = require("fs");
 
 const argv = process.argv.splice(2);
 
-if (argv.length !== 4){
+if (argv.length !== 4) {
     console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <algorithm> <max groupsize> <input filename> <output filename>`);
     process.exit(1);
 }
 
+const algorithmMap =
+{
+    "0point": {alg: balance, highBetter: false},
+    "distance": {alg: maxDistance, highBetter: true},
+    "mindistance": {alg: splitAvgMinDistance, highBetter: true},
+    "vectormindistance0.5constant": {alg: (criteria) => averageVectorMinDistance(criteria, 0.5, weightFunctions.constant), highBetter: true},
+    "vectormindistance1constant": {alg: (criteria) => averageVectorMinDistance(criteria, 1, weightFunctions.constant), highBetter: true},
+    "vectormindistance2constant": {alg: (criteria) => averageVectorMinDistance(criteria, 2, weightFunctions.constant), highBetter: true},
+    "vectormindistance3constant": {alg: (criteria) => averageVectorMinDistance(criteria, 3, weightFunctions.constant), highBetter: true},
+    "vectormindistance0.5sigmoid": {alg: (criteria) => averageVectorMinDistance(criteria, 0.5, weightFunctions.sigmoid0to2), highBetter: true},
+    "vectormindistance1sigmoid": {alg: (criteria) => averageVectorMinDistance(criteria, 1, weightFunctions.sigmoid0to2), highBetter: true},
+    "vectormindistance2sigmoid": {alg: (criteria) => averageVectorMinDistance(criteria, 2, weightFunctions.sigmoid0to2), highBetter: true},
+    "vectormindistance3sigmoid": {alg: (criteria) => averageVectorMinDistance(criteria, 3, weightFunctions.sigmoid0to2), highBetter: true},
+    "vectoravgdistance0.5constant": {alg: (criteria) => averageVectorDistance(criteria, 0.5, weightFunctions.constant), highBetter: true},
+    "vectoravgdistance1constant": {alg: (criteria) => averageVectorDistance(criteria, 1, weightFunctions.constant), highBetter: true},
+    "vectoravgdistance2constant": {alg: (criteria) => averageVectorDistance(criteria, 2, weightFunctions.constant), highBetter: true},
+    "vectoravgdistance3constant": {alg: (criteria) => averageVectorDistance(criteria, 3, weightFunctions.constant), highBetter: true},
+    "vectoravgdistance0.5sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 0.5, weightFunctions.sigmoid0to2), highBetter: true},
+    "vectoravgdistance1sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 1, weightFunctions.sigmoid0to2), highBetter: true},
+    "vectoravgdistance2sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 2, weightFunctions.sigmoid0to2), highBetter: true},
+    "vectoravgdistance3sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 3, weightFunctions.sigmoid0to2), highBetter: true},
+};
+
 const studentArray = JSON.parse(fs.readFileSync(argv[2])).map((s) => studentToStudent(s));
 
-const algorithm = getAlgorithm(argv[0]);
-if (algorithm === null) {
+const algorithm = algorithmMap[argv[0]];
+if (algorithm === undefined) {
     // Then you done did it
     console.error("Thats not a valid algorithm there partner");
+    console.error("Valid algorithms:");
+    for (let alg in algorithmMap) {
+        console.error(`  ${alg}`);
+    }
     process.exit(1);
 }
 
-const weightedCriteria = new WeightedCriteria(null, algorithm);
+const weightedCriteria = new WeightedCriteria(null, algorithm.alg);
 const groupFormation = new GroupFormation(studentArray, Number(argv[1]), weightedCriteria);
 
 createBestGroups();
@@ -33,10 +62,13 @@ const doneGroups = groupFormation.groups.map((g) => g.toGroup());
 
 saveToFile(doneGroups, argv[3]);
 
+
+
+
 /**
  * @summary Creates a list of groups
  */
-function createBestGroups(){
+function createBestGroups() {
     while (!isDone()) {
         const group = selectRndGroup();
         const candidates = group.valueGroups(group.candidates());
@@ -49,7 +81,7 @@ function createBestGroups(){
  * @summary Chooses a random group from the group array
  * @returns {FMGroup} A random group from the array
  */
-function selectRndGroup(){
+function selectRndGroup() {
     const groupsWithCandidates = groupFormation.groups.filter((g) => g.candidates().length > 0);
     return groupsWithCandidates[Math.floor(Math.random() * groupsWithCandidates.length)];
 }
@@ -67,11 +99,17 @@ function isDone() {
  * @param {Map.<FMGroup,number>} candidateScores Map from group to scoreS
  * @returns {FMGroup} best possible group
  */
-function bestCandidate(candidateScores){
+function bestCandidate(candidateScores) {
     let g;
-    let v = -Infinity;
+    let v = algorithm.highBetter ? -Infinity : Infinity;
     for (let [group, value] of candidateScores) {
-        if (v < value) {
+        if (algorithm.highBetter) {
+            if (v < value) {
+                g = group;
+                v = value;
+            }
+        }
+        else if (v > value) {
             g = group;
             v = value;
         }
@@ -86,7 +124,7 @@ function bestCandidate(candidateScores){
  * @param {FMGroup[]} groups array of all the groups
  * @param {string} fileName the name of the file created
  */
-function saveToFile(groups, fileName){
+function saveToFile(groups, fileName) {
     const data = JSON.stringify(groups, null, 2);
     fs.writeFile(fileName, data, (err) => {
         if (err) {
@@ -96,35 +134,13 @@ function saveToFile(groups, fileName){
     });
 }
 
-/**
- * @summary Get an algorithm function by name
- * @param {string} name The name of the algorithm
- * @returns {Function} The algorithm function
- */
-function getAlgorithm(name) {
-    if (name === "0point") {
-        return balance;
-    }
-    else if (name === "distance") {
-        return maxDistance;
-    }
-    else if (name === "vectorspace") {
-        return averageVectorDistance;
-    }
-    else if (name === "vectorspacemin") {
-        return averageVectorMinDistance;
-    }
-
-    // bruh you done did it
-    return null;
-}
 
 
 /**
  * @param {Student} student A foreign student object
  * @returns {Student} A student object that is an instance of Student
  */
-function studentToStudent(student){
+function studentToStudent(student) {
     return new Student(student.name, criteriaToCriteria(student.criteria));
 }
 
