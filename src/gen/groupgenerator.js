@@ -38,7 +38,7 @@ const algorithmMap =
     "vectoravgdistance1sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 1, weightFunctions.sigmoid0to2), highBetter: true},
     "vectoravgdistance2sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 2, weightFunctions.sigmoid0to2), highBetter: true},
     "vectoravgdistance3sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 3, weightFunctions.sigmoid0to2), highBetter: true},
-}
+};
 
 const studentArray = JSON.parse(fs.readFileSync(argv[2])).map((s) => studentToStudent(s));
 
@@ -109,11 +109,9 @@ function bestCandidate(candidateScores) {
                 v = value;
             }
         }
-        else {
-            if (v > value) {
-                g = group;
-                v = value;
-            }
+        else if (v > value) {
+            g = group;
+            v = value;
         }
     }
 
