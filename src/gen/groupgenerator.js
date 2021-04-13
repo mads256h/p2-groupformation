@@ -1,22 +1,17 @@
-/**
- * @description Tests the algorithms
- * @module algorithmTester.js
- * @see module:algorithmTester
- * @author Mati-AAU, thom776g, mads256h og CasperNS
- */
+#!/usr/bin/node
 
-const {balance} = require("./Algorithms/0point");
-const {maxDistance} = require("./Algorithms/distance");
-const {averageVectorMinDistance, averageVectorDistance} = require("./Algorithms/vectorspace");
-const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("./group");
-const {GroupFormation, WeightedCriteria, FMGroup} = require("./formation");
+const {balance} = require("../Algorithms/0point");
+const {maxDistance} = require("../Algorithms/distance");
+const {averageVectorMinDistance, averageVectorDistance} = require("../Algorithms/vectorspace");
+const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("../group");
+const {GroupFormation, WeightedCriteria, FMGroup} = require("../formation");
 const fs = require("fs");
 
 
 const argv = process.argv.splice(2);
 
 if (argv.length !== 3){
-    console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <Max size of group> <input filename> <output filename>`);
+    console.log(`USAGE: ${process.argv[0]} ${process.argv[1]} <max groupsize> <input filename> <output filename>`);
     process.exit(1);
 }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/node
 
-const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("./group");
-const {assertArray, assertArrayItemsInstanceOf, assertString, assertStringNotEmpty} = require("./typeassert");
+const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("../group");
+const {assertArray, assertArrayItemsInstanceOf, assertString, assertStringNotEmpty} = require("../typeassert");
 const fs = require("fs");
 
 const argv = process.argv.splice(2);
