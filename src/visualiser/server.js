@@ -11,7 +11,7 @@ webserver.addGetHandler("/ls", lsHandler);
 webserver.run().then(() => console.log("Server started on http://localhost:3000"));
 
 
-function lsHandler(getParams, request) {
+function lsHandler(data, request) {
     return fsp.readdir(path.join(__dirname, "/data"))
         .catch((e) => {throw new HttpError(500, e.message)});
 }

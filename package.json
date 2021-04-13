@@ -40,8 +40,10 @@
     "stylelint-config-standard": "^21.0.0"
   },
   "dependencies": {
+    "concat-stream": "^2.0.0",
     "content-type": "^1.0.4",
     "mime-type": "^4.0.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "querystring": "^0.2.1"
   }
 }

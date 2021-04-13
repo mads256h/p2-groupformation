@@ -4,6 +4,8 @@ const path = require("path");
 const contentType = require("content-type");
 const mimeType = require("mime-type/with-db");
 const typeassert = require("./typeassert");
+const concat = require("concat-stream");
+const qs = require("querystring");
 
 /**
  * @description WebServer module.
@@ -13,16 +15,10 @@ const typeassert = require("./typeassert");
  */
 
 /**
- * @callback getCallback
- * @param {URLSearchParams} getParams
+ * @callback handlerCallback
+ * @param {URLSearchParams} data
  * @param {http.IncomingMessage} request
- * @throws HttpError
- */
-
-/**
- * @callback postCallback
- * @param {URLSearchParams} postBody
- * @param {http.IncomingMessage} request
+ * @returns {any|Promise}
  * @throws HttpError
  */
 
@@ -68,7 +64,7 @@ class WebServer {
     /**
      * @summary Add a get handler
      * @param {string} url The url to handle
-     * @param {getCallback} handler The handler
+     * @param {handlerCallback} handler The handler
      */
     addGetHandler(url, handler) {
         typeassert.assertStringNotEmpty(url);
@@ -80,7 +76,7 @@ class WebServer {
     /**
      * @summary Add a post handler
      * @param {string} url The url to handle
-     * @param {postCallback} handler The handler
+     * @param {handlerCallback} handler The handler
      */
     addPostHandler(url, handler) {
         typeassert.assertStringNotEmpty(url);
@@ -133,7 +129,7 @@ class WebServer {
         }
 
         /**
-         * @returns {Promise} Post body data in form of URLSearchParams
+         * @returns {Promise} Post body data
          */
         function extractForm() {
             if (request.headers["content-type"] === undefined) {
@@ -146,7 +142,7 @@ class WebServer {
                 return Promise.reject(new HttpError(415, "Unsupported content type"));
             }
             else {
-                return getPostBody().then(body => new URLSearchParams(body));
+                return getPostBody().then((body) => qs.parse(body));
             }
         }
 
@@ -154,13 +150,9 @@ class WebServer {
          * @returns {Promise} Post body data
          */
         function getPostBody() {
-            return new Promise((resolve) => {
-                const bodyChunk = [];
-                request.on("data", (chunk) => {
-                    bodyChunk.push(chunk);
-                }).on("end", () => {
-                    resolve(Buffer.concat(bodyChunk).toString());
-                });
+            return new Promise((resolve, reject) => {
+                request.on("error", (e) => reject(e));
+                request.pipe(concat((str) => resolve(str)));
             });
         }
 
@@ -181,7 +173,7 @@ class WebServer {
                 }
                 else {
                     response.statusCode = 200; // OK
-                    response.setHeader("Content-Type", mimeType.contentType(path.extname(trueFilename)));
+                    response.setHeader("Content-Type", mimeType.contentType(path.extname(trueFilename)) || "text/txt");
                     response.write(data);
                     response.end("\n");
                 }
@@ -201,9 +193,14 @@ class WebServer {
             response.end("\n");
         }
 
+
+
+
         if (request.headers.host === undefined || request.headers.host === null) {
             errorResponse(405);
         }
+
+        request.setEncoding("utf8");
 
         const url = new URL(request.url, `http://${request.headers.host}`);
 
@@ -211,17 +208,19 @@ class WebServer {
             if (thiz.getHandlers.has(url.pathname)) {
                 const handler = thiz.getHandlers.get(url.pathname);
 
-                Promise.resolve().then(() => handler(url.searchParams, request)).then(resp => {
-                    const obj = {status: "OK", response: resp};
-                    jsonResponse(200, obj);
-                }).catch(reason => {
-                    if (!HttpError[Symbol.hasInstance](reason)) {
-                        throw reason;
-                    }
+                Promise.resolve()
+                    .then(() => handler(qs.parse(url.searchParams.toString()), request))
+                    .then(resp => {
+                        const obj = {status: "OK", response: resp};
+                        jsonResponse(200, obj);
+                    }).catch(reason => {
+                        if (!HttpError[Symbol.hasInstance](reason)) {
+                            throw reason;
+                        }
 
-                    const obj = {status: "ERR", code: reason.code, message: reason.message};
-                    jsonResponse(reason.code, obj);
-                });
+                        const obj = {status: "ERR", code: reason.code, message: reason.message};
+                        jsonResponse(reason.code, obj);
+                    });
             }
             else {
                 // Serve file
@@ -233,17 +232,19 @@ class WebServer {
             if (thiz.postHandlers.has(url.pathname)) {
                 const handler = thiz.postHandlers.get(url.pathname);
 
-                extractForm().then(postData => handler(postData, request)).then(resp => {
-                    const obj = {status: "OK", response: resp};
-                    jsonResponse(200, obj);
-                }).catch(reason => {
-                    if (!HttpError[Symbol.hasInstance](reason)) {
-                        throw reason;
-                    }
+                extractForm()
+                    .then(postData => handler(postData, request))
+                    .then(resp => {
+                        const obj = {status: "OK", response: resp};
+                        jsonResponse(200, obj);
+                    }).catch(reason => {
+                        if (!HttpError[Symbol.hasInstance](reason)) {
+                            throw reason;
+                        }
 
-                    const obj = {status: "ERR", code: reason.code, message: reason.message};
-                    jsonResponse(reason.code, obj);
-                });
+                        const obj = {status: "ERR", code: reason.code, message: reason.message};
+                        jsonResponse(reason.code, obj);
+                    });
             }
             else {
                 errorResponse(404);
