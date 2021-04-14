@@ -1,22 +1,26 @@
-#cssTest{
-    color: blue;
+#cssTest {
+  color: blue;
 }
 
-.groupsize{
-    color: black;
-    display: inline-block;
-    vertical-align: top;
-    line-height: 100%;
-    text-align: left;
-    width: 300;
-    font-size: 100%;
+.groupsize {
+  color: black;
+  display: inline-block;
+  vertical-align: top;
+  line-height: 100%;
+  text-align: left;
+  width: 300;
+  font-size: 100%;
 }
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-  }
-th, td {
-    text-align: center;
-    padding: 5px;
-    
-  }
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 5px;
+}
