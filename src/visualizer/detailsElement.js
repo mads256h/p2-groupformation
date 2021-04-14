@@ -161,14 +161,14 @@
      */
     function createStudentElement(student, i) {
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        const details = createDetailsElement(student.name, "Student", 0, "font-size: 150% ;color:" + colorArr[i] + "; background-color:lightgrey");
+        const details = createDetailsElement(student.name, "Student", 0, "color:" + colorArr[i] + ";", "studentClass");
         const criteriaList = document.createElement("ul");
         for (let criterias in student.criteria) {
             if (typeof student.criteria[criterias] === "object"){
                 criteriaList.appendChild(createCriteriaElement(student.criteria[criterias], criterias));
             }
             else {
-                const listItem = createListItem(criterias + ": " + student.criteria[criterias], "CriteriaItem");
+                const listItem = createListItem(criterias + ": " + student.criteria[criterias]);
                 criteriaList.appendChild(listItem);
             }
         }
@@ -190,7 +190,7 @@
                 criteriaList.appendChild(createSubjectElement(criteria[criterias], criterias));
             }
             else {
-                const listItem = createListItem(criterias + ": " + criteria[criterias], "LearningStyleItems");
+                const listItem = createListItem(criterias + ": " + criteria[criterias]);
                 criteriaList.appendChild(listItem);
             }
         }
@@ -225,9 +225,10 @@
      * @param {string} detailsName The name of the details element (only visible in developer tool)
      * @param {boolean} open If the details element shoud be open by default
      * @param {string} summaryStyle The style of the summary innertext (used to color the names of the students)
+     * @param {string} className The classname of the summary element
      * @returns {HTMLElement} return a html details element with a summary element
      */
-    function createDetailsElement(summary, detailsName, open, summaryStyle){
+    function createDetailsElement(summary, detailsName, open, summaryStyle, className){
         const detailsElement = document.createElement("details");
         const summaryElement = document.createElement("summary");
         summaryElement.innerText = summary;
@@ -237,6 +238,9 @@
         else if (summaryStyle !== undefined){
             summaryElement.setAttribute("style", summaryStyle);
         }
+        if (className !== undefined){
+            summaryElement.setAttribute("class", className);
+        }
         detailsElement.appendChild(summaryElement);
         detailsElement.setAttribute("name", detailsName);
         return detailsElement;
@@ -244,14 +248,11 @@
     /**
      * @summary Creates a html listItem
      * @param {string} innerText The innertext of the list item element
-     * @param {string} listItemName The name of the list item element (only visible in developer tool)
      * @returns {HTMLElement} returns a html list item element
      */
-    function createListItem(innerText, listItemName){
+    function createListItem(innerText){
         const listItem = document.createElement("li");
         listItem.innerText = innerText;
-        listItem.setAttribute("name", listItemName);
         return listItem;
     }
 }());
-

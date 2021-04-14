@@ -15,36 +15,48 @@
     const svgHeight = 2 * learningStyles * svgLineSpace; // height of the svg, 4 lines, double linespace between lines, +2 for top&bottom
 
     /**
-     * @summary Creates and appends a div element with and id to the body of the html-doc, and runs and appends the result of createGroupSvg to this div
+     * @summary Creates and appends a div element with the svg of the learningstyles
      * @param {Array} groupArray the group array with students
      * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
     function createGroupSvg(groupArray){
-        const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", svgWidth);
         svg.setAttribute("height", svgHeight);
         svg.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
-        let yValue = svgLineSpace;
         for (let learnStyle = 0; learnStyle < learningStyles; learnStyle++) {
-            // Create the -11 and 11 text
-            svg.appendChild(createText(svgLineSpace * 0.25, yValue + 6, "-11"));
-            svg.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, "11"));
-
-            // Create the horisontal lines
-            svg.appendChild(createLine(svgLineSpace, yValue, svgWidth - svgLineSpace));
-            svg.appendChild(createLine(svgWidth / 2, yValue + 10, svgWidth / 2, yValue - 10, svgLineWidth / 1.5));
-
-            // Create the circles
-            let arrCircleSize = closeby(arrayBySecondIndex(groupArray, learnStyle));
-            for (let student = 0; student < groupArray.length; student++) {
-                // Create & append one circle by the info:
-                svg.appendChild(createCircle(circleXValue(groupArray[student][learnStyle]), yValue, colorArr[student], arrCircleSize[student]));
-                arrCircleSize[groupArray[student][learnStyle]]--;
-            }
-            arrCircleSize.length = 0;
-            yValue += 2 * svgLineSpace;
+            svg = createLearningStyleDimension(groupArray, learnStyle, svg);
         }
+        return svg;
+    }
+
+    /**
+     * @summary Creates and appends a svg learningstyle to the svg element
+     * @param {Array} groupArray the group array with students
+     * @param {number} learnStyle the index of the learningstyle (used for linespaceing)
+     * @param {SVGElement} svg svg element on which we append the svg for a learningstyle
+     * @returns {SVGElement} The svg element we took as parameter, but now with an extra learningstyle
+     */
+    function createLearningStyleDimension(groupArray, learnStyle, svg){
+        let yValue = svgLineSpace + 2 * learnStyle * svgLineSpace;
+        const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
+        // Create the -11 and 11 text
+        svg.appendChild(createText(svgLineSpace * 0.25, yValue + 6, "-11"));
+        svg.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, "11"));
+
+        // Create the horisontal lines
+        svg.appendChild(createLine(svgLineSpace, yValue, svgWidth - svgLineSpace));
+        // Create the little line to indicate the midle of the line
+        svg.appendChild(createLine(svgWidth / 2, yValue + 10, svgWidth / 2, yValue - 10, svgLineWidth / 1.5));
+
+        // Create the circles
+        let arrCircleSize = closeby(arrayBySecondIndex(groupArray, learnStyle));
+        for (let student = 0; student < groupArray.length; student++) {
+            // Create & append one circle by the info:
+            svg.appendChild(createCircle(circleXValue(groupArray[student][learnStyle]), yValue, colorArr[student], arrCircleSize[student]));
+            arrCircleSize[groupArray[student][learnStyle]]--;
+        }
+        arrCircleSize.length = 0;
         return svg;
     }
     // --------------------------------------------------- SVG constructors -----------------------------------
@@ -168,12 +180,7 @@
      */
     function range(a, b){
         const distance = 0.5;
-        if (Math.abs(a - b) <= Math.abs(distance)){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return Math.abs(a - b) <= Math.abs(distance);
     }
 
     /**

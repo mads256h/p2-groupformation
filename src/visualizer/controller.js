@@ -13,27 +13,28 @@
 
     getListOfData().then(responds => {
         console.log(responds);
-        createButtons(responds);
+        document.body.appendChild(createButtons(responds));
     });
 
     /**
      * @summary Creates a button for each file in the data folder
-     * @param {Array} array this is an array with the names of the files in the data folder
+     * @param {string[]} array this is an array with the names of the files in the data folder
+     * @returns {HTMLDivElement} Returns a html div element with the buttons appended.
      */
     function createButtons(array) {
-        for (let i = 0; i < array.length; i++) {
-            if (array[i] !== ".gitkeep"){
-                const buttonElement = document.createElement("BUTTON");
-                buttonElement.innerText = "Filename: " + array[i];
-                buttonElement.addEventListener("click", () => callData(array[i]));
-                document.body.appendChild(buttonElement);
-            }
+        const div = document.createElement("div");
+        for (const file of array.filter((f)=>f !== ".gitkeep")) {
+            const buttonElement = document.createElement("BUTTON");
+            buttonElement.innerText = "Filename: " + file;
+            buttonElement.addEventListener("click", () => callData(file));
+            div.appendChild(buttonElement);
         }
         if (array.length === 1){ // 1 because of the .gitkeep file
             const displayHelp = document.createElement("p");
             displayHelp.innerText = "You do not have any files in your src/visualizer/data folder, insert files with json data in this folder :)";
-            document.body.appendChild(displayHelp);
+            div.appendChild(displayHelp);
         }
+        return div;
     }
 
     /**
