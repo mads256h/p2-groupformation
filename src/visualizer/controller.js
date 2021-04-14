@@ -13,7 +13,7 @@
 
     getListOfData().then(responds => {
         console.log(responds);
-        document.body.appendChild(createButtons(responds));
+        document.body.appendChild(createButtons(responds.filter((f)=>f !== ".gitkeep")));
     });
 
     /**
@@ -23,13 +23,13 @@
      */
     function createButtons(array) {
         const div = document.createElement("div");
-        for (const file of array.filter((f)=>f !== ".gitkeep")) {
+        for (const file of array) {
             const buttonElement = document.createElement("BUTTON");
             buttonElement.innerText = "Filename: " + file;
             buttonElement.addEventListener("click", () => callData(file));
             div.appendChild(buttonElement);
         }
-        if (array.length === 1){ // 1 because of the .gitkeep file
+        if (array.length === 0){ // 1 because of the .gitkeep file
             const displayHelp = document.createElement("p");
             displayHelp.innerText = "You do not have any files in your src/visualizer/data folder, insert files with json data in this folder :)";
             div.appendChild(displayHelp);
