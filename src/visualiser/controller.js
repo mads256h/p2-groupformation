@@ -5,7 +5,7 @@
     } = window.comm;
     const {
         createGroupInfoElement,
-        displayAverage
+        createAverageValueTable
     } = window.detailsElement;
     const {
         createGroupSvg
@@ -50,7 +50,7 @@
             // Tilføj groupDiv til vores master element
             masterDiv.appendChild(groupDiv);
         }
-        masterDiv.prepend(displayAverage());
+        masterDiv.prepend(createAverageValueTable());
     }
 
     /**

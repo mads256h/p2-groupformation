@@ -11,7 +11,6 @@
 
     window.detailsElement = {createGroupInfoElement, createAverageValueTable};
     document.addEventListener("DOMContentLoaded", () => {
-        // createVisualInfo(groupTest, exsampleBad);
     });
 
     /**
