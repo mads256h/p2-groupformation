@@ -75,8 +75,11 @@
         th.innerText = text;
         return th;
     }
-    function createTableTd(value){
+    function createTableTd(value, id){
         const td = document.createElement("td");
+        if (id !== undefined){
+            td.setAttribute("id", id)
+        }
         td.innerText = value;
         return td;
     }
