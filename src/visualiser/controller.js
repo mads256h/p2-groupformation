@@ -86,7 +86,6 @@
         let allGroupsLSarr = [];
         let allGroupsInfo = [];
         for (const group of content) {
-            console.log(group);
             let groupLSarr = [];
             for (const student of group.students) {
                 groupLSarr.push(getStudentLS(student));
