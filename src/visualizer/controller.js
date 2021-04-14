@@ -21,13 +21,20 @@
      * @param {Array} array this is an array with the names of the files in the data folder
      */
     function createButtons(array) {
-        for (let i = 0; i < array.length; i++) {
+        console.log("No info");
+        let i = 0;
+        for (i = 0; i < array.length; i++) {
             if (array[i] !== ".gitkeep"){
                 const buttonElement = document.createElement("BUTTON");
                 buttonElement.innerText = "Filename: " + array[i];
                 buttonElement.addEventListener("click", () => callData(array[i]));
                 document.body.appendChild(buttonElement);
             }
+        }
+        if (i === 1){ // 1 because of the .gitkeep file
+            const displayHelp = document.createElement("p");
+            displayHelp.innerText = "You do not have any files in your src/visualizer/data folder, insert files with json data in this folder :)";
+            document.body.appendChild(displayHelp);
         }
     }
 
