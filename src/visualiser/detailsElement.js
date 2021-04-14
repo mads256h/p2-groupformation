@@ -9,7 +9,7 @@
         arrayBySecondIndex
     } = window.svg;
 
-    window.detailsElement = {createGroupInfoElement};
+    window.detailsElement = {createGroupInfoElement, displayAverage};
     document.addEventListener("DOMContentLoaded", () => {
         // createVisualInfo(groupTest, exsampleBad);
     });
@@ -25,14 +25,12 @@
         masterDivElement.className = "groupsize";
         let superSum = [0, 0, 0];
         const table = document.createElement("table");
-        // start
-        const tableHeader = createTableHeader();
+        const tableHeader = createTableHeader("Name");
         table.appendChild(tableHeader);
         const learningStyleNames = [];
         for (const LS in group.students[0].criteria.learningStyles) {
             learningStyleNames.push(LS);
         }
-        console.log(learningStyleNames);
         for (let i = 0; i < array[0].length; i++) {
             let lSarray = [];
             lSarray = arrayBySecondIndex(array, i);
@@ -50,11 +48,10 @@
         }
         const tr = document.createElement("tr");
         tr.appendChild(createTableTd("Sum:"));
-        tr.appendChild(createTableTd(superSum[0]));
-        tr.appendChild(createTableTd(superSum[1]));
-        tr.appendChild(createTableTd(superSum[2].toFixed(2)));
+        tr.appendChild(createTableTd(superSum[0], "MaxMin"));
+        tr.appendChild(createTableTd(superSum[1], "Sum"));
+        tr.appendChild(createTableTd(superSum[2].toFixed(2), "LinearDistribution"));
         table.appendChild(tr);
-        // Rest
         masterDivElement.appendChild(table);
         const displayGroupSize = document.createElement("span");
         displayGroupSize.innerText = "Group-size: " + group.students.length;
@@ -62,23 +59,72 @@
         masterDivElement.appendChild(createGroupElement(group));
         return masterDivElement;
     }
-    function createTableHeader(){
+    /**
+     * @summary Creates a html table with the average values of all the groups
+     * @returns {HTMLElement} returns a html table element with info about all the groups
+     */
+    function displayAverage(){
+        const table = document.createElement("table");
+        table.appendChild(createTableHeader("Gennemsnit"));
         const tr = document.createElement("tr");
-        tr.appendChild(createTableTh("Name"));
-        tr.appendChild(createTableTh("MaxMin"));
-        tr.appendChild(createTableTh("Sum"));
-        tr.appendChild(createTableTh("LinearDistribution"));
+        tr.appendChild(createTableTd("Værdier:"));
+        tr.appendChild(createTableTd(sumByTableCellClassName("MaxMin")));
+        tr.appendChild(createTableTd(sumByTableCellClassName("Sum")));
+        tr.appendChild(createTableTd(sumByTableCellClassName("LinearDistribution")));
+        table.appendChild(tr);
+        return table;
+    }
+    /**
+     * @summary Creates the html code for the information in the groups
+     * @param {string} className The classname of the cells from which to take the average
+     * @returns {number} returns the average value of the innertext of the cells with the classname
+     */
+    function sumByTableCellClassName(className){
+        const cells = document.querySelectorAll("." + className);
+        let sum = 0;
+        let groupcounter = 0;
+        for (const cell of cells) {
+            sum += parseInt(cell.innerText);
+            groupcounter++;
+        }
+        return (sum / groupcounter).toFixed(2);
+    }
+    /**
+     * @summary Creates the html table header, only the first parameter is used in calls
+     * @param {string} h1 The innertext of the first header cell
+     * @param {string} h2 The innertext of the second header cell
+     * @param {string} h3 The innertext of the third header cell
+     * @param {string} h4 The innertext of the fourth header cell
+     * @returns {HTMLTableRowElement} return a html row element with the table header
+     */
+    function createTableHeader(h1, h2 = "MaxMin", h3 = "Sum", h4 = "LinearDistribution"){
+        const tr = document.createElement("tr");
+        tr.appendChild(createTableTh(h1));
+        tr.appendChild(createTableTh(h2));
+        tr.appendChild(createTableTh(h3));
+        tr.appendChild(createTableTh(h4));
         return tr;
     }
+    /**
+     * @summary Creates a html table headercell element
+     * @param {string} text the name of the headercell
+     * @returns {HTMLTableHeaderCellElement} returns a html table header cell element
+     */
     function createTableTh(text){
         const th = document.createElement("th");
         th.innerText = text;
         return th;
     }
-    function createTableTd(value, id){
+    /**
+     * @summary Makes a table cell
+     * @param {string} value The innertext of the cell
+     * @param {string} className The name of the class to be assigned to the cell
+     * @returns {HTMLTableCellElement} returns a html table cell
+     */
+    function createTableTd(value, className){
         const td = document.createElement("td");
-        if (id !== undefined){
-            td.setAttribute("id", id);
+        if (className !== undefined){
+            td.setAttribute("class", className);
         }
         td.innerText = value;
         return td;

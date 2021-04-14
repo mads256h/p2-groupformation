@@ -4,7 +4,8 @@
         getData
     } = window.comm;
     const {
-        createGroupInfoElement
+        createGroupInfoElement,
+        displayAverage
     } = window.detailsElement;
     const {
         createGroupSvg
@@ -42,7 +43,6 @@
         for (let i = 0; i < allGroupLSArr.length; i++) {
             const groupDiv = document.createElement("div");
             groupDiv.setAttribute("id", "DIV" + i);
-
             // Lav de elementer der skal appendes til groupdiv
             groupDiv.appendChild(createGroupSvg(allGroupLSArr[i]));
             groupDiv.appendChild(createGroupInfoElement(allGroupsInfoArr[i], allGroupLSArr[i]));
@@ -51,6 +51,7 @@
             // Tilføj groupDiv til vores master element
             masterDiv.appendChild(groupDiv);
         }
+        masterDiv.prepend(displayAverage());
     }
 
     /**

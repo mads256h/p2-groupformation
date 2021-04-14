@@ -7,7 +7,7 @@
     function distanceBetweenExtremes(array) {
         const min = Math.min(...array);
         const max = Math.max(...array);
-        return max - min;
+        return 22 - (max - min);
     }
 
     /**
