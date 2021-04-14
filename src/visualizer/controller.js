@@ -13,7 +13,15 @@
 
     getListOfData().then(responds => {
         console.log(responds);
-        document.body.appendChild(createButtons(responds.filter((f)=>f !== ".gitkeep")));
+        const filtered = responds.filter((f)=>f !== ".gitkeep");
+        if (filtered.length === 0){
+            const displayHelp = document.createElement("p");
+            displayHelp.innerText = "You do not have any files in your src/visualizer/data folder, insert files with json data in this folder :)";
+            document.body.appendChild(displayHelp);
+        }
+        else {
+            document.body.appendChild(createButtons(filtered));
+        }
     });
 
     /**
@@ -28,11 +36,6 @@
             buttonElement.innerText = "Filename: " + file;
             buttonElement.addEventListener("click", () => callData(file));
             div.appendChild(buttonElement);
-        }
-        if (array.length === 0){ // 1 because of the .gitkeep file
-            const displayHelp = document.createElement("p");
-            displayHelp.innerText = "You do not have any files in your src/visualizer/data folder, insert files with json data in this folder :)";
-            div.appendChild(displayHelp);
         }
         return div;
     }
