@@ -51,7 +51,7 @@ class WebServer {
             getHandlers: new Map(),
             postHandlers: new Map(),
             indexFile: indexFile
-        }
+        };
 
         Object.freeze(this.requestListenerData);
 
@@ -91,8 +91,8 @@ class WebServer {
      */
     run() {
         return new Promise((resolve, reject) => {
-            this.server.on("error", (e) => {reject(e)});
-            this.server.on("listening", () => {resolve()});
+            this.server.on("error", (e) => reject(e));
+            this.server.on("listening", () => resolve());
             this.server.listen(this.port, this.hostname);
         });
     }
