@@ -22,9 +22,11 @@
     function createGroupInfoElement(group, array) {
         const masterDivElement = document.createElement("div");
         masterDivElement.className = "groupsize";
-        let sumArray = [0, 0, 0];
+        let maxMinSum = 0;
+        let sumSum = 0;
+        let linearDistributionSum = 0;
         const table = document.createElement("table");
-        const tableHeader = createTableHeader("Name");
+        const tableHeader = createTableHeader("Name", "MaxMin", "Sum", "LinearDistribution");
         table.appendChild(tableHeader);
         const learningStyleNames = [];
         for (const LS in group.students[0].criteria.learningStyles) {
@@ -41,15 +43,15 @@
             tr.appendChild(createTableTd(distribution(lSarray).toFixed(2).toString()));
             table.appendChild(tr);
 
-            sumArray[0] += Number(Math.abs(distanceBetweenExtremes(lSarray)));
-            sumArray[1] += Number(Math.abs(sumOfArray(lSarray)));
-            sumArray[2] += Number(Math.abs(distribution(lSarray)));
+            maxMinSum += Number(Math.abs(distanceBetweenExtremes(lSarray)));
+            sumSum += Number(Math.abs(sumOfArray(lSarray)));
+            linearDistributionSum += Number(Math.abs(distribution(lSarray)));
         }
         const tr = document.createElement("tr");
         tr.appendChild(createTableTd("Sum:"));
-        tr.appendChild(createTableTd(sumArray[0], "MaxMin"));
-        tr.appendChild(createTableTd(sumArray[1], "Sum"));
-        tr.appendChild(createTableTd(sumArray[2].toFixed(2), "LinearDistribution"));
+        tr.appendChild(createTableTd(maxMinSum, "MaxMin"));
+        tr.appendChild(createTableTd(sumSum, "Sum"));
+        tr.appendChild(createTableTd(linearDistributionSum.toFixed(2), "LinearDistribution"));
         table.appendChild(tr);
         masterDivElement.appendChild(table);
         const displayGroupSize = document.createElement("span");
@@ -65,9 +67,7 @@
      */
     function createAverageValueTable(){
         const table = document.createElement("table");
-        const th = createTableHeader("Gennemsnit");
-        th.appendChild(createTableTh("GroupSize"));
-        // table.appendChild(createTableHeader("Gennemsnit"));
+        const th = createTableHeader("Gennemsnit", "MaxMin", "Sum", "LinearDistribution", "GroupSize");
         table.appendChild(th);
         const tr = document.createElement("tr");
         tr.appendChild(createTableTd("Værdier:"));
@@ -100,18 +100,14 @@
     }
     /**
      * @summary Creates the html table header, only the first parameter is used in calls
-     * @param {string} h1 The innertext of the first header cell
-     * @param {string} h2 The innertext of the second header cell
-     * @param {string} h3 The innertext of the third header cell
-     * @param {string} h4 The innertext of the fourth header cell
+     * @param {string[]} header The innertext of the headers
      * @returns {HTMLTableRowElement} return a html row element with the table header
      */
-    function createTableHeader(h1, h2 = "MaxMin", h3 = "Sum", h4 = "LinearDistribution"){
+    function createTableHeader(...header){
         const tr = document.createElement("tr");
-        tr.appendChild(createTableTh(h1));
-        tr.appendChild(createTableTh(h2));
-        tr.appendChild(createTableTh(h3));
-        tr.appendChild(createTableTh(h4));
+        for (const headCell of header) {
+            tr.appendChild(createTableTh(headCell));
+        }
         return tr;
     }
     /**
@@ -145,10 +141,11 @@
      * @returns {HTMLElement} Returns a list as a html element
      */
     function createGroupElement(group) {
+        const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
         const details = createDetailsElement("Groupname: " + group.name, "Group");
         const studentList = document.createElement("ul");
         for (let i = 0; i < group.students.length; i++) {
-            studentList.appendChild(createStudentElement(group.students[i], i));
+            studentList.appendChild(createStudentElement(group.students[i], colorArr[i]));
         }
         details.appendChild(studentList);
         return details;
@@ -156,12 +153,11 @@
     /**
      * @summary Creates the html details element with a list element
      * @param {object} student The student from the group
-     * @param {number} i The position of the student in the group array (used to chose the color)
+     * @param {string} color The color of the student in the svg
      * @returns {HTMLElement} return a html element with info about the student
      */
-    function createStudentElement(student, i) {
-        const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        const details = createDetailsElement(student.name, "Student", 0, "color:" + colorArr[i] + ";", "studentClass");
+    function createStudentElement(student, color) {
+        const details = createDetailsElement(student.name, "Student", 0, "color:" + color + ";", "studentClass");
         const criteriaList = document.createElement("ul");
         for (let criterias in student.criteria) {
             if (typeof student.criteria[criterias] === "object"){

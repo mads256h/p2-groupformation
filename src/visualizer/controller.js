@@ -34,7 +34,7 @@
         for (const file of array) {
             const buttonElement = document.createElement("BUTTON");
             buttonElement.innerText = "Filename: " + file;
-            buttonElement.addEventListener("click", () => callData(file));
+            buttonElement.addEventListener("click", () => showData(file));
             div.appendChild(buttonElement);
         }
         return div;
@@ -64,7 +64,7 @@
 
     /**
      * @summary Creates/overwrites the master div element
-     * @returns {HTMLElement} an empty html master div element
+     * @returns {HTMLDivElement} an empty html master div element
      */
     function makeMasterDiv(){
         const element = document.getElementById("MasterDiv");
@@ -80,7 +80,7 @@
      * @summary Changes the header and calls the getData promise
      * @param {string} filename the name of the file from which to get the data
      */
-    function callData(filename){
+    function showData(filename){
         const header = document.querySelector("h1");
         header.innerText = "Now showing the content of: " + filename;
         getData(filename).then(content=>useData(content));
