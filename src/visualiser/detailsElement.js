@@ -78,7 +78,7 @@
     function createTableTd(value, id){
         const td = document.createElement("td");
         if (id !== undefined){
-            td.setAttribute("id", id)
+            td.setAttribute("id", id);
         }
         td.innerText = value;
         return td;
