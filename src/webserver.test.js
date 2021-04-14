@@ -135,8 +135,8 @@ function getHandlerErr() {
     throw new HttpError(403, "Access forbidden");
 }
 
-function getHandlerEcho(getParams) {
-    return paramsToObject(getParams);
+function getHandlerEcho(data) {
+    return data;
 }
 
 
@@ -148,8 +148,8 @@ function postHandlerErr() {
     throw new HttpError(403, "Access forbidden");
 }
 
-function postHandlerEcho(postBody) {
-    return paramsToObject(postBody);
+function postHandlerEcho(data) {
+    return data;
 }
 
 function get(url) {
@@ -163,12 +163,4 @@ function post(url, data = {}) {
             body: new URLSearchParams(data).toString(),
             headers: {"Content-Type": "application/x-www-form-urlencoded"}
         });
-}
-
-function paramsToObject(entries) {
-    const result = {};
-    for (const [key, value] of entries) {
-        result[key] = value;
-    }
-    return result;
 }
