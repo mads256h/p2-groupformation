@@ -54,6 +54,7 @@
         table.appendChild(tr);
         masterDivElement.appendChild(table);
         const displayGroupSize = document.createElement("span");
+        displayGroupSize.setAttribute("class", "GroupSizeSpan");
         displayGroupSize.innerText = "Group-size: " + group.students.length;
         masterDivElement.appendChild(displayGroupSize);
         masterDivElement.appendChild(createGroupElement(group));
@@ -65,12 +66,16 @@
      */
     function displayAverage(){
         const table = document.createElement("table");
-        table.appendChild(createTableHeader("Gennemsnit"));
+        const th = createTableHeader("Gennemsnit");
+        th.appendChild(createTableTh("GroupSize"));
+        // table.appendChild(createTableHeader("Gennemsnit"));
+        table.appendChild(th);
         const tr = document.createElement("tr");
         tr.appendChild(createTableTd("Værdier:"));
         tr.appendChild(createTableTd(sumByTableCellClassName("MaxMin")));
         tr.appendChild(createTableTd(sumByTableCellClassName("Sum")));
         tr.appendChild(createTableTd(sumByTableCellClassName("LinearDistribution")));
+        tr.appendChild(createTableTd(sumByTableCellClassName("GroupSizeSpan")));
         table.appendChild(tr);
         return table;
     }
@@ -84,7 +89,12 @@
         let sum = 0;
         let groupcounter = 0;
         for (const cell of cells) {
-            sum += parseInt(cell.innerText);
+            if (cell.innerText.toString().includes("Group-size")){
+                sum += parseInt(cell.innerText.replace("Group-size: ", ""));
+            }
+            else {
+                sum += parseInt(cell.innerText);
+            }
             groupcounter++;
         }
         return (sum / groupcounter).toFixed(2);
