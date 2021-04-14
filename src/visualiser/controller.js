@@ -42,7 +42,6 @@
         document.body.appendChild(masterDiv);
         for (let i = 0; i < allGroupLSArr.length; i++) {
             const groupDiv = document.createElement("div");
-            groupDiv.setAttribute("id", "DIV" + i);
             // Lav de elementer der skal appendes til groupdiv
             groupDiv.appendChild(createGroupSvg(allGroupLSArr[i]));
             groupDiv.appendChild(createGroupInfoElement(allGroupsInfoArr[i], allGroupLSArr[i]));

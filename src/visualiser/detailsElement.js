@@ -9,7 +9,7 @@
         arrayBySecondIndex
     } = window.svg;
 
-    window.detailsElement = {createGroupInfoElement, displayAverage};
+    window.detailsElement = {createGroupInfoElement, createAverageValueTable};
     document.addEventListener("DOMContentLoaded", () => {
         // createVisualInfo(groupTest, exsampleBad);
     });
@@ -23,7 +23,7 @@
     function createGroupInfoElement(group, array) {
         const masterDivElement = document.createElement("div");
         masterDivElement.className = "groupsize";
-        let superSum = [0, 0, 0];
+        let sumArray = [0, 0, 0];
         const table = document.createElement("table");
         const tableHeader = createTableHeader("Name");
         table.appendChild(tableHeader);
@@ -42,15 +42,15 @@
             tr.appendChild(createTableTd(distribution(lSarray).toFixed(2).toString()));
             table.appendChild(tr);
 
-            superSum[0] += Number(Math.abs(distanceBetweenExtremes(lSarray)));
-            superSum[1] += Number(Math.abs(sumOfArray(lSarray)));
-            superSum[2] += Number(Math.abs(distribution(lSarray)));
+            sumArray[0] += Number(Math.abs(distanceBetweenExtremes(lSarray)));
+            sumArray[1] += Number(Math.abs(sumOfArray(lSarray)));
+            sumArray[2] += Number(Math.abs(distribution(lSarray)));
         }
         const tr = document.createElement("tr");
         tr.appendChild(createTableTd("Sum:"));
-        tr.appendChild(createTableTd(superSum[0], "MaxMin"));
-        tr.appendChild(createTableTd(superSum[1], "Sum"));
-        tr.appendChild(createTableTd(superSum[2].toFixed(2), "LinearDistribution"));
+        tr.appendChild(createTableTd(sumArray[0], "MaxMin"));
+        tr.appendChild(createTableTd(sumArray[1], "Sum"));
+        tr.appendChild(createTableTd(sumArray[2].toFixed(2), "LinearDistribution"));
         table.appendChild(tr);
         masterDivElement.appendChild(table);
         const displayGroupSize = document.createElement("span");
@@ -64,7 +64,7 @@
      * @summary Creates a html table with the average values of all the groups
      * @returns {HTMLElement} returns a html table element with info about all the groups
      */
-    function displayAverage(){
+    function createAverageValueTable(){
         const table = document.createElement("table");
         const th = createTableHeader("Gennemsnit");
         th.appendChild(createTableTh("GroupSize"));
@@ -161,6 +161,7 @@
      * @returns {HTMLElement} return a html element with info about the student
      */
     function createStudentElement(student, i) {
+        const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
         const details = createDetailsElement(student.name, "Student", 0, "font-size: 150% ;color:" + colorArr[i] + "; background-color:lightgrey");
         const criteriaList = document.createElement("ul");
         for (let criterias in student.criteria) {
@@ -253,7 +254,5 @@
         listItem.setAttribute("name", listItemName);
         return listItem;
     }
-
-    const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
 }());
 

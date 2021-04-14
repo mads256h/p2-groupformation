@@ -7,15 +7,12 @@
 (function(){
     window.svg = {createGroupSvg, arrayBySecondIndex};
     // Declaration of global consts, which are layout settings of the svg
-    const RANGEWIDTH = 22;
     const svgWidth = window.innerWidth / 2; // width of the svg is half the browser size
     const svgLineSpace = svgWidth * 0.04; // the amount of space between each line, by the width of the svg
     const svgLineWidth = svgWidth * 0.01;
     const svgTextSize = svgLineSpace * 0.5;
     const learningStyles = 4; // antal læringsstile
     const svgHeight = 2 * learningStyles * svgLineSpace; // height of the svg, 4 lines, double linespace between lines, +2 for top&bottom
-    const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-
 
     /**
      * @summary Creates and appends a div element with and id to the body of the html-doc, and runs and appends the result of createGroupSvg to this div
@@ -23,6 +20,7 @@
      * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
     function createGroupSvg(groupArray){
+        const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", svgWidth);
         svg.setAttribute("height", svgHeight);
@@ -35,6 +33,7 @@
 
             // Create the horisontal lines
             svg.appendChild(createLine(svgLineSpace, yValue, svgWidth - svgLineSpace));
+            svg.appendChild(createLine(svgWidth / 2, yValue + 10, svgWidth / 2, yValue - 10, svgLineWidth / 1.5));
 
             // Create the circles
             let arrCircleSize = closeby(arrayBySecondIndex(groupArray, learnStyle));
@@ -128,6 +127,7 @@
      * @returns {number} Returns the x coordinate of the circle
      */
     function circleXValue(learnStyleValue){
+        const RANGEWIDTH = 22;
         let xPos = svgLineSpace; // add the ofset from the left of the svg (the lines start some length inside the grey) this is equal to the -11 position
         let percent = (learnStyleValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
         let lineLength = svgWidth - (2 * svgLineSpace); // the length of the line
