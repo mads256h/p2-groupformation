@@ -10,7 +10,9 @@
     "css-lint": "stylelint --aei src/{www/**,visualizer}/*.css",
     "test": "jest",
     "doc": "jsdoc -r src/",
-    "vis": "node src/visualizer/server.js"
+    "vis": "node src/visualizer/server.js",
+    "student-gen": "node src/gen/studentgenerator.js",
+    "group-gen": "node src/gen/groupgenerator.js"
   },
   "repository": {
     "type": "git",
