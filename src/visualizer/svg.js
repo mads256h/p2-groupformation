@@ -19,13 +19,17 @@
      * @param {Array} groupArray the group array with students
      * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
-    function createGroupSvg(groupArray){
+    function createGroupSvg(groupArray, group){
+        // console.log("Gr: " + group);
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", svgWidth);
         svg.setAttribute("height", svgHeight);
         svg.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
+        /* for (let criterias in group.students.criteria) {
+            console.log(criterias);
+        } */
         for (let learnStyle = 0; learnStyle < learningStyles; learnStyle++) {
-            svg = createLearningStyleDimension(groupArray, learnStyle, svg);
+            createLearningStyleDimension(groupArray, learnStyle, svg, group);
         }
         return svg;
     }
@@ -37,7 +41,7 @@
      * @param {SVGElement} svg svg element on which we append the svg for a learningstyle
      * @returns {SVGElement} The svg element we took as parameter, but now with an extra learningstyle
      */
-    function createLearningStyleDimension(groupArray, learnStyle, svg){
+    function createLearningStyleDimension(groupArray, learnStyle, svg, group){
         let yValue = svgLineSpace + 2 * learnStyle * svgLineSpace;
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
         // Create the -11 and 11 text

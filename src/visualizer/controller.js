@@ -45,14 +45,14 @@
      * @param {Array} allGroupLSArr The array with the learningstyles from all the groups
      * @param {Array} allGroupsInfoArr The array with the info from all the groups
      */
-    function displayGroups(allGroupLSArr, allGroupsInfoArr) {
+    function displayGroups(allGroupLSArr, allGroupsInfoArr, content) {
         // Creates a master div element, under which alle the info will be displayed, this is overwritten by each buttonpress
         const masterDiv = makeMasterDiv();
         document.body.appendChild(masterDiv);
         for (let i = 0; i < allGroupLSArr.length; i++) {
             const groupDiv = document.createElement("div");
             // Lav de elementer der skal appendes til groupdiv
-            groupDiv.appendChild(createGroupSvg(allGroupLSArr[i]));
+            groupDiv.appendChild(createGroupSvg(allGroupLSArr[i], content));
             groupDiv.appendChild(createGroupInfoElement(allGroupsInfoArr[i], allGroupLSArr[i]));
             const line = document.createElement("hr");
             groupDiv.appendChild(line);
@@ -101,7 +101,7 @@
             allGroupsInfo.push(group);
             allGroupsLSarr.push(groupLSarr);
         }
-        displayGroups(allGroupsLSarr, allGroupsInfo);
+        displayGroups(allGroupsLSarr, allGroupsInfo, content);
     }
     /**
      * @summary Uses the content of the file and picks out the info needed and iserts it into arrays, which is used in the displayGroups function
