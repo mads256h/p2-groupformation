@@ -5,10 +5,6 @@
         distanceBetweenExtremes
     } = window.visualjs;
 
-    const {
-        arrayBySecondIndex
-    } = window.svg;
-
     window.detailsElement = {createGroupInfoElement, createAverageValueTable};
     document.addEventListener("DOMContentLoaded", () => {
     });
@@ -16,12 +12,11 @@
     /**
      * @summary Creates the html code for the information in the groups
      * @param {object} group The class with all the groups
-     * @param {number[]} array Array of the students learningstyles
      * @returns {HTMLElement} return a html element with info about the groups
      */
-    function createGroupInfoElement(group, array) {
-        console.log(group);
-        /* const masterDivElement = document.createElement("div");
+    function createGroupInfoElement(group) {
+        // console.log(group);
+        const masterDivElement = document.createElement("div");
         masterDivElement.className = "groupsize";
         let maxMinSum = 0;
         let sumSum = 0;
@@ -29,16 +24,12 @@
         const table = document.createElement("table");
         const tableHeader = createTableHeader("Name", "MaxMin", "Sum", "LinearDistribution");
         table.appendChild(tableHeader);
-        const learningStyleNames = [];
-        for (const LS in group.students[0].criteria.learningStyles) {
-            learningStyleNames.push(LS);
-        }
-        for (let i = 0; i < array[0].length; i++) {
+        for (const lSName in group.students[0].criteria.learningStyles) {
             let lSarray = [];
-            lSarray = arrayBySecondIndex(array, i);
-
+            lSarray = getLSValuesOfGroup(group, lSName);
+            // console.log(lSarray);
             const tr = document.createElement("tr");
-            tr.appendChild(createTableTd(learningStyleNames[i]));
+            tr.appendChild(createTableTd(lSName));
             tr.appendChild(createTableTd(distanceBetweenExtremes(lSarray).toString()));
             tr.appendChild(createTableTd(sumOfArray(lSarray).toString()));
             tr.appendChild(createTableTd(distribution(lSarray).toFixed(2).toString()));
@@ -60,7 +51,7 @@
         displayGroupSize.innerText = "Group-size: " + group.students.length;
         masterDivElement.appendChild(displayGroupSize);
         masterDivElement.appendChild(createGroupElement(group));
-        return masterDivElement; */
+        return masterDivElement;
     }
     /**
      * @summary Creates a html table with the average values of all the groups
@@ -251,5 +242,19 @@
         const listItem = document.createElement("li");
         listItem.innerText = innerText;
         return listItem;
+    }
+    /**
+     * @summary Creates and returns a new array with the learningstyle values(-11 to 11)
+     * of the learningstyle with the learningstyle(e.g. active, visual, sensing..) name provided in the learnStyleName argument
+     * @param {object} group the group from which to get the data
+     * @param {string} learnStyleName the name of the learningstyle e.g. "activeReflective"
+     * @returns {Array} returns an array with the students of the groups values in the given learningstyle
+     */
+    function getLSValuesOfGroup(group, learnStyleName){
+        const resArray = new Array();
+        for (const student of group.students) {
+            resArray.push(student.criteria.learningStyles[learnStyleName]);
+        }
+        return resArray;
     }
 }());

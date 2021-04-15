@@ -41,11 +41,10 @@
     }
 
     /**
-     * @summary Displays the info of the allGroupLSarr and allGroupsInfo arrays
-     * @param {Array} allGroupLSArr The array with the learningstyles from all the groups
-     * @param {Array} allGroupsInfoArr The array with the info from all the groups
+     * @summary displays the groups and their info
+     * @param {object} content this is the content of the data in the file
      */
-    function displayGroups(allGroupLSArr, allGroupsInfoArr, content) {
+    function displayGroups(content) {
         // Creates a master div element, under which alle the info will be displayed, this is overwritten by each buttonpress
         const masterDiv = makeMasterDiv();
         document.body.appendChild(masterDiv);
@@ -53,23 +52,13 @@
             // console.log(group);
             const groupDiv = document.createElement("div");
             // Lav de elementer der skal appendes til groupdiv
+            console.log(group);
             groupDiv.appendChild(createGroupSvg(group));
-            createGroupInfoElement(group)
-            // groupDiv.appendChild(createGroupInfoElement(group));
+            groupDiv.appendChild(createGroupInfoElement(group));
             const line = document.createElement("hr");
             groupDiv.appendChild(line);
             // Tilføj groupDiv til vores master element
             masterDiv.appendChild(groupDiv);
-        }
-        for (let i = 0; i < allGroupLSArr.length; i++) {
-/*             const groupDiv = document.createElement("div");
-            // Lav de elementer der skal appendes til groupdiv
-            groupDiv.appendChild(createGroupSvg(allGroupLSArr[i], content));
-            groupDiv.appendChild(createGroupInfoElement(allGroupsInfoArr[i], allGroupLSArr[i]));
-            const line = document.createElement("hr");
-            groupDiv.appendChild(line);
-            // Tilføj groupDiv til vores master element
-            masterDiv.appendChild(groupDiv); */
         }
         masterDiv.prepend(createAverageValueTable());
     }
@@ -95,38 +84,7 @@
     function showData(filename){
         const header = document.querySelector("h1");
         header.innerText = "Now showing the content of: " + filename;
-        getData(filename).then(content=>useData(content));
-    }
-
-    /**
-     * @summary Uses the content of the file and picks out the info needed and iserts it into arrays, which is used in the displayGroups function
-     * @param {object} content The content of the file, all stored into an object
-     */
-    function useData(content){
-        let allGroupsLSarr = [];
-        let allGroupsInfo = [];
-        for (const group of content) {
-            let groupLSarr = [];
-            for (const student of group.students) {
-                groupLSarr.push(getStudentLS(student));
-            }
-            allGroupsInfo.push(group);
-            allGroupsLSarr.push(groupLSarr);
-        }
-        displayGroups(allGroupsLSarr, allGroupsInfo, content);
-    }
-    /**
-     * @summary Uses the content of the file and picks out the info needed and iserts it into arrays, which is used in the displayGroups function
-     * @param {object} student The student from which to get the learningstyles from
-     * @returns {Array} an array with the learningstyles of the student
-     */
-    function getStudentLS(student){
-        const studentLS = student.criteria.learningStyles;
-        let arr = [];
-        for (const learningStyle in studentLS) {
-            arr.push(parseInt(studentLS[learningStyle]));
-        }
-        return arr;
+        getData(filename).then(content=>displayGroups(content));
     }
 }());
 

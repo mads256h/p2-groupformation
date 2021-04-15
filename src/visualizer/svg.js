@@ -5,7 +5,7 @@
 // Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
 
 (function(){
-    window.svg = {createGroupSvg, getLearnStyleValueOfGroup};
+    window.svg = {createGroupSvg, getstudentByStudentName, getStudentIdxInGroupByStudentName};
     // Declaration of global consts, which are layout settings of the svg
     const svgWidth = window.innerWidth / 2; // width of the svg is half the browser size
     const svgLineSpace = svgWidth * 0.04; // the amount of space between each line, by the width of the svg
@@ -20,11 +20,11 @@
      * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
     function createGroupSvg(group){
-        // console.log(group);
+        console.log(group);
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         const learningStyles = [];
-        for (let criterias in group.students[0].criteria.learningStyles) {
-            learningStyles.push(criterias);
+        for (let learningStyle in group.students[0].criteria.learningStyles) {
+            learningStyles.push(learningStyle);
         }
         const svgHeight = 2  * svgLineSpace * learningStyles.length;
         svg.setAttribute("width", svgWidth);
@@ -32,7 +32,6 @@
         svg.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
         let yValue = svgLineSpace;
         for (const learningStyle of learningStyles) {
-            // console.log(learningStyle);
             createLearningStyleDimension(group, learningStyle, svg, yValue);
             yValue += 2 * svgLineSpace;
         }
@@ -51,7 +50,7 @@
         createBar(yValue, -11, RANGEWIDTH, svg);
 
         // Create the circles
-        let arrCircleSize = closeby(getLearnStyleValueOfGroup(group, learnStyleName));
+        let arrCircleSize = closeby(getLSValuesOfGroupNameAsKey(group, learnStyleName));
         for (const [studentName, circleRadius] of Object.entries(arrCircleSize)) {
             const student = getstudentByStudentName(group, studentName);
             const xValue = circleXValue(student.criteria.learningStyles[learnStyleName]);
@@ -203,7 +202,7 @@
      * @param {string} learnStyleName the name of the learningstyle e.g. "activeReflective"
      * @returns {object} returns an object with the students of the groups values in the given learningstyle, in the format {studentname: learningstylevalue} e.g. {jens: -3}
      */
-    function getLearnStyleValueOfGroup(group, learnStyleName){
+    function getLSValuesOfGroupNameAsKey(group, learnStyleName){
         const resArray = new Array();
         for (const student of group.students) {
             resArray[student.name] = student.criteria.learningStyles[learnStyleName];

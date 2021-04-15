@@ -5,6 +5,7 @@
      * @returns {number} Distance between the max and min value in the array
      */
     function distanceBetweenExtremes(array) {
+        console.log(array);
         const min = Math.min(...array);
         const max = Math.max(...array);
         return 22 - (max - min);
