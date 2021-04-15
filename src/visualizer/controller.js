@@ -49,15 +49,27 @@
         // Creates a master div element, under which alle the info will be displayed, this is overwritten by each buttonpress
         const masterDiv = makeMasterDiv();
         document.body.appendChild(masterDiv);
-        for (let i = 0; i < allGroupLSArr.length; i++) {
+        for (const group of content) {
+            // console.log(group);
             const groupDiv = document.createElement("div");
+            // Lav de elementer der skal appendes til groupdiv
+            groupDiv.appendChild(createGroupSvg(group));
+            createGroupInfoElement(group)
+            // groupDiv.appendChild(createGroupInfoElement(group));
+            const line = document.createElement("hr");
+            groupDiv.appendChild(line);
+            // Tilføj groupDiv til vores master element
+            masterDiv.appendChild(groupDiv);
+        }
+        for (let i = 0; i < allGroupLSArr.length; i++) {
+/*             const groupDiv = document.createElement("div");
             // Lav de elementer der skal appendes til groupdiv
             groupDiv.appendChild(createGroupSvg(allGroupLSArr[i], content));
             groupDiv.appendChild(createGroupInfoElement(allGroupsInfoArr[i], allGroupLSArr[i]));
             const line = document.createElement("hr");
             groupDiv.appendChild(line);
             // Tilføj groupDiv til vores master element
-            masterDiv.appendChild(groupDiv);
+            masterDiv.appendChild(groupDiv); */
         }
         masterDiv.prepend(createAverageValueTable());
     }

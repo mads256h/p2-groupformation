@@ -20,7 +20,8 @@
      * @returns {HTMLElement} return a html element with info about the groups
      */
     function createGroupInfoElement(group, array) {
-        const masterDivElement = document.createElement("div");
+        console.log(group);
+        /* const masterDivElement = document.createElement("div");
         masterDivElement.className = "groupsize";
         let maxMinSum = 0;
         let sumSum = 0;
@@ -59,7 +60,7 @@
         displayGroupSize.innerText = "Group-size: " + group.students.length;
         masterDivElement.appendChild(displayGroupSize);
         masterDivElement.appendChild(createGroupElement(group));
-        return masterDivElement;
+        return masterDivElement; */
     }
     /**
      * @summary Creates a html table with the average values of all the groups

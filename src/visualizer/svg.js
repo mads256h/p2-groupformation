@@ -5,63 +5,76 @@
 // Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
 
 (function(){
-    window.svg = {createGroupSvg, arrayBySecondIndex};
+    window.svg = {createGroupSvg, getLearnStyleValueOfGroup};
     // Declaration of global consts, which are layout settings of the svg
     const svgWidth = window.innerWidth / 2; // width of the svg is half the browser size
     const svgLineSpace = svgWidth * 0.04; // the amount of space between each line, by the width of the svg
     const svgLineWidth = svgWidth * 0.01;
     const svgTextSize = svgLineSpace * 0.5;
-    const learningStyles = 4; // antal læringsstile
-    const svgHeight = 2 * learningStyles * svgLineSpace; // height of the svg, 4 lines, double linespace between lines, +2 for top&bottom
+    const RANGEWIDTH = 22;
+
 
     /**
      * @summary Creates and appends a div element with the svg of the learningstyles
-     * @param {Array} groupArray the group array with students
+     * @param {Array} group the group array with students
      * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
-    function createGroupSvg(groupArray, group){
-        // console.log("Gr: " + group);
+    function createGroupSvg(group){
+        // console.log(group);
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        const learningStyles = [];
+        for (let criterias in group.students[0].criteria.learningStyles) {
+            learningStyles.push(criterias);
+        }
+        const svgHeight = 2  * svgLineSpace * learningStyles.length;
         svg.setAttribute("width", svgWidth);
         svg.setAttribute("height", svgHeight);
         svg.appendChild(createRect(0, 0, svgWidth, svgHeight)); // create a lightgrey rect that fills the whole svg to show it in browser.
-        /* for (let criterias in group.students.criteria) {
-            console.log(criterias);
-        } */
-        for (let learnStyle = 0; learnStyle < learningStyles; learnStyle++) {
-            createLearningStyleDimension(groupArray, learnStyle, svg, group);
+        let yValue = svgLineSpace;
+        for (const learningStyle of learningStyles) {
+            // console.log(learningStyle);
+            createLearningStyleDimension(group, learningStyle, svg, yValue);
+            yValue += 2 * svgLineSpace;
         }
         return svg;
     }
 
     /**
      * @summary Creates and appends a svg learningstyle to the svg element
-     * @param {Array} groupArray the group array with students
-     * @param {number} learnStyle the index of the learningstyle (used for linespaceing)
+     * @param {Array} group the group array with students
+     * @param {number} learnStyleName the index of the learningstyle (used for linespaceing)
      * @param {SVGElement} svg svg element on which we append the svg for a learningstyle
-     * @returns {SVGElement} The svg element we took as parameter, but now with an extra learningstyle
+     * @param {number} yValue the yValue of this bar and the circles
      */
-    function createLearningStyleDimension(groupArray, learnStyle, svg, group){
-        let yValue = svgLineSpace + 2 * learnStyle * svgLineSpace;
+    function createLearningStyleDimension(group, learnStyleName, svg, yValue){
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        // Create the -11 and 11 text
-        svg.appendChild(createText(svgLineSpace * 0.25, yValue + 6, "-11"));
-        svg.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, "11"));
+        createBar(yValue, -11, RANGEWIDTH, svg);
 
+        // Create the circles
+        let arrCircleSize = closeby(getLearnStyleValueOfGroup(group, learnStyleName));
+        for (const [studentName, circleRadius] of Object.entries(arrCircleSize)) {
+            const student = getstudentByStudentName(group, studentName);
+            const xValue = circleXValue(student.criteria.learningStyles[learnStyleName]);
+            const studentColor = colorArr[getStudentIdxInGroupByStudentName(group, studentName)];
+            svg.appendChild(createCircle(xValue, yValue, studentColor, circleRadius));
+        }
+    }
+
+    /**
+     * @summary Creates and appends the line with the axis-titles in each end and a line in the middle
+     * @param {number} yValue The yValue of the bar
+     * @param {number} minimalValue The axis-title to the left, the smalles possible value for the data
+     * @param {number} totalRange This is added to the minimalValue, and will be the axis-title to the right
+     * @param {SVGElement} svg the svg element on which to append the bar
+     */
+    function createBar(yValue, minimalValue, totalRange, svg){
+        // Create the -11 and 11 text
+        svg.appendChild(createText(svgLineSpace * 0.25, yValue + 6, minimalValue));
+        svg.appendChild(createText(svgWidth - svgLineSpace, yValue + 6, minimalValue + totalRange));
         // Create the horisontal lines
         svg.appendChild(createLine(svgLineSpace, yValue, svgWidth - svgLineSpace));
         // Create the little line to indicate the midle of the line
         svg.appendChild(createLine(svgWidth / 2, yValue + 10, svgWidth / 2, yValue - 10, svgLineWidth / 1.5));
-
-        // Create the circles
-        let arrCircleSize = closeby(arrayBySecondIndex(groupArray, learnStyle));
-        for (let student = 0; student < groupArray.length; student++) {
-            // Create & append one circle by the info:
-            svg.appendChild(createCircle(circleXValue(groupArray[student][learnStyle]), yValue, colorArr[student], arrCircleSize[student]));
-            arrCircleSize[groupArray[student][learnStyle]]--;
-        }
-        arrCircleSize.length = 0;
-        return svg;
     }
     // --------------------------------------------------- SVG constructors -----------------------------------
     /**
@@ -139,13 +152,12 @@
     // --------------------------------------------------- End of SVG constructors ----------------------------
     /**
      * @summary calculates the x coordinate of the circle's center from the LearningStyleValue(from -11 to 11) to a x coordinate on the line
-     * @param {number} learnStyleValue the LearningStyleValue form which to calculate the x value of the circle
+     * @param {number} learnStyleNameValue the LearningStyleValue form which to calculate the x value of the circle
      * @returns {number} Returns the x coordinate of the circle
      */
-    function circleXValue(learnStyleValue){
-        const RANGEWIDTH = 22;
+    function circleXValue(learnStyleNameValue){
         let xPos = svgLineSpace; // add the ofset from the left of the svg (the lines start some length inside the grey) this is equal to the -11 position
-        let percent = (learnStyleValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
+        let percent = (learnStyleNameValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
         let lineLength = svgWidth - (2 * svgLineSpace); // the length of the line
         xPos += lineLength * percent; // how far into the line must the center of the circle be placed
         return xPos;
@@ -157,25 +169,23 @@
      * @returns {Array} Returns an array with the radius(size) of the circles to be made, so alle the circles can be seen
      */
     function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works
-        const arr = new Array();
-        for (let i = 0; i < arrCircleSize.length; i++) {
-            arr[i] = 0;
-            for (let j = i; j < arrCircleSize.length; j++) {
-                if (i !== j){
-                    if (range(arrCircleSize[i], arrCircleSize[j])){
-                        arr[i]++;
-                        arr[j]++;
-                    }
+        const resArr = new Array();
+        for (const [student1Name, lsValue1] of Object.entries(arrCircleSize)) {
+            resArr[student1Name] = 1;
+            for (const [student2Name, lsValue2] of Object.entries(arrCircleSize)) {
+                // If they aren't the same person and their scores are close, the make the size of one of the circles larger, so it'll still be visible
+                if (student1Name !== student2Name && range(lsValue1, lsValue2)){
+                    resArr[student2Name]++;
                 }
             }
-            arr[i]++; // adds itself, so we can multiply, so we dont multiply with 0, because that would be a problem
         }
         // calc the circlesize in pixels by the size e.g. 1, 2, 3... depends on how many values are close to eachother
-        for (let idx in arr) {
-            arr[idx] = 0.25 * svgLineSpace * Math.pow(arr[idx], 0.6);
+        for (const [studentName, circleSize] of Object.entries(resArr)){
+            resArr[studentName] = 0.25 * svgLineSpace * Math.pow(circleSize, 0.6);
         }
-        return arr;
+        return resArr;
     }
+
     /**
      * @summary Returns boolean whether the distance between a & b is smaller than 'distance'
      * @param {number} a the first number
@@ -188,16 +198,48 @@
     }
 
     /**
-     * @summary Creates and return a new array by the second index e.g.: arr[[1,2],[3,4]] with idx=1 becomes [2,4]
-     * @param {Array} arr the array from which to create the sub-array
-     * @param {number} idx the index to use as second index
-     * @returns {Array} return an array
+     * @summary Creates and returns a new array with the learningstyle values of the learningstyle with the learningstyle name provided in the learnStyleName argument
+     * @param {object} group the group from which to get the data
+     * @param {string} learnStyleName the name of the learningstyle e.g. "activeReflective"
+     * @returns {object} returns an object with the students of the groups values in the given learningstyle, in the format {studentname: learningstylevalue} e.g. {jens: -3}
      */
-    function arrayBySecondIndex(arr, idx){
+    function getLearnStyleValueOfGroup(group, learnStyleName){
         const resArray = new Array();
-        for (let q = 0; q < arr.length; q++) {
-            resArray[q] = arr[q][idx];
+        for (const student of group.students) {
+            resArray[student.name] = student.criteria.learningStyles[learnStyleName];
         }
         return resArray;
+    }
+
+    /**
+     * @summary Gets and return the student object from the studentName, return the student object where (student.name === studentName)
+     * @param {object} group the group from which to find and get the student
+     * @param {string} studentName the name of the student to find and return
+     * @returns {object} return the student object from the group object where student.name === studentName
+     */
+    function getstudentByStudentName(group, studentName){
+        for (const student of group.students) {
+            if (student.name === studentName){
+                return student;
+            }
+        }
+    }
+
+    /**
+     * @summary Gets and returns the students index in the group object (used to determine the color to be assigned to the student)
+     * @param {object} group the group in which the find the student by their name
+     * @param {string} studentName the name of the student
+     * @returns {number} returns the students index in the group object
+     */
+    function getStudentIdxInGroupByStudentName(group, studentName){
+        console.log(group);
+        // Finds the students in the group object
+        for (const studentArray of Object.entries(group).filter((entry)=>entry[0] === "students")) {
+            // Iterates through the only student where the student.name === studentName
+            for (const val of studentArray[1].filter((entry)=>entry.name === studentName)) {
+                // Finds and returns the index of the student in the group.students object
+                return studentArray[1].indexOf(val);
+            }
+        }
     }
 }());
