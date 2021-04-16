@@ -10,7 +10,7 @@
     const {
         getStudentIdxInGroupByStudentName,
         getLSValuesOfGroup
-    } = window.objectMath;
+    } = window.objectFunctions;
     const {
         createTableHeader,
         createTableRow,

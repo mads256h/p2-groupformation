@@ -6,7 +6,7 @@
 const {getstudentByStudentName,
     getLSValuesOfGroupNameAsKey,
     getStudentIdxInGroupByStudentName
-} = window.objectMath;
+} = window.objectFunctions;
 (function(){
     window.svg = {createGroupSvg};
     // Declaration of global consts, which are layout settings of the svg

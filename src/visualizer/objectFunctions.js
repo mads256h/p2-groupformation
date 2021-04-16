@@ -3,6 +3,7 @@
  */
 
 (function(){
+    window.objectFunctions = {getLSValuesOfGroupNameAsKey, getstudentByStudentName, getStudentIdxInGroupByStudentName, getLSValuesOfGroup};
     /**
      * @summary Creates and returns a new array with the learningstyle values of the learningstyle with the learningstyle name provided in the learnStyleName argument
      * @param {object} group the group from which to get the data
@@ -60,5 +61,4 @@
         }
         return resArray;
     }
-    window.objectMath = {getLSValuesOfGroupNameAsKey, getstudentByStudentName, getStudentIdxInGroupByStudentName, getLSValuesOfGroup};
 }());
