@@ -49,10 +49,8 @@
         const masterDiv = makeMasterDiv();
         document.body.appendChild(masterDiv);
         for (const group of content) {
-            // console.log(group);
             const groupDiv = document.createElement("div");
             // Lav de elementer der skal appendes til groupdiv
-            console.log(group);
             groupDiv.appendChild(createGroupSvg(group));
             groupDiv.appendChild(createGroupInfoElement(group));
             const line = document.createElement("hr");

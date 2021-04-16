@@ -20,7 +20,6 @@
      * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
     function createGroupSvg(group){
-        console.log(group);
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         const learningStyles = [];
         for (let learningStyle in group.students[0].criteria.learningStyles) {
@@ -231,7 +230,6 @@
      * @returns {number} returns the students index in the group object
      */
     function getStudentIdxInGroupByStudentName(group, studentName){
-        console.log(group);
         // Finds the students in the group object
         for (const studentArray of Object.entries(group).filter((entry)=>entry[0] === "students")) {
             // Iterates through the only student where the student.name === studentName

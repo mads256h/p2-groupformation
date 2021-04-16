@@ -15,7 +15,6 @@
      * @returns {HTMLElement} return a html element with info about the groups
      */
     function createGroupInfoElement(group) {
-        // console.log(group);
         const masterDivElement = document.createElement("div");
         masterDivElement.className = "groupsize";
         let maxMinSum = 0;
@@ -27,7 +26,6 @@
         for (const lSName in group.students[0].criteria.learningStyles) {
             let lSarray = [];
             lSarray = getLSValuesOfGroup(group, lSName);
-            // console.log(lSarray);
             const tr = document.createElement("tr");
             tr.appendChild(createTableTd(lSName));
             tr.appendChild(createTableTd(distanceBetweenExtremes(lSarray).toString()));
