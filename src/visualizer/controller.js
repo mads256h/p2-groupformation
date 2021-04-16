@@ -30,14 +30,15 @@
      * @returns {HTMLDivElement} Returns a html div element with the buttons appended.
      */
     function createButtons(array) {
-        const div = document.createElement("div");
+        const select = document.createElement("select");
+        select.addEventListener("change", () => showData(select.options[select.selectedIndex].text));
         for (const file of array) {
-            const buttonElement = document.createElement("BUTTON");
-            buttonElement.innerText = "Filename: " + file;
-            buttonElement.addEventListener("click", () => showData(file));
-            div.appendChild(buttonElement);
+            const option = document.createElement("option");
+            option.value = file;
+            option.text = file;
+            select.appendChild(option);
         }
-        return div;
+        return select;
     }
 
     /**
