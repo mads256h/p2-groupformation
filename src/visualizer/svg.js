@@ -53,7 +53,7 @@ const {getstudentByStudentName,
 
         // Create the circles
         let arrCircleSize = closeby(getLSValuesOfGroupNameAsKey(group, learnStyleName));
-        for (const [studentName, circleRadius] of Object.entries(arrCircleSize)) {
+        for (const [studentName, circleRadius] of Object.entries(arrCircleSize)) { // Henrik note, omskriv ligesom i display, mht color
             const student = getstudentByStudentName(group, studentName);
             const xValue = circleXValue(student.criteria.learningStyles[learnStyleName]);
             const studentColor = colorArr[getStudentIdxInGroupByStudentName(group, studentName)];

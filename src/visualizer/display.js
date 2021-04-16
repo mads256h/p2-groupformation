@@ -8,7 +8,6 @@
         distanceBetweenExtremes
     } = window.statisticsMath;
     const {
-        getStudentIdxInGroupByStudentName,
         getLSValuesOfGroup
     } = window.objectFunctions;
     const {
@@ -99,9 +98,9 @@
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
         const details = createDetailsElement("Groupname: " + group.name, "Group");
         const studentList = document.createElement("ul");
-        for (const student of group.students) {
-            const studentColor = colorArr[getStudentIdxInGroupByStudentName(group, student.name)];
-            studentList.appendChild(createStudentElement(student, studentColor));
+        for (const studentIdx in group.students) {
+            const studentColor = colorArr[studentIdx];
+            studentList.appendChild(createStudentElement(group.students[studentIdx], studentColor));
         }
         details.appendChild(studentList);
         return details;
