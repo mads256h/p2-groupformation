@@ -10,9 +10,11 @@
   assertArrayItemsType,
   assertArrayNotEmpty
 } = require("../typeassert");
+const { splitAvgMinDistance } = require("./splitAvgMinDistance");
 
 const{averageVectorDistance} = require("./vectorspace.js");
 const{constant} = require("./weightFunction.js");
+const{splitAvgMinDistance} = require("./splitAvgMinDistance.js")
 
 /**
  * @summary Calculates score for preferences (i.e. working from home)
@@ -35,16 +37,13 @@ function prefrenceAlg(preferences){
     return -(min/max);
 }
 
-function subjectAlg(){
-
-}
 
 function masterAlg(heterogenous, homogenous, subject){
     let score = 0;
     
     score += averageVectorDistance(heterogenous, 0.5, constant);
     score += preferenceAlg(homogenous);
-    score += subjectAlg(subject);
+    score += splitAvgMinDistance(subject);
 
     return score;
 }
