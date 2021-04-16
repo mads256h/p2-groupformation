@@ -37,16 +37,18 @@
         const lSSumTableRow = createTableRow("Sum", maxMinSum, sumSum, linearDistributionSum.toFixed(0));
         table.appendChild(lSSumTableRow);
         masterDivElement.appendChild(table);
+        // Display the groupsize
         const displayGroupSize = document.createElement("span");
         displayGroupSize.innerText = "Group-size: " + group.students.length;
         masterDivElement.appendChild(displayGroupSize);
+
         masterDivElement.appendChild(createGroupElement(group));
         return masterDivElement;
     }
     /**
      * @summary Creates a html table with the average values of all the groups
      * @param {object} content Object with all the groups
-     * @returns {HTMLElement} returns a html table element with info about all the groups
+     * @returns {HTMLTableElement} returns a html table element with info about all the groups
      */
     function createAverageValueTable(content){
         let maxMinSum = 0;
@@ -191,9 +193,8 @@
         const details = createDetailsElement(subjectName, "Subject", 1);
         const subjectList = document.createElement("ul");
         for (const subjects of subject){
-            const subjectScore = document.createElement("span");
-            subjectScore.setAttribute("name", "SubjectScore");
             const detailsSubject = createDetailsElement(subjects.name, "Subject name", 1);
+            const subjectScore = document.createElement("span");
             subjectScore.innerText = subjects.score;
             detailsSubject.appendChild(subjectScore);
             subjectList.appendChild(detailsSubject);
