@@ -5,7 +5,6 @@
      * @returns {number} Distance between the max and min value in the array
      */
     function distanceBetweenExtremes(array) {
-        console.log(array);
         const min = Math.min(...array);
         const max = Math.max(...array);
         return 22 - (max - min);
@@ -55,8 +54,6 @@
         for (let i = 0; i <= n - 1; i++) {
             array[i] = ((rangeWidth / (n - 1)) * i) - 11;
         }
-        // console.log("Perfect dist:");
-        // console.log(...array);
         return array;
     }
 
