@@ -5,6 +5,11 @@
  * @author Mati-AAU and thom776g
  */
 
+/**
+ * 
+ * @param {Array} preferences 
+ * @returns 
+ */
 function prefrenceAlg(preferences){
     let fromHome = 0, inOffice = 0;
     for (const preference of preferences) {
