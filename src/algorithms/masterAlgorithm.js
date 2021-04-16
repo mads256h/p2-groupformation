@@ -21,7 +21,7 @@ const{splitAvgMinDistance} = require("./splitAvgMinDistance.js")
  * @param {Number[]} preferences preference array. 0 is do not care, positive or negative is a preference. 
  * @returns Calculated score for preferences
  */
-function prefrenceAlg(preferences){
+function preferenceAlg(preferences){
     let fromHome = 0, inOffice = 0;
     for (const preference of preferences) {
         if(preference < -Number.EPSILON){
