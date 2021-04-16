@@ -1,0 +1,12 @@
+#right {
+  border: 2px solid red;
+}
+#left {
+  border: 2px solid blue;
+}
+#masterDiv {
+  
+}
+.boxes {
+display: inline-block;
+}
