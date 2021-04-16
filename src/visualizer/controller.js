@@ -6,7 +6,7 @@
     const {
         createGroupInfoElement,
         createAverageValueTable
-    } = window.detailsElement;
+    } = window.display;
     const {
         createGroupSvg
     } = window.svg;

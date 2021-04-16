@@ -1,3 +1,6 @@
+/**
+ * @description This file contains functions that calculate statistical numbers which we use to evaluate the results
+ */
 (function(){
     /**
      * @summary Finds the distance between the min and max value in the array
