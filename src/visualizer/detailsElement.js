@@ -4,10 +4,11 @@
         sumOfArray,
         distanceBetweenExtremes
     } = window.visualjs;
+    const {
+        getStudentIdxInGroupByStudentName
+    } = window.svg;
 
     window.detailsElement = {createGroupInfoElement, createAverageValueTable};
-    document.addEventListener("DOMContentLoaded", () => {
-    });
 
     /**
      * @summary Creates the html code for the information in the groups
@@ -26,26 +27,17 @@
         for (const lSName in group.students[0].criteria.learningStyles) {
             let lSarray = [];
             lSarray = getLSValuesOfGroup(group, lSName);
-            const tr = document.createElement("tr");
-            tr.appendChild(createTableTd(lSName));
-            tr.appendChild(createTableTd(distanceBetweenExtremes(lSarray).toString()));
-            tr.appendChild(createTableTd(sumOfArray(lSarray).toString()));
-            tr.appendChild(createTableTd(distribution(lSarray).toFixed(2).toString()));
-            table.appendChild(tr);
-
-            maxMinSum += Number(Math.abs(distanceBetweenExtremes(lSarray)));
-            sumSum += Number(Math.abs(sumOfArray(lSarray)));
-            linearDistributionSum += Number(Math.abs(distribution(lSarray)));
+            const lSTableRow = createTableRow(lSName, distanceBetweenExtremes(lSarray), sumOfArray(lSarray), distribution(lSarray).toFixed(0));
+            table.appendChild(lSTableRow);
+            // Add to the sums
+            maxMinSum += Math.abs(distanceBetweenExtremes(lSarray));
+            sumSum += Math.abs(sumOfArray(lSarray));
+            linearDistributionSum += Math.abs(distribution(lSarray));
         }
-        const tr = document.createElement("tr");
-        tr.appendChild(createTableTd("Sum:"));
-        tr.appendChild(createTableTd(maxMinSum, "MaxMin"));
-        tr.appendChild(createTableTd(sumSum, "Sum"));
-        tr.appendChild(createTableTd(linearDistributionSum.toFixed(2), "LinearDistribution"));
-        table.appendChild(tr);
+        const lSSumTableRow = createTableRow("Sum", maxMinSum, sumSum, linearDistributionSum.toFixed(0));
+        table.appendChild(lSSumTableRow);
         masterDivElement.appendChild(table);
         const displayGroupSize = document.createElement("span");
-        displayGroupSize.setAttribute("class", "GroupSizeSpan");
         displayGroupSize.innerText = "Group-size: " + group.students.length;
         masterDivElement.appendChild(displayGroupSize);
         masterDivElement.appendChild(createGroupElement(group));
@@ -57,56 +49,32 @@
      * @returns {HTMLElement} returns a html table element with info about all the groups
      */
     function createAverageValueTable(content){
-      let maxMinSum = 0;
-      let sumSum = 0;
-      let linearDistributionSum = 0;
-      let groups = content.length;
-      let numbereOfStudents = 0;
-      for (const group of content) {
-        numbereOfStudents += group.students.length;
-        for (const lSName in group.students[0].criteria.learningStyles) {
-          let lSarray = [];
-          lSarray = getLSValuesOfGroup(group, lSName);
-          maxMinSum += Math.abs(distanceBetweenExtremes(lSarray));
-          sumSum += Math.abs(sumOfArray(lSarray));
-          linearDistributionSum += Math.abs(distribution(lSarray));
+        let maxMinSum = 0;
+        let sumSum = 0;
+        let linearDistributionSum = 0;
+        let groups = content.length;
+        let numbereOfStudents = 0;
+        for (const group of content) {
+            numbereOfStudents += group.students.length;
+            for (const lSName in group.students[0].criteria.learningStyles) {
+                let lSarray = [];
+                lSarray = getLSValuesOfGroup(group, lSName);
+                maxMinSum += Math.abs(distanceBetweenExtremes(lSarray));
+                sumSum += Math.abs(sumOfArray(lSarray));
+                linearDistributionSum += Math.abs(distribution(lSarray));
+            }
         }
-      }
         const table = document.createElement("table");
         const th = createTableHeader("Gennemsnit", "MaxMin", "Sum", "LinearDistribution", "GroupSize");
         table.appendChild(th);
-        const tr = document.createElement("tr");
-        tr.appendChild(createTableTd("Værdier:"));
-        const maxMinAverage = (maxMinSum/groups).toFixed(2);
-        const sumAverage = (sumSum/groups).toFixed(2);
-        const linearDistributionAverage = (linearDistributionSum/groups).toFixed(2);
-        const averageStudentsPrGroup = (numbereOfStudents/groups).toFixed(2);
-        tr.appendChild(createTableTd(maxMinAverage));
-        tr.appendChild(createTableTd(sumAverage));
-        tr.appendChild(createTableTd(linearDistributionAverage));
-        tr.appendChild(createTableTd(averageStudentsPrGroup));
+        // Calculate the average to be displayed in the table
+        const maxMinAverage = (maxMinSum / groups).toFixed(2);
+        const sumAverage = (sumSum / groups).toFixed(2);
+        const linearDistributionAverage = (linearDistributionSum / groups).toFixed(2);
+        const averageStudentsPrGroup = (numbereOfStudents / groups).toFixed(2);
+        const tr = createTableRow("Values:", maxMinAverage, sumAverage, linearDistributionAverage, averageStudentsPrGroup);
         table.appendChild(tr);
         return table;
-    }
-    /**
-     * @summary Creates the html code for the information in the groups
-     * @param {string} className The classname of the cells from which to take the average
-     * @returns {number} returns the average value of the innertext of the cells with the classname
-     */
-    function sumByTableCellClassName(className){
-        const cells = document.querySelectorAll("." + className);
-        let sum = 0;
-        let groupcounter = 0;
-        for (const cell of cells) {
-            if (cell.innerText.toString().includes("Group-size")){
-                sum += parseInt(cell.innerText.replace("Group-size: ", ""));
-            }
-            else {
-                sum += parseInt(cell.innerText);
-            }
-            groupcounter++;
-        }
-        return (sum / groupcounter).toFixed(2);
     }
     /**
      * @summary Creates the html table header, only the first parameter is used in calls
@@ -117,6 +85,18 @@
         const tr = document.createElement("tr");
         for (const headCell of header) {
             tr.appendChild(createTableTh(headCell));
+        }
+        return tr;
+    }
+    /**
+     * @summary Creates the html table header, only the first parameter is used in calls
+     * @param {string[]} row The innertext of the headers
+     * @returns {HTMLTableRowElement} return a html row element with the table header
+     */
+    function createTableRow(...row){
+        const tr = document.createElement("tr");
+        for (const cell of row) {
+            tr.appendChild(createTableTd(cell));
         }
         return tr;
     }
@@ -133,14 +113,10 @@
     /**
      * @summary Makes a table cell
      * @param {string} value The innertext of the cell
-     * @param {string} className The name of the class to be assigned to the cell
      * @returns {HTMLTableCellElement} returns a html table cell
      */
-    function createTableTd(value, className){
+    function createTableTd(value){
         const td = document.createElement("td");
-        if (className !== undefined){
-            td.setAttribute("class", className);
-        }
         td.innerText = value;
         return td;
     }
@@ -154,8 +130,9 @@
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
         const details = createDetailsElement("Groupname: " + group.name, "Group");
         const studentList = document.createElement("ul");
-        for (let i = 0; i < group.students.length; i++) {
-            studentList.appendChild(createStudentElement(group.students[i], colorArr[i]));
+        for (const student of group.students) {
+            const studentColor = colorArr[getStudentIdxInGroupByStudentName(group, student.name)];
+            studentList.appendChild(createStudentElement(student, studentColor));
         }
         details.appendChild(studentList);
         return details;
