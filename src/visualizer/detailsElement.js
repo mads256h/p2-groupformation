@@ -3,7 +3,7 @@
         distribution,
         sumOfArray,
         distanceBetweenExtremes
-    } = window.visualjs;
+    } = window.statisticsMath;
     const {
         getStudentIdxInGroupByStudentName
     } = window.svg;

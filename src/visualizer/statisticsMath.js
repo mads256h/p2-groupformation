@@ -57,7 +57,7 @@
         return array;
     }
 
-    window.visualjs = {
+    window.statisticsMath = {
         distribution,
         sumOfArray,
         distanceBetweenExtremes
