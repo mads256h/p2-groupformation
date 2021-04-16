@@ -53,18 +53,38 @@
     }
     /**
      * @summary Creates a html table with the average values of all the groups
+     * @param {object} content Object with all the groups
      * @returns {HTMLElement} returns a html table element with info about all the groups
      */
-    function createAverageValueTable(){
+    function createAverageValueTable(content){
+      let maxMinSum = 0;
+      let sumSum = 0;
+      let linearDistributionSum = 0;
+      let groups = content.length;
+      let numbereOfStudents = 0;
+      for (const group of content) {
+        numbereOfStudents += group.students.length;
+        for (const lSName in group.students[0].criteria.learningStyles) {
+          let lSarray = [];
+          lSarray = getLSValuesOfGroup(group, lSName);
+          maxMinSum += Math.abs(distanceBetweenExtremes(lSarray));
+          sumSum += Math.abs(sumOfArray(lSarray));
+          linearDistributionSum += Math.abs(distribution(lSarray));
+        }
+      }
         const table = document.createElement("table");
         const th = createTableHeader("Gennemsnit", "MaxMin", "Sum", "LinearDistribution", "GroupSize");
         table.appendChild(th);
         const tr = document.createElement("tr");
         tr.appendChild(createTableTd("Værdier:"));
-        tr.appendChild(createTableTd(sumByTableCellClassName("MaxMin")));
-        tr.appendChild(createTableTd(sumByTableCellClassName("Sum")));
-        tr.appendChild(createTableTd(sumByTableCellClassName("LinearDistribution")));
-        tr.appendChild(createTableTd(sumByTableCellClassName("GroupSizeSpan")));
+        const maxMinAverage = (maxMinSum/groups).toFixed(2);
+        const sumAverage = (sumSum/groups).toFixed(2);
+        const linearDistributionAverage = (linearDistributionSum/groups).toFixed(2);
+        const averageStudentsPrGroup = (numbereOfStudents/groups).toFixed(2);
+        tr.appendChild(createTableTd(maxMinAverage));
+        tr.appendChild(createTableTd(sumAverage));
+        tr.appendChild(createTableTd(linearDistributionAverage));
+        tr.appendChild(createTableTd(averageStudentsPrGroup));
         table.appendChild(tr);
         return table;
     }

@@ -58,7 +58,7 @@
             // Tilføj groupDiv til vores master element
             masterDiv.appendChild(groupDiv);
         }
-        masterDiv.prepend(createAverageValueTable());
+        masterDiv.prepend(createAverageValueTable(content));
     }
 
     /**
