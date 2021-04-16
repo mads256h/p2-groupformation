@@ -36,7 +36,7 @@ do
   do
     for run in {1..3}
     do
-      npm run group-gen "$algorithm" "7" "${size}students.json" "src/visualizer/data/${algorithm}-${size}-${run}.json"
+      npm run group-gen "$algorithm" "7" "${size}students.json" "src/visualizer/data/${algorithm}-${size}-${run}.json" &
     done
   done
 done
