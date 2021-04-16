@@ -46,7 +46,7 @@ function studentGenerator(name, numSubjects) {
 function criteriaGenerator(numSubjects) {
     return new Criteria(
         Math.floor(Math.random() * 10) + 1, // ambitions
-        Math.floor(Math.random() * 3), // workingAtHome
+        Math.floor(Math.random() * 3) - 1, // workingAtHome
         learningStylesGenerator(),
         subjectPreferenceGenerator(numSubjects));
 }
