@@ -5,7 +5,16 @@
  * @author Mati-AAU and thom776g
  */
 
-function prefrenceAlg(preferences){
+ module.exports = {preferenceAlg};
+ const {
+  assertArrayItemsType,
+  assertArrayNotEmpty
+} = require("../typeassert");
+
+
+function preferenceAlg(preferences){
+    assertArrayNotEmpty(preferences);
+    assertArrayItemsType(preferences, "number");
     let fromHome = 0, inOffice = 0;
     for (const preference of preferences) {
         if(preference < -Number.EPSILON){
