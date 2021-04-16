@@ -37,13 +37,6 @@ function prefrenceAlg(preferences){
     return -(min/max);
 }
 
-
-function masterAlg(heterogenous, homogenous, subject){
-    let score = 0;
-    
-    score += averageVectorDistance(heterogenous, 0.5, constant);
-    score += preferenceAlg(homogenous);
-    score += splitAvgMinDistance(subject);
-
-    return score;
+function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction){
+    return heterogenousFunction() + homogenousFunction() + subjectFunction();
 }
