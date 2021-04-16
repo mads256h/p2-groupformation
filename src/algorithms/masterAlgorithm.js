@@ -11,6 +11,9 @@
   assertArrayNotEmpty
 } = require("../typeassert");
 
+const{averageVectorDistance} = require("./vectorspace.js");
+const{constant} = require("./weightFunction.js");
+
 /**
  * @summary Calculates score for preferences (i.e. working from home)
  * @param {Number[]} preferences preference array. 0 is do not care, positive or negative is a preference. 
@@ -30,4 +33,18 @@ function prefrenceAlg(preferences){
     let max = Math.max(fromHome, inOffice)
     
     return -(min/max);
+}
+
+function subjectAlg(){
+
+}
+
+function masterAlg(heterogenous, homogenous, subject){
+    let score = 0;
+    
+    score += averageVectorDistance(heterogenous, 0.5, constant);
+    score += preferenceAlg(homogenous);
+    score += subjectAlg(subject);
+
+    return score;
 }
