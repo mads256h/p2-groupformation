@@ -11,10 +11,12 @@
   assertArrayNotEmpty
 } = require("../typeassert");
 
-
-function preferenceAlg(preferences){
-    assertArrayNotEmpty(preferences);
-    assertArrayItemsType(preferences, "number");
+/**
+ * @summary Calculates score for preferences (i.e. working from home)
+ * @param {Number[]} preferences preference array. 0 is do not care, positive or negative is a preference. 
+ * @returns Calculated score for preferences
+ */
+function prefrenceAlg(preferences){
     let fromHome = 0, inOffice = 0;
     for (const preference of preferences) {
         if(preference < -Number.EPSILON){
