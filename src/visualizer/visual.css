@@ -12,6 +12,10 @@
   font-size: 100%;
 }
 
+table {
+  margin: 10px;
+}
+
 table,
 th,
 td {
