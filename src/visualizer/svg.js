@@ -3,12 +3,13 @@
  * @author henneboy
  */
 // Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
-const {getstudentByStudentName,
-    getLSValuesOfGroupNameAsKey,
-    getStudentIdxInGroupByStudentName
+const {
+    getLSValuesOfGroup
 } = window.objectFunctions;
+
 (function(){
-    window.svg = {createGroupSvg};
+    window.svg = {
+        createGroupSvg};
     // Declaration of global consts, which are layout settings of the svg
     const svgWidth = window.innerWidth / 2; // width of the svg is half the browser size
     const svgLineSpace = svgWidth * 0.04; // the amount of space between each line, by the width of the svg
@@ -52,11 +53,10 @@ const {getstudentByStudentName,
         createBar(yValue, -11, RANGEWIDTH, svg);
 
         // Create the circles
-        let arrCircleSize = closeby(getLSValuesOfGroupNameAsKey(group, learnStyleName));
-        for (const [studentName, circleRadius] of Object.entries(arrCircleSize)) { // Henrik note, omskriv ligesom i display, mht color
-            const student = getstudentByStudentName(group, studentName);
-            const xValue = circleXValue(student.criteria.learningStyles[learnStyleName]);
-            const studentColor = colorArr[getStudentIdxInGroupByStudentName(group, studentName)];
+        let arrCircleSize = closeby(getLSValuesOfGroup(group, learnStyleName));
+        for (const [studentIdx, circleRadius] of Object.entries(arrCircleSize)) { // Henrik note, omskriv ligesom i display, mht color
+            const xValue = circleXValue(group.students[studentIdx].criteria.learningStyles[learnStyleName]);
+            const studentColor = colorArr[studentIdx];
             svg.appendChild(createCircle(xValue, yValue, studentColor, circleRadius));
         }
     }
@@ -144,9 +144,9 @@ const {getstudentByStudentName,
      */
     function createText(x, y, text, fontSize = svgTextSize){
         const textSvg = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        textSvg.textContent = text;
         textSvg.setAttribute("x", x);
         textSvg.setAttribute("y", y);
-        textSvg.textContent = text;
         textSvg.setAttribute("font-size", fontSize);
         return textSvg;
     }
@@ -159,8 +159,8 @@ const {getstudentByStudentName,
      */
     function circleXValue(learnStyleNameValue){
         let xPos = svgLineSpace; // add the ofset from the left of the svg (the lines start some length inside the grey) this is equal to the -11 position
-        let percent = (learnStyleNameValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
-        let lineLength = svgWidth - (2 * svgLineSpace); // the length of the line
+        const percent = (learnStyleNameValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
+        const lineLength = svgWidth - (2 * svgLineSpace); // the length of the line
         xPos += lineLength * percent; // how far into the line must the center of the circle be placed
         return xPos;
     }
@@ -172,12 +172,12 @@ const {getstudentByStudentName,
      */
     function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works
         const resArr = new Array();
-        for (const [student1Name, lsValue1] of Object.entries(arrCircleSize)) {
-            resArr[student1Name] = 1;
-            for (const [student2Name, lsValue2] of Object.entries(arrCircleSize)) {
+        for (const [student1Idx, lsValue1] of Object.entries(arrCircleSize)) {
+            resArr[student1Idx] = 1;
+            for (const [student2Idx, lsValue2] of Object.entries(arrCircleSize)) {
                 // If they aren't the same person and their scores are close, the make the size of one of the circles larger, so it'll still be visible
-                if (student1Name !== student2Name && range(lsValue1, lsValue2)){
-                    resArr[student2Name]++;
+                if (student1Idx !== student2Idx && range(lsValue1, lsValue2)){
+                    resArr[student2Idx]++;
                 }
             }
         }

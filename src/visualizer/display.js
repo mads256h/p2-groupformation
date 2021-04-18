@@ -112,14 +112,14 @@
      * @returns {HTMLElement} return a html element with info about the student
      */
     function createStudentElement(student, color) {
-        const details = createDetailsElement(student.name, "Student", 0, "color:" + color + ";", "studentClass");
+        const details = createDetailsElement(student.name, "Student", false, "color:" + color + ";", "studentClass");
         const criteriaList = document.createElement("ul");
-        for (let criterias in student.criteria) {
-            if (typeof student.criteria[criterias] === "object"){
-                criteriaList.appendChild(createCriteriaElement(student.criteria[criterias], criterias));
+        for (let criteria in student.criteria) {
+            if (typeof student.criteria[criteria] === "object"){
+                criteriaList.appendChild(createCriteriaElement(student.criteria[criteria], criteria));
             }
             else {
-                const listItem = createListItem(criterias + ": " + student.criteria[criterias]);
+                const listItem = createListItem(criteria + ": " + student.criteria[criteria]);
                 criteriaList.appendChild(listItem);
             }
         }
@@ -134,7 +134,7 @@
      * @returns {HTMLElement} return a html element with info about the criterias
      */
     function createCriteriaElement(criteria, criteriaName) {
-        const details = createDetailsElement(criteriaName, "CriteriaObect", 1);
+        const details = createDetailsElement(criteriaName, "CriteriaObect", true);
         const criteriaList = document.createElement("ul");
         for (let criterias in criteria) {
             if (typeof criteria[criterias] === "object"){
@@ -156,10 +156,10 @@
      * @returns {HTMLElement} return a html element with info about the subjects
      */
     function createSubjectElement(subject, subjectName) {
-        const details = createDetailsElement(subjectName, "Subject", 1);
+        const details = createDetailsElement(subjectName, "Subject", true);
         const subjectList = document.createElement("ul");
         for (const subjects of subject){
-            const detailsSubject = createDetailsElement(subjects.name, "Subject name", 1);
+            const detailsSubject = createDetailsElement(subjects.name, "Subject name", true);
             const subjectScore = document.createElement("span");
             subjectScore.innerText = subjects.score;
             detailsSubject.appendChild(subjectScore);
