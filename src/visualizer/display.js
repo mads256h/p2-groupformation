@@ -112,7 +112,11 @@
      * @returns {HTMLElement} return a html element with info about the student
      */
     function createStudentElement(student, color) {
-        const details = createDetailsElement(student.name, "Student", false, "color:" + color + ";", "studentClass");
+        const details = createDetailsElement(student.name, "Student", false);
+        // The summary element is appended in the createDetailsElement, so it will be the firstChild
+        const detailsSummary = details.firstChild;
+        detailsSummary.setAttribute("class", "studentClass");
+        detailsSummary.setAttribute("style", "color:" + color + ";");
         const criteriaList = document.createElement("ul");
         for (let criteria in student.criteria) {
             if (typeof student.criteria[criteria] === "object"){

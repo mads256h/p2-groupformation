@@ -53,22 +53,14 @@
      * @param {string} summary The innertext of the summary of the details element
      * @param {string} detailsName The name of the details element (only visible in developer tool)
      * @param {boolean} open Whether the details element shoud start open, false if not defined
-     * @param {string} summaryStyle The style of the summary innertext (used to color the names of the students)
-     * @param {string} className The classname of the summary element
      * @returns {HTMLElement} return a html details element with a summary element
      */
-    function createDetailsElement(summary, detailsName, open = false, summaryStyle, className){
+    function createDetailsElement(summary, detailsName, open = false){
         const detailsElement = document.createElement("details");
         const summaryElement = document.createElement("summary");
         summaryElement.innerText = summary;
         if (open !== false){
             detailsElement.setAttribute("open", 1);
-        }
-        else if (summaryStyle !== undefined){
-            summaryElement.setAttribute("style", summaryStyle);
-        }
-        if (className !== undefined){
-            summaryElement.setAttribute("class", className);
         }
         detailsElement.appendChild(summaryElement);
         detailsElement.setAttribute("name", detailsName);
