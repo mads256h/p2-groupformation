@@ -13,7 +13,7 @@ const {
 
 /**
  * @summary Calculates score for preferences (i.e. working from home)
- * @param {number[]} preferences preference array. 0 is do not care, positive or negative is a preference. 
+ * @param {number[]} preferences preference array. 0 is do not care, positive or negative is a preference.
  * @returns {number} Calculated score for preferences
  */
 function preferenceAlg(preferences){
