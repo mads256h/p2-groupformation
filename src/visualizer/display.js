@@ -96,7 +96,7 @@
      */
     function createGroupElement(group) {
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        const details = createDetailsElement("Groupname: " + group.name, "Group");
+        const details = createDetailsElement(`Groupname: ${group.name}`, "Group");
         const studentList = document.createElement("ul");
         for (const studentIdx in group.students) {
             const studentColor = colorArr[studentIdx];
@@ -116,14 +116,14 @@
         // The summary element is appended in the createDetailsElement, so it will be the firstChild
         const detailsSummary = details.firstChild;
         detailsSummary.setAttribute("class", "studentClass");
-        detailsSummary.setAttribute("style", "color:" + color + ";");
+        detailsSummary.setAttribute("style", `color: ${color};`);
         const criteriaList = document.createElement("ul");
         for (let criteria in student.criteria) {
             if (typeof student.criteria[criteria] === "object"){
                 criteriaList.appendChild(createCriteriaElement(student.criteria[criteria], criteria));
             }
             else {
-                const listItem = createListItem(criteria + ": " + student.criteria[criteria]);
+                const listItem = createListItem(`${criteria}: ${student.criteria[criteria]}`);
                 criteriaList.appendChild(listItem);
             }
         }
@@ -145,7 +145,7 @@
                 criteriaList.appendChild(createSubjectElement(criteria[criterias], criterias));
             }
             else {
-                const listItem = createListItem(criterias + ": " + criteria[criterias]);
+                const listItem = createListItem(`${criterias}: ${criteria[criterias]}`);
                 criteriaList.appendChild(listItem);
             }
         }
