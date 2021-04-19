@@ -12,10 +12,6 @@
      * @returns {object} returns an object with the students of the groups values in the given learningstyle, the key is the students idx in the groups.students
      */
     function getLSValuesOfGroup(group, learnStyleName){
-        const resArray = new Array();
-        for (const studentIdx in group.students) {
-            resArray[studentIdx] = group.students[studentIdx].criteria.learningStyles[learnStyleName];
-        }
-        return resArray;
+        return group.students.map((s) => s.criteria.learningStyles[learnStyleName]);
     }
 }());
