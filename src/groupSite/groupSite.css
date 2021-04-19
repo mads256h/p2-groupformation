@@ -1,22 +1,29 @@
-.masterDiv {
-  background-color: grey;
-  color: rgb(128, 19, 19);
+#masterDiv {
+
+  color:white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
 }
 
-.informationBox {
-  border: 2px solid darkgrey;
+#informationBox {
   width: 50%;
-  float:left;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid white;
+  border-spacing: 15px;
 }
-.groupExamples {
-  border: 2px solid darkgrey;
+#groupExamples {
   width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid white;
+  border-spacing: 15px;
 }
-
-.boxes {
-
+p.titles {
+  text-align: center;
+  text-decoration: underline;
 }
-
 #candidatesTable, th, td {
   border: 1px solid white;
   border-collapse: collapse;
@@ -28,4 +35,8 @@ th {
 }
 td {
   text-align: left;
+}
+
+body {
+  background-color: grey;
 }
