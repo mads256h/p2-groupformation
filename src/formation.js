@@ -113,7 +113,8 @@ class WeightedCriteria {
      * @returns {number} The score of the set of criteria
      */
     score(criteria) {
-        const {heterogenous, homogenous, subjects} = this.asNumberArrays(criteria);
+        let criteriaWeighted = this.weighCriteria(criteria);
+        const {heterogenous, homogenous, subjects} = this.asNumberArrays(criteriaWeighted);
         return this.algorithm(heterogenous, homogenous, subjects);
     }
 
