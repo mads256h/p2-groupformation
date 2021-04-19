@@ -30,7 +30,7 @@
      */
     function distribution(array) {
         if (array.length === 1) {
-            throw new RangeError("To few arguments");
+            return 0;
         }
         else {
             const newArray = array.slice();
