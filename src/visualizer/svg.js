@@ -3,9 +3,13 @@
  * @author henneboy
  */
 // Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
+const {
+    getLSValuesOfGroup
+} = window.objectFunctions;
 
 (function(){
-    window.svg = {createGroupSvg, getstudentByStudentName, getStudentIdxInGroupByStudentName};
+    window.svg = {
+        createGroupSvg};
     // Declaration of global consts, which are layout settings of the svg
     const svgWidth = window.innerWidth / 2; // width of the svg is half the browser size
     const svgLineSpace = svgWidth * 0.04; // the amount of space between each line, by the width of the svg
@@ -49,11 +53,10 @@
         createBar(yValue, -11, RANGEWIDTH, svg);
 
         // Create the circles
-        let arrCircleSize = closeby(getLSValuesOfGroupNameAsKey(group, learnStyleName));
-        for (const [studentName, circleRadius] of Object.entries(arrCircleSize)) {
-            const student = getstudentByStudentName(group, studentName);
-            const xValue = circleXValue(student.criteria.learningStyles[learnStyleName]);
-            const studentColor = colorArr[getStudentIdxInGroupByStudentName(group, studentName)];
+        let arrCircleSize = closeby(getLSValuesOfGroup(group, learnStyleName));
+        for (const [studentIdx, circleRadius] of Object.entries(arrCircleSize)) { // Henrik note, omskriv ligesom i display, mht color
+            const xValue = circleXValue(group.students[studentIdx].criteria.learningStyles[learnStyleName]);
+            const studentColor = colorArr[studentIdx];
             svg.appendChild(createCircle(xValue, yValue, studentColor, circleRadius));
         }
     }
@@ -141,13 +144,14 @@
      */
     function createText(x, y, text, fontSize = svgTextSize){
         const textSvg = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        textSvg.textContent = text;
         textSvg.setAttribute("x", x);
         textSvg.setAttribute("y", y);
-        textSvg.textContent = text;
         textSvg.setAttribute("font-size", fontSize);
         return textSvg;
     }
     // --------------------------------------------------- End of SVG constructors ----------------------------
+    // --------------------------------------------------- Start of math functions only used for svg ----------
     /**
      * @summary calculates the x coordinate of the circle's center from the LearningStyleValue(from -11 to 11) to a x coordinate on the line
      * @param {number} learnStyleNameValue the LearningStyleValue form which to calculate the x value of the circle
@@ -155,8 +159,8 @@
      */
     function circleXValue(learnStyleNameValue){
         let xPos = svgLineSpace; // add the ofset from the left of the svg (the lines start some length inside the grey) this is equal to the -11 position
-        let percent = (learnStyleNameValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
-        let lineLength = svgWidth - (2 * svgLineSpace); // the length of the line
+        const percent = (learnStyleNameValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
+        const lineLength = svgWidth - (2 * svgLineSpace); // the length of the line
         xPos += lineLength * percent; // how far into the line must the center of the circle be placed
         return xPos;
     }
@@ -168,12 +172,12 @@
      */
     function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works
         const resArr = new Array();
-        for (const [student1Name, lsValue1] of Object.entries(arrCircleSize)) {
-            resArr[student1Name] = 1;
-            for (const [student2Name, lsValue2] of Object.entries(arrCircleSize)) {
+        for (const [student1Idx, lsValue1] of Object.entries(arrCircleSize)) {
+            resArr[student1Idx] = 1;
+            for (const [student2Idx, lsValue2] of Object.entries(arrCircleSize)) {
                 // If they aren't the same person and their scores are close, the make the size of one of the circles larger, so it'll still be visible
-                if (student1Name !== student2Name && range(lsValue1, lsValue2)){
-                    resArr[student2Name]++;
+                if (student1Idx !== student2Idx && range(lsValue1, lsValue2)){
+                    resArr[student2Idx]++;
                 }
             }
         }
@@ -193,50 +197,5 @@
     function range(a, b){
         const distance = 0.5;
         return Math.abs(a - b) <= Math.abs(distance);
-    }
-
-    /**
-     * @summary Creates and returns a new array with the learningstyle values of the learningstyle with the learningstyle name provided in the learnStyleName argument
-     * @param {object} group the group from which to get the data
-     * @param {string} learnStyleName the name of the learningstyle e.g. "activeReflective"
-     * @returns {object} returns an object with the students of the groups values in the given learningstyle, in the format {studentname: learningstylevalue} e.g. {jens: -3}
-     */
-    function getLSValuesOfGroupNameAsKey(group, learnStyleName){
-        const resArray = new Array();
-        for (const student of group.students) {
-            resArray[student.name] = student.criteria.learningStyles[learnStyleName];
-        }
-        return resArray;
-    }
-
-    /**
-     * @summary Gets and return the student object from the studentName, return the student object where (student.name === studentName)
-     * @param {object} group the group from which to find and get the student
-     * @param {string} studentName the name of the student to find and return
-     * @returns {object} return the student object from the group object where student.name === studentName
-     */
-    function getstudentByStudentName(group, studentName){
-        for (const student of group.students) {
-            if (student.name === studentName){
-                return student;
-            }
-        }
-    }
-
-    /**
-     * @summary Gets and returns the students index in the group object (used to determine the color to be assigned to the student)
-     * @param {object} group the group in which the find the student by their name
-     * @param {string} studentName the name of the student
-     * @returns {number} returns the students index in the group object
-     */
-    function getStudentIdxInGroupByStudentName(group, studentName){
-        // Finds the students in the group object
-        for (const studentArray of Object.entries(group).filter((entry)=>entry[0] === "students")) {
-            // Iterates through the only student where the student.name === studentName
-            for (const val of studentArray[1].filter((entry)=>entry.name === studentName)) {
-                // Finds and returns the index of the student in the group.students object
-                return studentArray[1].indexOf(val);
-            }
-        }
     }
 }());
