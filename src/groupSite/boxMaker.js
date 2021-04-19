@@ -83,8 +83,9 @@ function createInvColumn(){
 
 function updateCandidateTable(table, candidateList){
     clearTable(table);
+    table.appendChild(createCandidateTableHeader());
     for (const candidate of candidateList) {
-        createCandidateRow(candidate);
+        table.appendChild(createCandidateRow(candidate));
     }
 }
 
@@ -94,6 +95,14 @@ function clearTable(){
     }
 }
 
+function createCandidateTableHeader(){
+    let tableRow = document.createElement("TR");
+    tableRow.appendChild(document.createElement("TH")).textContent = "Group Name";
+    tableRow.appendChild(document.createElement("TH")).textContent = "Score";
+    tableRow.appendChild(document.createElement("TH")).textContent = "Invitation status";
+    return tableRow;
+}
+
 let table = document.getElementById("candidatesTable");
 table.appendChild(createCandidateRow());
-updateCandidateTable(table, [null, null, null, null, null]);
+updateCandidateTable(table, [null, null, null, null]);
