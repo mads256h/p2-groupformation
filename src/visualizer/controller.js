@@ -38,6 +38,7 @@
             option.text = file;
             select.appendChild(option);
         }
+        select.selectedIndex = "-1";
         return select;
     }
 
