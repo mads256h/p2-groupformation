@@ -19,7 +19,7 @@ function makeDivElement(name){
 
 function makeList(groupArray){
     const fullList = document.createElement("ul");
-    for(let group = 0; group < groupArray.length; group++){
+    for (let group = 0; group < groupArray.length; group++){
         const listPart = document.createElement("details");
         const summary = document.createElement("summary");
         summary.innerText = groupArray[group];
@@ -54,3 +54,46 @@ function changeButtonColor(id){
 }
 
 const testArray = ["Hej", "med", "dig"];
+
+function createCandidateRow(candidate){
+    let tableRow = document.createElement("TR");
+    tableRow.appendChild(createGroupColumn());
+    tableRow.appendChild(createScoreColumn());
+    tableRow.appendChild(createInvColumn());
+    return tableRow;
+}
+
+function createGroupColumn(){
+    let groupColumn = document.createElement("TD");
+    groupColumn.textContent = "Grupppe1";
+    return groupColumn;
+}
+
+function createScoreColumn(){
+    let scoreColumn = document.createElement("TD");
+    scoreColumn.textContent = "69 nice";
+    return scoreColumn;
+}
+
+function createInvColumn(){
+    let invColumn = document.createElement("TD");
+    invColumn.textContent = "Jeg er en fake knap";
+    return invColumn;
+}
+
+function updateCandidateTable(table, candidateList){
+    clearTable(table);
+    for (const candidate of candidateList) {
+        createCandidateRow(candidate);
+    }
+}
+
+function clearTable(){
+    while (table.lastChild){
+        table.removeChild(table.lastChild);
+    }
+}
+
+let table = document.getElementById("candidatesTable");
+table.appendChild(createCandidateRow());
+updateCandidateTable(table, [null, null, null, null, null]);
