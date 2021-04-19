@@ -1,7 +1,7 @@
-#right {
+#informationBox {
   border: 2px solid red;
 }
-#left {
+#groupExamples {
   border: 2px solid blue;
 }
 #masterDiv {
@@ -9,4 +9,17 @@
 }
 .boxes {
 display: inline-block;
+}
+
+#candidatesTable, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 10px;
+  width: 50%;
+}
+th {
+  text-align: right;
+}
+td {
+  text-align: left;
 }

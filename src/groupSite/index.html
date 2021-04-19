@@ -12,16 +12,37 @@
 
 <body>
   <div id="masterDiv">
-    <div id="left" class="boxes">
+    <div id="informationBox" class="boxes">
       <p>Welcome "name"</p>
-      <div>
+      <div id="yourData">
         Your data:
       </div>
+      <div id="currentGroup">
+        Your current group:
+      </div>
+      <button type="button" id="leaveButton">
+        Leave group
+      </button>
     </div>
-    <div id="right" class="boxes">
+    <div id="groupExamples" class="boxes">
       <p>Your candidates</p>
-      <div>
-        
+      <div id="candidatesBox">
+        <table id="candidatesTable">
+          <tr>
+            <th>Group Name</th>
+            <th>Score</th>
+            <th>Invitation status</th>
+          </tr>
+          <tr>
+            <td>1234</td>
+            <td>9,8</td>
+            <td>
+              <button type="button">
+              Invite
+            </button>
+          </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
