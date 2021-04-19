@@ -8,7 +8,8 @@
 module.exports = {preferenceAlg, masterAlg};
 const {
     assertArrayItemsType,
-    assertArrayNotEmpty
+    assertArrayNotEmpty,
+    assertFunction
 } = require("../typeassert");
 
 /**
@@ -41,5 +42,8 @@ function preferenceAlg(preferences){
  * @returns {number} Calculated score for preferences
  */
 function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction){
+    assertFunction(heterogenousFunction);
+    assertFunction(homogenousFunction);
+    assertFunction(subjectFunction);
     return heterogenousFunction() + homogenousFunction() + subjectFunction();
 }
