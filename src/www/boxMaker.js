@@ -1,4 +1,4 @@
-const {invitegroup, rankedgroups} = window.commjs;
+const {invitegroup, rankedgroups, mygroup, registerUpdateHandler} = window.commjs;
 
 function createGroupStudentList(group){
     
@@ -23,12 +23,23 @@ function createListItem(innerText){
     return listItem;
 }
 
-function createButtons(group) {
+function createButton(group, thisGroup) {
     const button = document.createElement("button");
     button.setAttribute("id", group.id);
     button.innerText = "Invite";
-    button.addEventListener("pointerdown",() => invitegroup(group).then(button.style.background = "lightgreen").catch((e)=>console.log(e)));
-    //button.onclick;
+    if (group.isInvited){
+        console.log("meme");
+        button.style.backgroundColor = "lightgreen";
+    }
+    else if (thisGroup.invitations.includes(group.id)){
+        button.style.backgroundColor = "yellow";
+    }
+    mygroup().then((response) => console.log(response));
+    button.addEventListener("click", () => 
+        invitegroup(group)
+            .then((response) => console.log(response))
+            .catch((e)=>console.log(e)));
+    //button.onclick;0
     return button;
 }
 
@@ -41,11 +52,11 @@ function changeButtonColor(id){
     }
 }
 
-function createCandidateRow(candidate){
+function createCandidateRow(candidate, thisGroup){
     let tableRow = document.createElement("TR");
     tableRow.appendChild(createGroupColumn(candidate.group));
     tableRow.appendChild(createScoreColumn(candidate.value));
-    tableRow.appendChild(createInvColumn(candidate.group));
+    tableRow.appendChild(createInvColumn(candidate.group, thisGroup));
     return tableRow;
 }
 
@@ -62,17 +73,17 @@ function createScoreColumn(score){
     return scoreColumn;
 }
 
-function createInvColumn(group){
+function createInvColumn(group, thisGroup){
     let invColumn = document.createElement("TD");
-    invColumn.appendChild(createButtons(group));
+    invColumn.appendChild(createButton(group, thisGroup));
     return invColumn;
 }
 
-function updateCandidateTable(table, candidateList){
+function updateCandidateTable(table, candidateList, thisGroup){
     clearTable(table);
     table.appendChild(createCandidateTableHeader());
     for (const candidate of candidateList) {
-        table.appendChild(createCandidateRow(candidate));
+        table.appendChild(createCandidateRow(candidate, thisGroup));
     }
 }
 
@@ -90,11 +101,23 @@ function createCandidateTableHeader(){
     return tableRow;
 }
 
+function updateAll(){
+    mygroup().then((thisGroup)=>{
+        console.log(thisGroup);
+        updateCandidates(thisGroup.response);
+
+    })
+}
+function updateCandidates(thisGroup){
+    rankedgroups().then((group)=>{
+        const sortedGroup = group.response.sort((a, b)=>b.value - a.value);
+        updateCandidateTable(table, sortedGroup, thisGroup);
+        return sortedGroup;
+        });
+}
+
+registerUpdateHandler(updateAll);
+updateAll();
 let table = document.getElementById("candidatesTable");
 
-rankedgroups().then((group)=>{
-    const sortedGroup = group.response.sort((a, b)=>b.value - a.value);
-    console.log(sortedGroup);
-    updateCandidateTable(table, sortedGroup);
-    return sortedGroup;
-    });
+
