@@ -53,10 +53,10 @@ const {
 
         // Create the circles
         const arrCircleSize = closeby(getLSValuesOfGroup(group, learnStyleName));
-        for (const studentIdx in arrCircleSize) {
-            const xValue = circleXValue(group.students[studentIdx].criteria.learningStyles[learnStyleName]);
-            const studentColor = colorArr[studentIdx];
-            svg.appendChild(createCircle(xValue, yValue, studentColor, arrCircleSize[studentIdx]));
+        for (const i in arrCircleSize) {
+            const xValue = circleXValue(group.students[i].criteria.learningStyles[learnStyleName]);
+            const studentColor = colorArr[i];
+            svg.appendChild(createCircle(xValue, yValue, studentColor, arrCircleSize[i]));
         }
     }
 
@@ -171,18 +171,19 @@ const {
      */
     function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works
         const resArr = new Array();
-        for (const student1Idx in arrCircleSize) {
-            resArr[student1Idx] = 1;
-            for (const student2Idx in arrCircleSize) {
+        for (const i in arrCircleSize) {
+            resArr[i] = 1;
+            for (const j in arrCircleSize) {
                 // If they aren't the same person and their scores are close, the make the size of one of the circles larger, so it'll still be visible
-                if (student1Idx !== student2Idx && range(arrCircleSize[student1Idx], arrCircleSize[student2Idx])){
-                    resArr[student2Idx]++;
+                if (i !== j && range(arrCircleSize[i], arrCircleSize[j])){
+                    resArr[j]++;
                 }
             }
         }
         // calc the circlesize in pixels by the size e.g. 1, 2, 3... depends on how many values are close to eachother
-        for (const studentName in resArr){
-            resArr[studentName] = 0.25 * svgLineSpace * Math.pow(resArr[studentName], 0.6);
+        console.log(resArr);
+        for (const i in resArr){
+            resArr[i] = 0.25 * svgLineSpace * Math.pow(resArr[i], 0.6);
         }
         return resArr;
     }
