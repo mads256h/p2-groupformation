@@ -37,13 +37,11 @@ function changeButtonColor(id){
     }
 }
 
-const testArray = ["Hej", "med", "dig"];
-
 function createCandidateRow(candidate){
     let tableRow = document.createElement("TR");
     tableRow.appendChild(createGroupColumn(candidate.group));
     tableRow.appendChild(createScoreColumn(candidate.value));
-    tableRow.appendChild(createInvColumn());
+    tableRow.appendChild(createInvColumn(candidate.group.id));
     return tableRow;
 }
 
@@ -60,9 +58,9 @@ function createScoreColumn(score){
     return scoreColumn;
 }
 
-function createInvColumn(){
+function createInvColumn(id){
     let invColumn = document.createElement("TD");
-    invColumn.textContent = "Jeg er en fake knap";
+    invColumn.appendChild(createButtons(id));
     return invColumn;
 }
 
@@ -89,9 +87,6 @@ function createCandidateTableHeader(){
 }
 
 let table = document.getElementById("candidatesTable");
-
-
-
 
 //im so sorry
 let testCandidates = JSON.parse(`
