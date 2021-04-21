@@ -27,7 +27,7 @@ function createButtons(group) {
     const button = document.createElement("button");
     button.setAttribute("id", group.id);
     button.innerText = "Invite";
-    button.addEventListener("pointerdown",() =>invitegroup(group).then(button.style.background = "lightgreen"));
+    button.addEventListener("pointerdown",() => invitegroup(group).then(button.style.background = "lightgreen").catch((e)=>console.log(e)));
     //button.onclick;
     return button;
 }
@@ -45,7 +45,7 @@ function createCandidateRow(candidate){
     let tableRow = document.createElement("TR");
     tableRow.appendChild(createGroupColumn(candidate.group));
     tableRow.appendChild(createScoreColumn(candidate.value));
-    tableRow.appendChild(createInvColumn(candidate.group.id));
+    tableRow.appendChild(createInvColumn(candidate.group));
     return tableRow;
 }
 
@@ -62,9 +62,9 @@ function createScoreColumn(score){
     return scoreColumn;
 }
 
-function createInvColumn(id){
+function createInvColumn(group){
     let invColumn = document.createElement("TD");
-    invColumn.appendChild(createButtons(id));
+    invColumn.appendChild(createButtons(group));
     return invColumn;
 }
 
