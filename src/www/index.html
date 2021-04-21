@@ -12,11 +12,10 @@
 <body>
   <div class="error" id="error"></div>
   <div class="center">
-    <h1>Login</h1>
     <fieldset>
-      <form method="POST" action="/api/login" id="login">
-        <label for="username">Username</label>
-        <input name="username" type="text" id="username">
+      <legend>Login</legend>
+      <form method="post" action="/api/login" id="login">
+        <input name="username" type="text" id="username" placeholder="Username">
         <input type="submit" value="Log in">
       </form>
     </fieldset>
