@@ -17,14 +17,13 @@ const {
     const svgTextSize = svgLineSpace * 0.5;
     const RANGEWIDTH = 22;
 
-
     /**
      * @summary Creates and appends a div element with the svg of the learningstyles
-     * @param {Array} group the group array with students
+     * @param {object} group the group array with students
      * @returns {HTMLElement} Html element with the graphical info of the group from the argument
      */
     function createGroupSvg(group){
-        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         const learningStyles = [];
         for (let learningStyle in group.students[0].criteria.learningStyles) {
             learningStyles.push(learningStyle);
@@ -43,7 +42,7 @@ const {
 
     /**
      * @summary Creates and appends a svg learningstyle to the svg element
-     * @param {Array} group the group array with students
+     * @param {object} group the group array with students
      * @param {number} learnStyleName the index of the learningstyle (used for linespaceing)
      * @param {SVGElement} svg svg element on which we append the svg for a learningstyle
      * @param {number} yValue the yValue of this bar and the circles
@@ -53,8 +52,8 @@ const {
         createBar(yValue, -11, RANGEWIDTH, svg);
 
         // Create the circles
-        let arrCircleSize = closeby(getLSValuesOfGroup(group, learnStyleName));
-        for (const [studentIdx, circleRadius] of Object.entries(arrCircleSize)) { // Henrik note, omskriv ligesom i display, mht color
+        const arrCircleSize = closeby(getLSValuesOfGroup(group, learnStyleName));
+        for (const [studentIdx, circleRadius] of arrCircleSize.entries()) {
             const xValue = circleXValue(group.students[studentIdx].criteria.learningStyles[learnStyleName]);
             const studentColor = colorArr[studentIdx];
             svg.appendChild(createCircle(xValue, yValue, studentColor, circleRadius));
@@ -154,12 +153,12 @@ const {
     // --------------------------------------------------- Start of math functions only used for svg ----------
     /**
      * @summary calculates the x coordinate of the circle's center from the LearningStyleValue(from -11 to 11) to a x coordinate on the line
-     * @param {number} learnStyleNameValue the LearningStyleValue form which to calculate the x value of the circle
+     * @param {number} learnStyleValue the LearningStyleValue form which to calculate the x value of the circle
      * @returns {number} Returns the x coordinate of the circle
      */
-    function circleXValue(learnStyleNameValue){
+    function circleXValue(learnStyleValue){
         let xPos = svgLineSpace; // add the ofset from the left of the svg (the lines start some length inside the grey) this is equal to the -11 position
-        const percent = (learnStyleNameValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
+        const percent = (learnStyleValue + 11) / RANGEWIDTH; // from -11 to 11, how many % is the position into the line? 0%=-11, 100%=11
         const lineLength = svgWidth - (2 * svgLineSpace); // the length of the line
         xPos += lineLength * percent; // how far into the line must the center of the circle be placed
         return xPos;
@@ -167,14 +166,14 @@ const {
 
     /**
      * @summary finds how many elements are close to each other and increases their size accordingly
-     * @param {Array} arrCircleSize the input array, this contains
-     * @returns {Array} Returns an array with the radius(size) of the circles to be made, so alle the circles can be seen
+     * @param {number[]} arrCircleSize the input array, this contains the values of the learningStyles for a learningstyle of a group
+     * @returns {number[]} Returns an array with the radius(size) of the circles to be made, so alle the circles can be seen
      */
     function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works
         const resArr = new Array();
-        for (const [student1Idx, lsValue1] of Object.entries(arrCircleSize)) {
+        for (const [student1Idx, lsValue1] of arrCircleSize.entries()) {
             resArr[student1Idx] = 1;
-            for (const [student2Idx, lsValue2] of Object.entries(arrCircleSize)) {
+            for (const [student2Idx, lsValue2] of arrCircleSize.entries()) {
                 // If they aren't the same person and their scores are close, the make the size of one of the circles larger, so it'll still be visible
                 if (student1Idx !== student2Idx && range(lsValue1, lsValue2)){
                     resArr[student2Idx]++;
@@ -182,7 +181,7 @@ const {
             }
         }
         // calc the circlesize in pixels by the size e.g. 1, 2, 3... depends on how many values are close to eachother
-        for (const [studentName, circleSize] of Object.entries(resArr)){
+        for (const [studentName, circleSize] of resArr.entries()){
             resArr[studentName] = 0.25 * svgLineSpace * Math.pow(circleSize, 0.6);
         }
         return resArr;

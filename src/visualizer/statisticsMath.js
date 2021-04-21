@@ -24,23 +24,22 @@
 
     /**
      * @summary Finds the length between the numbers
-     * @param {number[]} array Array of numbers
+     * @param {number[]} learningStyleArray Array of numbers
      * @returns {number} The sum of all the lengths between the numbers
      * @throws {RangeError} On invalid arguments
      */
-    function distribution(array) {
-        if (array.length === 1) {
+    function distribution(learningStyleArray) {
+        if (learningStyleArray.length === 1) {
             return 0;
         }
         else {
-            const newArray = array.slice();
-            newArray.sort(function(a, b) {
+            const sortedInputArray = learningStyleArray.slice().sort(function(a, b) {
                 return a - b;
             });
             let sum = 0;
-            const pef = perfectDist(newArray.length);
-            for (let index = 0; index < newArray.length; index++) {
-                sum += Math.abs(newArray[index] - pef[index]);
+            const perfectDistribution = perfectDist(sortedInputArray.length);
+            for (let index = 0; index < sortedInputArray.length; index++) {
+                sum += Math.abs(sortedInputArray[index] - perfectDistribution[index]);
             }
             return sum;
         }
@@ -49,10 +48,10 @@
     /**
      * @summary Makes the perfect array of numbers with a perfect distances between
      * @param {number} n The number of indexs needed in the array
-     * @returns {Array} The calulated array
+     * @returns {number[]} The calulated array
      */
     function perfectDist(n) {
-        let array = new Array();
+        const array = new Array();
         const rangeWidth = 22;
         for (let i = 0; i <= n - 1; i++) {
             array[i] = ((rangeWidth / (n - 1)) * i) - 11;

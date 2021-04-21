@@ -108,7 +108,7 @@
     /**
      * @summary Creates the html details element with a list element
      * @param {object} student The student from the group
-     * @param {string} color The color of the student in the svg
+     * @param {color} color The color of the student in the svg
      * @returns {HTMLElement} return a html element with info about the student
      */
     function createStudentElement(student, color) {
