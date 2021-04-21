@@ -58,7 +58,9 @@ fs.readFile("config.json", (err, data) => {
                 const webServer = new WebServer(config.hostname, config.port, "src/www");
 
                 webServer.addPostHandler("/api/login", (data, cookies) => loginHandler(groupFormation, data, cookies));
+
                 webServer.addGetHandler("/api/mygroup", (data, cookies) => mygroupHandler(groupFormation, data, cookies));
+                webServer.addGetHandler("/api/rankedgroups", (data, cookies) => rankedgroupsHandler(groupFormation, data, cookies));
 
 
                 webServer.run()
@@ -93,16 +95,42 @@ function loginHandler(groupFormation, data, cookies) {
  * @param {Cookies} cookies
  */
 function mygroupHandler(groupFormation, data, cookies) {
-     const session = cookies.get("session");
+    const session = cookies.get("session");
 
     if (session === undefined) {
         throw new HttpError(403, "Missing session cookie");
     }
 
-    const student = groupFormation.students.find((s) => s.name === session);
+    const student = getStudent(groupFormation, session);
     const group = student.group;
 
     return group.toGroup();
+}
+
+function rankedgroupsHandler(groupFormation, data, cookies) {
+    const session = cookies.get("session");
+
+    if (session === undefined) {
+        throw new HttpError(403, "Missing session cookie");
+    }
+
+    const student = getStudent(groupFormation, session);
+    const group = student.group;
+
+    const candidates = group.candidates();
+    const rankedGroups = group.valueGroups(candidates);
+
+    const arr = [];
+
+    for (let [group, value] of rankedGroups.entries()) {
+        arr.push({group: group.toGroup(), value});
+    }
+
+    return arr;
+}
+
+function getStudent(groupFormation, name) {
+    return groupFormation.students.find((s) => s.name === name);
 }
 
 function convertStudents(students) {
