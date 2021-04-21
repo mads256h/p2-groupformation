@@ -38,5 +38,15 @@
     }
 
 
-    window.commjs = {login, me, mygroup, rankedgroups, leavegroup, invitegroup}
+    function registerUpdateHandler(callback) {
+        const socket = new WebSocket("ws://" + window.location.host);
+        socket.onerror = (e) => console.error(e);
+        socket.onopen = (e) => console.log("Opened websocket", e);
+        socket.onclose = (e) => console.log("Closed websocket", e);
+
+        socket.onmessage = () => callback();
+    }
+
+
+    window.commjs = {login, me, mygroup, rankedgroups, leavegroup, invitegroup, registerUpdateHandler}
 }())

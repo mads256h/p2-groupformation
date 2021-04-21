@@ -1,6 +1,7 @@
 #!/usr/bin/node
 
 const {WebServer, HttpError} = require("./webserver");
+const {WebSocketServer} = require("./websocketserver");
 const {Student, Criteria, LearningStyles, SubjectPreference, Subject} = require("./group");
 const {GroupFormation, WeightedCriteria} = require("./formation");
 const fs = require("fs");
@@ -56,6 +57,7 @@ fs.readFile("config.json", (err, data) => {
 
 
                 const webServer = new WebServer(config.hostname, config.port, "src/www");
+                const webSocketServer = new WebSocketServer(webServer);
 
                 webServer.addPostHandler("/api/login", (data, cookies) => loginHandler(groupFormation, data, cookies));
 
@@ -63,7 +65,8 @@ fs.readFile("config.json", (err, data) => {
                 webServer.addGetHandler("/api/mygroup", (data, cookies) => mygroupHandler(groupFormation, data, cookies));
                 webServer.addGetHandler("/api/rankedgroups", (data, cookies) => rankedgroupsHandler(groupFormation, data, cookies));
                 webServer.addGetHandler("/api/leavegroup", (data, cookies) => leavegroupHandler(groupFormation, data, cookies));
-                webServer.addPostHandler("/api/invitegroup", (data, cookies) => invitegroupHandler(groupFormation, data, cookies));
+                webServer.addPostHandler("/api/invitegroup", (data, cookies) => invitegroupHandler(webSocketServer, groupFormation, data, cookies));
+
 
 
                 webServer.run()
@@ -160,7 +163,7 @@ function leavegroupHandler(groupFormation, data, cookies) {
     student.leave();
 }
 
-function invitegroupHandler(groupFormation, data, cookies) {
+function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
     const session = cookies.get("session");
 
     if (session === undefined) {
@@ -183,6 +186,8 @@ function invitegroupHandler(groupFormation, data, cookies) {
     }
 
     group.invitations.push(student.group);
+
+    webSocketServer.broadcastMessage("update");
 }
 
 function getStudent(groupFormation, name) {

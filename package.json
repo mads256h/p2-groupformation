@@ -47,6 +47,7 @@
     "cookies": "^0.8.0",
     "mime-type": "^4.0.0",
     "node-fetch": "^2.6.1",
-    "querystring": "^0.2.1"
+    "querystring": "^0.2.1",
+    "websocket": "^1.0.34"
   }
 }

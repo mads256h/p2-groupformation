@@ -17,7 +17,7 @@ class WebSocketServer {
         typeassert.assertInstanceOf(server, WebServer);
 
 
-        this.websocket = new WSServer({httpServer: server});
+        this.websocket = new WSServer({httpServer: server.server});
         this.clients = [];
 
         this.websocket.on("request", (request) => {
@@ -55,4 +55,4 @@ class WebSocketServer {
     }
 }
 
-module.exports({WebSocketServer});
+module.exports = {WebSocketServer};
