@@ -8,16 +8,15 @@ window.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
 
-        fetch("/login", {
-            method: "POST",
-            body: "username=" + username.value,
-            headers:
-            {
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        })
-            .then((response) => response.json())
-            .then((response) => {if (response.status === "OK") {window.location = "/formation.html"} else {alert(response.message)} });
+        window.commjs.login(username.value)
+            .then((response) => {
+                if (response.status === "OK") {
+                    window.location = "/formation.html"
+                }
+                else {
+                    alert(response.message)
+                }
+            });
     });
 
 
