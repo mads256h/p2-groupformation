@@ -57,7 +57,8 @@ fs.readFile("config.json", (err, data) => {
 
                 const webServer = new WebServer(config.hostname, config.port, "src/www");
 
-                webServer.addPostHandler("/login", (data, cookies) => loginHandler(groupFormation, data, cookies));
+                webServer.addPostHandler("/api/login", (data, cookies) => loginHandler(groupFormation, data, cookies));
+                webServer.addGetHandler("/api/mygroup", (data, cookies) => mygroupHandler(groupFormation, data, cookies));
 
 
                 webServer.run()
@@ -84,6 +85,24 @@ function loginHandler(groupFormation, data, cookies) {
     }
 
     cookies.set("session", data.username);
+}
+
+/**
+ * @param {GroupFormation} groupFormation
+ * @param {any} data
+ * @param {Cookies} cookies
+ */
+function mygroupHandler(groupFormation, data, cookies) {
+     const session = cookies.get("session");
+
+    if (session === undefined) {
+        throw new HttpError(403, "Missing session cookie");
+    }
+
+    const student = groupFormation.students.find((s) => s.name === session);
+    const group = student.group;
+
+    return group.toGroup();
 }
 
 function convertStudents(students) {

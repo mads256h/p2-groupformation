@@ -4,7 +4,7 @@
             method: "POST",
             body: new URLSearchParams(postData),
             headers: {"Content-Type": "application/x-www-form-urlencoded"}
-        }).then((response) => response.json);
+        }).then((response) => response.json());
 
     }
 

@@ -14,6 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     window.location = "/formation.html"
                 }
                 else {
+                    console.log(response);
                     alert(response.message)
                 }
             });
