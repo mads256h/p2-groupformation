@@ -1,22 +1,3 @@
-window.addEventListener('DOMContentLoaded', (event) => {
-    const divBox = makeDivElement("Hej");
-    document.body.appendChild(divBox);
-    const innerBox = makeDivElement("InnerBox");
-    innerBox.innerText = "Hej";
-    divBox.appendChild(innerBox);
-    const buttonInvite  = createButtons("invite");
-    divBox.appendChild(buttonInvite);
-    const id = "invite";
-    divBox.appendChild(makeList(testArray));
-    document.getElementById(id).addEventListener("click", changeButtonColor(id));
-});
-
-function makeDivElement(name){
-    const div = document.createElement("div");
-    div.className = name;
-    return div;
-}
-
 function makeList(groupArray){
     const fullList = document.createElement("ul");
     for (let group = 0; group < groupArray.length; group++){
