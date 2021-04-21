@@ -103,6 +103,28 @@ function createCandidateTableHeader(){
     return tableRow;
 }
 
+//delete when not needed
+const {Student, Criteria, Group, LearningStyles, Subject, SubjectPreference} = require("../group");
+let testCandidates = [
+    {group: new Group("group1", 420, [
+        new Student("bob", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([]))),
+        new Student("gwegei", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([]))),
+        new Student("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([])))
+
+    ]), value: 230},
+    {group: new Group("group2", 420, [
+        new Student("ahdsgæjkah", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([]))),
+        new Student("jogsiohæasg", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([]))),
+        new Student("afuhewhhfw", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([])))
+    ]), value: 42},
+    {group: new Group("group0", 420, [
+        new Student("kage", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([]))),
+        new Student("smager", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([]))),
+        new Student("godt", new Criteria(1, 1, new LearningStyles(1, 1, 1, 1), new SubjectPreference([])))
+    ]), value: 2}
+
+];
+
 let table = document.getElementById("candidatesTable");
 table.appendChild(createCandidateRow());
 updateCandidateTable(table, [null, null, null, null]);
