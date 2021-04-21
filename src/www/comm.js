@@ -1,11 +1,10 @@
-(function () {
+(function() {
     function postRequest(url, postData) {
         return fetch("/api/" + url, {
             method: "POST",
             body: new URLSearchParams(postData),
             headers: {"Content-Type": "application/x-www-form-urlencoded"}
         }).then((response) => response.json());
-
     }
 
     function getRequest(url, data = {}) {
@@ -48,5 +47,5 @@
     }
 
 
-    window.commjs = {login, me, mygroup, rankedgroups, leavegroup, invitegroup, registerUpdateHandler}
-}())
+    window.commjs = {login, me, mygroup, rankedgroups, leavegroup, invitegroup, registerUpdateHandler};
+}());
