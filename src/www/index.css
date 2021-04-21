@@ -6,6 +6,7 @@ fieldset {
   display: inline-block;
 }
 
+button,
 input {
   display: block;
   margin: 1em;
