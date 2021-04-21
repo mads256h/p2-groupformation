@@ -59,6 +59,7 @@ fs.readFile("config.json", (err, data) => {
 
                 webServer.addPostHandler("/api/login", (data, cookies) => loginHandler(groupFormation, data, cookies));
 
+                webServer.addGetHandler("/api/me", (data, cookies) => meHandler(groupFormation, data, cookies));
                 webServer.addGetHandler("/api/mygroup", (data, cookies) => mygroupHandler(groupFormation, data, cookies));
                 webServer.addGetHandler("/api/rankedgroups", (data, cookies) => rankedgroupsHandler(groupFormation, data, cookies));
                 webServer.addGetHandler("/api/leavegroup", (data, cookies) => leavegroupHandler(groupFormation, data, cookies));
@@ -89,6 +90,18 @@ function loginHandler(groupFormation, data, cookies) {
     }
 
     cookies.set("session", data.username);
+}
+
+function meHandler(groupFormation, data, cookies) {
+    const session = cookies.get("session");
+
+    if (session === undefined) {
+        throw new HttpError(403, "Missing session cookie");
+    }
+
+    const student = getStudent(groupFormation, session);
+
+    return student.toStudent();
 }
 
 /**
@@ -164,12 +177,22 @@ function invitegroupHandler(groupFormation, data, cookies) {
     const student = getStudent(groupFormation, session);
 
     const group = groupFormation.groups.find((g) => g.id === groupid);
+    
+    if (group === undefined) {
+        throw new HttpError(500, "could not group to invite");
+    }
 
     group.invitations.push(student.group);
 }
 
 function getStudent(groupFormation, name) {
-    return groupFormation.students.find((s) => s.name === name);
+    const student = groupFormation.students.find((s) => s.name === name);
+    if (student === undefined) {
+        throw new HttpError(400, "student name is invalid");
+    }
+    else {
+        return student;
+    }
 }
 
 function convertStudents(students) {

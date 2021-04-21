@@ -17,6 +17,10 @@
         return postRequest("login", {username});
     }
 
+    function me() {
+        return getRequest("me");
+    }
+
     function mygroup() {
         return getRequest("mygroup");
     }
@@ -34,5 +38,5 @@
     }
 
 
-    window.commjs = {login, mygroup, rankedgroups, leavegroup, invitegroup}
+    window.commjs = {login, me, mygroup, rankedgroups, leavegroup, invitegroup}
 }())
