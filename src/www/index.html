@@ -2,17 +2,50 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Login</title>
-  <script src="login.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Site</title>
+  <!--<script src="boxMaker.js"></script>-->
+  <link rel = "stylesheet" href="groupSite.css">
 </head>
 
 <body>
-  <h1>Login</h1>
-  <form method="POST" action="/login" id="login">
-    <input name="username" type="text" id="username">
-    <input type="submit">
-  </form>
+  <div id="masterDiv">
+    <div id="informationBox">
+      <p class="titles">Welcome "name not set"</p>
+      <div id="yourData">
+        <p>Your data:</p>
+      </div>
+      <div id="currentGroup">
+        Your current group:
+      </div>
+      <button type="button" id="leaveButton">
+        Leave group
+      </button>
+    </div>
+    <div id="groupExamples">
+      <p class="titles">Your candidates</p>
+      <div id="candidatesBox">
+        <table id="candidatesTable">
+          <tr>
+            <th>Group Name</th>
+            <th>Score</th>
+            <th>Invitation status</th>
+          </tr>
+          <tr>
+            <td>1234</td>
+            <td>9,8</td>
+            <td>
+              <button type="button">
+                Invite
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="boxMaker.js"></script>
 </body>
-
 </html>
