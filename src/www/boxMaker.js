@@ -72,7 +72,7 @@ function updateCandidateTable(table, candidateList){
     }
 }
 
-function clearTable(){
+function clearTable(table){
     while (table.lastChild){
         table.removeChild(table.lastChild);
     }
