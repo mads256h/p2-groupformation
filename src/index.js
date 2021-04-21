@@ -180,12 +180,20 @@ function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
     const student = getStudent(groupFormation, session);
 
     const group = groupFormation.groups.find((g) => g.id === groupid);
-    
+
     if (group === undefined) {
         throw new HttpError(500, "could not group to invite");
     }
 
-    group.invitations.push(student.group);
+    if (student.group.invitations.includes(group)) {
+        groupFormation.mergeGroups(student.group, group);
+    }
+    else {
+        if (group.invitations.includes(student.group)) {
+            throw new HttpError(400, "Group already invited");
+        }
+        group.invitations.push(student.group);
+    }
 
     webSocketServer.broadcastMessage("update");
 }
@@ -209,7 +217,7 @@ function convertStudents(students) {
 }
 
 function configToAlgorithmFunction(config) {
-    switch(config.algorithm) {
+    switch (config.algorithm) {
         case "random": return () => Math.random();
         case "0point": return balance;
         case "distance": return maxDistance;
