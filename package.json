@@ -7,7 +7,7 @@
     "main": "node src/index.js",
     "js-lint": "eslint src/",
     "html-lint": "html-validate src/{www,visualizer}/",
-    "css-lint": "stylelint --aei src/{www/**,visualizer}/*.css",
+    "css-lint": "stylelint --aei src/{www,www/**,visualizer}/*.css",
     "test": "jest",
     "doc": "jsdoc -r src/",
     "vis": "node src/visualizer/server.js",

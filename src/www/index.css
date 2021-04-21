@@ -1,7 +1,3 @@
-h1 {
-
-}
-
 fieldset {
   display: inline-block;
 }
@@ -19,7 +15,6 @@ input {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-
 
 .error {
   position: absolute;
