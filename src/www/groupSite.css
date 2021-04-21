@@ -1,28 +1,19 @@
-#masterDiv {
-
-  color:white;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
-}
-
 #informationBox {
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
   border: 2px solid white;
   border-spacing: 15px;
-  height: 75%;
-  /* position: fixed; */
+  height: min-content;
+  margin: 25px;
+  grid-column-start: 1;
+  position: fixed;
 }
 #groupExamples {
-  overflow: scroll;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
+  overflow: auto;
+  margin: 25px;
+ /*  margin-left: auto;
+  margin-right: auto; */
   border: 2px solid white;
   border-spacing: 15px;
-  height: 75%;
+  grid-column-start: 2;
 }
 p.titles {
   text-align: center;
@@ -43,4 +34,7 @@ td {
 
 body {
   background-color: grey;
+  color:white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
