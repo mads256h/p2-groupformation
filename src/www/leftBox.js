@@ -9,6 +9,7 @@
       showData(res.response);
       showNameOnSite(res.response);
       showWorkEnvironment(res.response);
+      showSubject(res.response);
     });
     });
     function showData(content){
@@ -43,4 +44,8 @@ function workEnvironmentStringMaker(work){
             break;
     }
     return place;
+}
+
+function showSubject(){
+    return 1;
 }
