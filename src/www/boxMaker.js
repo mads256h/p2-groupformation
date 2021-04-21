@@ -27,7 +27,7 @@ function createButtons(group) {
     const button = document.createElement("button");
     button.setAttribute("id", group.id);
     button.innerText = "Invite";
-    button.addEventListener("pointerdown",() =>invitegroup(group));
+    button.addEventListener("pointerdown",() =>invitegroup(group).then(button.style.background = "lightgreen"));
     //button.onclick;
     return button;
 }

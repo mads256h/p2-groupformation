@@ -30,7 +30,7 @@
     }
 
     function invitegroup(group) {
-        return postRequest("invitegroup", {id: group.id});
+        return postRequest("invitegroup", {groupid: group.id});
     }
 
 
