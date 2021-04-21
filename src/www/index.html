@@ -6,14 +6,21 @@
   <title>Login</title>
   <script src="comm.js"></script>
   <script src="login.js"></script>
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
 <body>
-  <h1>Login</h1>
-  <form method="POST" action="/login" id="login">
-    <input name="username" type="text" id="username">
-    <input type="submit">
-  </form>
+  <div class="error" id="error"></div>
+  <div class="center">
+    <h1>Login</h1>
+    <fieldset>
+      <form method="POST" action="/api/login" id="login">
+        <label for="username">Username</label>
+        <input name="username" type="text" id="username">
+        <input type="submit" value="Log in">
+      </form>
+    </fieldset>
+  </div>
 </body>
 
 </html>

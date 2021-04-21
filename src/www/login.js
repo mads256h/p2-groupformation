@@ -3,6 +3,7 @@
 window.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("login");
     const username = document.getElementById("username");
+    const errorbox = document.getElementById("error");
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -15,7 +16,8 @@ window.addEventListener("DOMContentLoaded", () => {
                 }
                 else {
                     console.log(response);
-                    alert(response.message)
+                    errorbox.innerText = response.message;
+                    errorbox.style.display = "block";
                 }
             });
     });
