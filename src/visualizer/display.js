@@ -5,11 +5,9 @@
     const {
         distribution,
         sumOfArray,
-        distanceBetweenExtremes
-    } = window.statisticsMath;
-    const {
+        distanceBetweenExtremes,
         getLSValuesOfGroup
-    } = window.objectFunctions;
+    } = window.statisticsMath;
     const {
         createTableHeader,
         createTableRow,

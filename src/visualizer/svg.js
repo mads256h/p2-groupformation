@@ -5,7 +5,7 @@
 // Inspired by: https://www.w3.org/TR/2011/REC-SVG11-20110816/shapes.html#CircleElement
 const {
     getLSValuesOfGroup
-} = window.objectFunctions;
+} = window.statisticsMath;
 
 (function(){
     window.svg = {
