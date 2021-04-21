@@ -6,6 +6,7 @@ const mimeType = require("mime-type/with-db");
 const typeassert = require("./typeassert");
 const concat = require("concat-stream");
 const qs = require("querystring");
+const Cookies = require("cookies");
 
 /**
  * @description WebServer module.
@@ -17,7 +18,7 @@ const qs = require("querystring");
 /**
  * @callback handlerCallback
  * @param {URLSearchParams} data
- * @param {http.IncomingMessage} request
+ * @param {any} cookies
  * @returns {any|Promise}
  * @throws HttpError
  */
@@ -92,7 +93,7 @@ class WebServer {
     run() {
         return new Promise((resolve, reject) => {
             this.server.on("error", (e) => reject(e));
-            this.server.on("listening", () => resolve());
+            this.server.on("listening", () => resolve(this.server));
             this.server.listen(this.port, this.hostname);
         });
     }
@@ -195,7 +196,6 @@ class WebServer {
 
 
 
-
         if (request.headers.host === undefined || request.headers.host === null) {
             errorResponse(405);
         }
@@ -203,13 +203,14 @@ class WebServer {
         request.setEncoding("utf8");
 
         const url = new URL(request.url, `http://${request.headers.host}`);
+        const cookies = new Cookies(request, response);
 
         if (request.method === "GET") {
             if (thiz.getHandlers.has(url.pathname)) {
                 const handler = thiz.getHandlers.get(url.pathname);
 
                 Promise.resolve()
-                    .then(() => handler(qs.parse(url.searchParams.toString()), request))
+                    .then(() => handler(qs.parse(url.searchParams.toString()), cookies))
                     .then(resp => {
                         const obj = {status: "OK", response: resp};
                         jsonResponse(200, obj);
@@ -233,7 +234,7 @@ class WebServer {
                 const handler = thiz.postHandlers.get(url.pathname);
 
                 extractForm()
-                    .then(postData => handler(postData, request))
+                    .then(postData => handler(postData, cookies))
                     .then(resp => {
                         const obj = {status: "OK", response: resp};
                         jsonResponse(200, obj);
