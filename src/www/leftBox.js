@@ -20,9 +20,27 @@
     }
     function showWorkEnvironment(content){
       const work = content.criteria.workingAtHome;
-      const workingEnvironmentDiv = document.getElementById("homogenousCriteria");
+      const workingEnvironmentDiv = document.getElementById("workFromHome");
       const workingEnvironment = document.createElement("p");
-      workingEnvironment.innerText = "Work " + work;
       workingEnvironmentDiv.appendChild(workingEnvironment);
+      workingEnvironment.innerText = workEnvironmentStringMaker(work);
     }
 }());
+
+function workEnvironmentStringMaker(work){
+    let place;
+    switch (work) {
+        case 0:
+            place = "Work from home";
+            break;
+        
+        case 1:
+            place = "Don't care";
+            break;
+
+        case 2:
+            place = "Work in office";
+            break;
+    }
+    return place;
+}
