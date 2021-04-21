@@ -61,10 +61,10 @@
         let maxMinSum = 0;
         let sumSum = 0;
         let linearDistributionSum = 0;
-        let groups = content.length;
-        let numbereOfStudents = 0;
+        const numberOfgroups = content.length;
+        let numberOfStudents = 0;
         for (const group of content) {
-            numbereOfStudents += group.students.length;
+            numberOfStudents += group.students.length;
             for (const lSName in group.students[0].criteria.learningStyles) {
                 let lSarray = [];
                 lSarray = getLSValuesOfGroup(group, lSName);
@@ -77,10 +77,10 @@
         const th = createTableHeader("Gennemsnit", "MaxMin", "Sum", "LinearDistribution", "GroupSize");
         table.appendChild(th);
         // Calculate the average to be displayed in the table
-        const maxMinAverage = (maxMinSum / groups).toFixed(2);
-        const sumAverage = (sumSum / groups).toFixed(2);
-        const linearDistributionAverage = (linearDistributionSum / groups).toFixed(2);
-        const averageStudentsPrGroup = (numbereOfStudents / groups).toFixed(2);
+        const maxMinAverage = (maxMinSum / numberOfgroups).toFixed(2);
+        const sumAverage = (sumSum / numberOfgroups).toFixed(2);
+        const linearDistributionAverage = (linearDistributionSum / numberOfgroups).toFixed(2);
+        const averageStudentsPrGroup = (numberOfStudents / numberOfgroups).toFixed(2);
         const tr = createTableRow("Values:", maxMinAverage, sumAverage, linearDistributionAverage, averageStudentsPrGroup);
         table.appendChild(tr);
         return table;
