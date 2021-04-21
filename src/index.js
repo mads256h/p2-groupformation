@@ -61,6 +61,8 @@ fs.readFile("config.json", (err, data) => {
 
                 webServer.addGetHandler("/api/mygroup", (data, cookies) => mygroupHandler(groupFormation, data, cookies));
                 webServer.addGetHandler("/api/rankedgroups", (data, cookies) => rankedgroupsHandler(groupFormation, data, cookies));
+                webServer.addGetHandler("/api/leavegroup", (data, cookies) => leavegroupHandler(groupFormation, data, cookies));
+                webServer.addPostHandler("/api/invitegroup", (data, cookies) => invitegroupHandler(groupFormation, data, cookies));
 
 
                 webServer.run()
@@ -104,7 +106,10 @@ function mygroupHandler(groupFormation, data, cookies) {
     const student = getStudent(groupFormation, session);
     const group = student.group;
 
-    return group.toGroup();
+    const groupToSend = group.toGroup();
+    groupToSend.invitations = group.invitations.map((g) => g.id);
+
+    return groupToSend;
 }
 
 function rankedgroupsHandler(groupFormation, data, cookies) {
@@ -122,11 +127,45 @@ function rankedgroupsHandler(groupFormation, data, cookies) {
 
     const arr = [];
 
-    for (let [group, value] of rankedGroups.entries()) {
-        arr.push({group: group.toGroup(), value});
+    for (let [g, value] of rankedGroups.entries()) {
+        const newGroup = g.toGroup();
+        newGroup.isInvited = g.invitations.some((g) => g === group);
+        arr.push({group: newGroup, value});
     }
 
     return arr;
+}
+
+function leavegroupHandler(groupFormation, data, cookies) {
+    const session = cookies.get("session");
+
+    if (session === undefined) {
+        throw new HttpError(403, "Missing session cookie");
+    }
+
+    const student = getStudent(groupFormation, session);
+    student.leave();
+}
+
+function invitegroupHandler(groupFormation, data, cookies) {
+    const session = cookies.get("session");
+
+    if (session === undefined) {
+        throw new HttpError(403, "Missing session cookie");
+    }
+
+    if (typeof data.groupid === "undefined") {
+        throw new HttpError(400, "Missing groupid");
+    }
+
+    const groupid = Number(data.groupid);
+
+
+    const student = getStudent(groupFormation, session);
+
+    const group = groupFormation.groups.find((g) => g.id === groupid);
+
+    group.invitations.push(student.group);
 }
 
 function getStudent(groupFormation, name) {
