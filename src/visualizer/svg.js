@@ -53,10 +53,10 @@ const {
 
         // Create the circles
         const arrCircleSize = closeby(getLSValuesOfGroup(group, learnStyleName));
-        for (const [studentIdx, circleRadius] of arrCircleSize.entries()) {
+        for (const studentIdx in arrCircleSize) {
             const xValue = circleXValue(group.students[studentIdx].criteria.learningStyles[learnStyleName]);
             const studentColor = colorArr[studentIdx];
-            svg.appendChild(createCircle(xValue, yValue, studentColor, circleRadius));
+            svg.appendChild(createCircle(xValue, yValue, studentColor, arrCircleSize[studentIdx]));
         }
     }
 
@@ -171,18 +171,18 @@ const {
      */
     function closeby(arrCircleSize){ // something is wrong in this function, but it still kinda works
         const resArr = new Array();
-        for (const [student1Idx, lsValue1] of arrCircleSize.entries()) {
+        for (const student1Idx in arrCircleSize) {
             resArr[student1Idx] = 1;
-            for (const [student2Idx, lsValue2] of arrCircleSize.entries()) {
+            for (const student2Idx in arrCircleSize) {
                 // If they aren't the same person and their scores are close, the make the size of one of the circles larger, so it'll still be visible
-                if (student1Idx !== student2Idx && range(lsValue1, lsValue2)){
+                if (student1Idx !== student2Idx && range(arrCircleSize[student1Idx], arrCircleSize[student2Idx])){
                     resArr[student2Idx]++;
                 }
             }
         }
         // calc the circlesize in pixels by the size e.g. 1, 2, 3... depends on how many values are close to eachother
-        for (const [studentName, circleSize] of resArr.entries()){
-            resArr[studentName] = 0.25 * svgLineSpace * Math.pow(circleSize, 0.6);
+        for (const studentName in resArr){
+            resArr[studentName] = 0.25 * svgLineSpace * Math.pow(resArr[studentName], 0.6);
         }
         return resArr;
     }

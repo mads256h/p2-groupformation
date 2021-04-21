@@ -39,9 +39,7 @@
             return 0;
         }
         else {
-            const sortedInputArray = learningStyleArray.slice().sort(function(a, b) {
-                return a - b;
-            });
+            const sortedInputArray = learningStyleArray.slice().sort((a, b) => a - b);
             let sum = 0;
             const perfectDistribution = perfectDist(sortedInputArray.length);
             for (let index = 0; index < sortedInputArray.length; index++) {
