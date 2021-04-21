@@ -1,15 +1,37 @@
-function makeList(groupArray){
-    const fullList = document.createElement("ul");
-    for (let group = 0; group < groupArray.length; group++){
-        const listPart = document.createElement("details");
-        const summary = document.createElement("summary");
-        summary.innerText = groupArray[group];
-        console.log(groupArray[group]);
-        console.log(summary);
-        listPart.appendChild(summary);
-        fullList.appendChild(listPart);
+window.addEventListener('DOMContentLoaded', (event) => {
+    const divBox = makeDivElement("Hej");
+    document.body.appendChild(divBox);
+    const innerBox = makeDivElement("InnerBox");
+    innerBox.innerText = "Hej";
+    divBox.appendChild(innerBox);
+    const buttonInvite  = createButtons("invite");
+    divBox.appendChild(buttonInvite);
+    const id = "invite";
+    divBox.appendChild(makeList(testArray));
+    document.getElementById(id).addEventListener("click", changeButtonColor(id));
+});
+
+function makeDivElement(name){
+    const div = document.createElement("div");
+    div.className = name;
+    return div;
+}
+
+function createGroupStudentList(group){
+    
+    const groupElement = document.createElement("details");
+    const summary = document.createElement("summary");
+    const nameList = document.createElement("ul");
+    summary.innerText = group.name;
+    
+    groupElement.appendChild(summary);
+    groupElement.appendChild(nameList);
+    
+    for (const student of group.students) {
+    nameList.appendChild(createListItem(student.name));   
     }
-    return fullList;
+
+    return groupElement;
 }
 
 function createListItem(innerText){
@@ -38,21 +60,22 @@ const testArray = ["Hej", "med", "dig"];
 
 function createCandidateRow(candidate){
     let tableRow = document.createElement("TR");
-    tableRow.appendChild(createGroupColumn());
-    tableRow.appendChild(createScoreColumn());
+    tableRow.appendChild(createGroupColumn(candidate.group));
+    tableRow.appendChild(createScoreColumn(candidate.value));
     tableRow.appendChild(createInvColumn());
     return tableRow;
 }
 
-function createGroupColumn(){
+function createGroupColumn(group){
     let groupColumn = document.createElement("TD");
-    groupColumn.textContent = "Grupppe1";
+    groupColumn.appendChild(createGroupStudentList(group));
+
     return groupColumn;
 }
 
-function createScoreColumn(){
+function createScoreColumn(score){
     let scoreColumn = document.createElement("TD");
-    scoreColumn.textContent = "69 nice";
+    scoreColumn.textContent = score;
     return scoreColumn;
 }
 
@@ -85,8 +108,8 @@ function createCandidateTableHeader(){
 }
 
 let table = document.getElementById("candidatesTable");
-table.appendChild(createCandidateRow());
-updateCandidateTable(table, [null, null, null, null, null]);
+
+
 
 
 //im so sorry
