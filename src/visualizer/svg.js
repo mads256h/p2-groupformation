@@ -181,10 +181,7 @@ const {
             }
         }
         // calc the circlesize in pixels by the size e.g. 1, 2, 3... depends on how many values are close to eachother
-        for (const i in resArr){
-            resArr[i] = 0.25 * svgLineSpace * Math.pow(resArr[i], 0.6);
-        }
-        return resArr;
+        return resArr.map((value) => 0.25 * svgLineSpace * Math.pow(value, 0.6));
     }
 
     /**

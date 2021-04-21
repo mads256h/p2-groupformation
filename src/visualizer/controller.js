@@ -12,7 +12,6 @@
     } = window.svg;
 
     getListOfData().then(responds => {
-        console.log(responds);
         const filtered = responds.filter((f)=>f !== ".gitkeep");
         if (filtered.length === 0){
             const displayHelp = document.createElement("p");
