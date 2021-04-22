@@ -35,6 +35,7 @@
             table.appendChild(createCandidateRow(candidate, thisGroup));
         }
     }
+<<<<<<< HEAD
 
     /**
      * @summary Removes all child elements from HTML table
