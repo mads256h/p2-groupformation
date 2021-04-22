@@ -122,7 +122,7 @@ function createListItem(innerText){
  */
 function createScoreColumn(score){
     let scoreColumn = document.createElement("TD");
-    scoreColumn.textContent = score;
+    scoreColumn.textContent = score.toFixed(2);
     return scoreColumn;
 }
 
