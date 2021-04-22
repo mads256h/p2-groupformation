@@ -39,7 +39,11 @@
 
     function registerUpdateHandler(callback) {
         const socket = new WebSocket("ws://" + window.location.host + window.location.pathname);
-        socket.onerror = (e) => console.error(e);
+        socket.onerror = (e) => { 
+            console.error("Could not create websocket!", e);
+            console.log("Using a timer instead!");
+            setInterval(callback, 1000);
+        }
         socket.onopen = (e) => console.log("Opened websocket", e);
         socket.onclose = (e) => console.log("Closed websocket", e);
 
