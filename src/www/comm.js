@@ -5,13 +5,13 @@
             body: new URLSearchParams(postData),
             headers: {"Content-Type": "application/x-www-form-urlencoded"}
         }).then((response) => response.json())
-            .then((response) => {if (response.status !== "OK") {throw new Error(response.message)} return response;});
+            .then((response) => {if (response.status !== "OK") {throw new Error(response.message)} return response.response;});
     }
 
     function getRequest(url, data = {}) {
         return fetch(`api/${url}?${new URLSearchParams(data)}`)
             .then((response) => response.json())
-            .then((response) => {if (response.status !== "OK") {throw new Error(response.message)} return response;});
+            .then((response) => {if (response.status !== "OK") {throw new Error(response.message)} return response.response;});
     }
 
     function login(username) {
