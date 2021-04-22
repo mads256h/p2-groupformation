@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
         window.commjs.login(username.value)
             .then((response) => {
                 if (response.status === "OK") {
-                    window.location = "/formation.html";
+                    window.location = "formation.html";
                 }
                 else {
                     console.log(response);
