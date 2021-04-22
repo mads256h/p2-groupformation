@@ -65,7 +65,7 @@ fs.readFile("config.json", (err, data) => {
                 webServer.addGetHandler("/api/me", (data, cookies) => meHandler(groupFormation, data, cookies));
                 webServer.addGetHandler("/api/mygroup", (data, cookies) => mygroupHandler(groupFormation, data, cookies));
                 webServer.addGetHandler("/api/rankedgroups", (data, cookies) => rankedgroupsHandler(groupFormation, data, cookies));
-                webServer.addGetHandler("/api/leavegroup", (data, cookies) => leavegroupHandler(groupFormation, data, cookies));
+                webServer.addGetHandler("/api/leavegroup", (data, cookies) => leavegroupHandler(webSocketServer, groupFormation, data, cookies));
                 webServer.addPostHandler("/api/invitegroup", (data, cookies) => invitegroupHandler(webSocketServer, groupFormation, data, cookies));
 
 
@@ -157,7 +157,7 @@ function rankedgroupsHandler(groupFormation, data, cookies) {
     return arr.map((pair) => { pair.value = mapRange(pair.value, min, max, 0, 10); return pair });
 }
 
-function leavegroupHandler(groupFormation, data, cookies) {
+function leavegroupHandler(webSocketServer, groupFormation, data, cookies) {
     const session = cookies.get("session");
 
     if (session === undefined) {
@@ -166,6 +166,8 @@ function leavegroupHandler(groupFormation, data, cookies) {
 
     const student = getStudent(groupFormation, session);
     student.leave();
+
+    webSocketServer.broadcastMessage("update");
 }
 
 function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
