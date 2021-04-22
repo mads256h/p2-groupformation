@@ -165,6 +165,10 @@ function leavegroupHandler(webSocketServer, groupFormation, data, cookies) {
     }
 
     const student = getStudent(groupFormation, session);
+    if (student.group.students.length === 1) {
+        throw new HttpError(400, "Cannot leave 1 man group");
+    }
+
     student.leave();
 
     webSocketServer.broadcastMessage("update");
