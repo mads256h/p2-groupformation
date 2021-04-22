@@ -186,7 +186,7 @@ function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
     }
 
     if (student.group.invitations.includes(group)) {
-        groupFormation.mergeGroups(student.group, group);
+        groupFormation.mergeGroup(student.group, group);
     }
     else {
         if (group.invitations.includes(student.group)) {
