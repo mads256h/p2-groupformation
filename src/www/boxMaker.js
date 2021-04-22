@@ -7,7 +7,7 @@
      * @summary updates all dynamic html elements of the page
      */
     function updateAll() {
-        mygroup().then((thisGroup) => updateCandidates(thisGroup.response));
+        mygroup().then((thisGroup) => updateCandidates(thisGroup));
     }
 
     /**
@@ -16,8 +16,8 @@
      */
     function updateCandidates(thisGroup) {
         rankedgroups().then((group) => {
-            const sortedGroup = group.response.sort((a, b) => b.value - a.value);
-            let table = document.getElementById("candidatesTable");
+            const sortedGroup = group.sort((a, b) => b.value - a.value);
+            const table = document.getElementById("candidatesTable");
             updateCandidateTable(table, sortedGroup, thisGroup);
         });
     }
@@ -34,8 +34,68 @@
         for (const candidate of candidateList) {
             table.appendChild(createCandidateRow(candidate, thisGroup));
         }
+
+        /**
+         * @summary fetches candidates and updates candidate table
+         * @param {object} thisGroup The groups whose candidates this is
+         */
+        function updateCandidates(thisGroup) {
+            rankedgroups().then((group) => {
+                const sortedGroup = group.sort((a, b) => b.value - a.value);
+                let table = document.getElementById("candidatesTable");
+                updateCandidateTable(table, sortedGroup, thisGroup);
+            });
+        }
     }
-<<<<<<< HEAD
+
+    /**
+     * @summary creates the candidate table header HTML element and returns it
+     * @returns {string} HTML element representing table header
+     */
+    function createCandidateTableHeader() {
+        const tableRow = document.createElement("TR");
+        tableRow.appendChild(document.createElement("TH")).textContent = "Group Name";
+        tableRow.appendChild(document.createElement("TH")).textContent = "Score";
+        tableRow.appendChild(document.createElement("TH")).textContent = "Invitation status";
+        return tableRow;
+    }
+    /**
+     * @summary creates a candidate table row HTML element and returns it
+     * @param {object} candidate the candidate to create the row of
+     * @param {object} thisGroup the group who has this candidate
+     * @returns {string} the candidate row HTML element
+     */
+    function createCandidateRow(candidate, thisGroup) {
+        const tableRow = document.createElement("TR");
+        tableRow.appendChild(createGroupColumn(candidate.group));
+        tableRow.appendChild(createScoreColumn(candidate.value));
+        tableRow.appendChild(createInvColumn(candidate.group, thisGroup));
+        return tableRow;
+    }
+    /**
+     * @summary creates a candidate table column HTML element and returns it
+     * @param {object} group the group to represent
+     * @returns {string} the candidate table column HTML element
+     */
+    function createGroupColumn(group) {
+        const groupColumn = document.createElement("TD");
+        groupColumn.appendChild(createGroupStudentList(group));
+        return groupColumn;
+    }
+
+    /**
+     * @summary Updates candidate table to new candidate list and group
+     * @param {string} table table HTML element to update
+     * @param {object[]} candidateList Sorted array of candidates
+     * @param {object} thisGroup The groups whose candidates this is
+     */
+    function updateCandidateTable(table, candidateList, thisGroup) {
+        clearTable(table);
+        table.appendChild(createCandidateTableHeader());
+        for (const candidate of candidateList) {
+            table.appendChild(createCandidateRow(candidate, thisGroup));
+        }
+    }
 
     /**
      * @summary Removes all child elements from HTML table

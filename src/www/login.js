@@ -8,15 +8,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
         window.commjs.login(username.value)
-            .then((response) => {
-                if (response.status === "OK") {
-                    window.location = "formation.html";
-                }
-                else {
-                    console.log(response);
-                    errorbox.innerText = response.message;
-                    errorbox.style.display = "block";
-                }
+            .then(() => {
+                window.location = "formation.html";
+            }).catch((e)=>{
+                console.log(e);
+                errorbox.innerText = e.message;
+                errorbox.style.display = "block";
             });
     });
 });

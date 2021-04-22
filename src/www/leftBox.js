@@ -12,13 +12,17 @@
 
     function update(){
         me().then((res) => {
-            showData(res.response);
-            showNameOnSite(res.response);
-            showWorkEnvironment(res.response);
-            showSubject(res.response);
+            showData(res);
+            showNameOnSite(res);
+            showWorkEnvironment(res);
+            showSubject(res);
             mygroup().then((group) => {
-                showGroup(group.response.students, res.response.name);
+                showGroup(group.students, res.name);
+            }).catch((e)=>{
+                console.log(e);
             });
+        }).catch((e)=>{
+            console.log(e);
         });
     }
 
@@ -131,7 +135,9 @@
     function leavegroupButton(){
         const button = document.getElementById("leaveButton");
         button.addEventListener("click", ()=> {
-            leavegroup();
+            leavegroup().catch((e)=>{
+                console.log(e);
+            });
         });
     }
 }());
