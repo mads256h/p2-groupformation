@@ -93,7 +93,7 @@ function loginHandler(groupFormation, data, cookies) {
         throw new HttpError(400, "This student does not exist");
     }
 
-    cookies.set("session", data.username);
+    cookies.set("session", data.username, {sameSite: true});
 }
 
 function meHandler(groupFormation, data, cookies) {
