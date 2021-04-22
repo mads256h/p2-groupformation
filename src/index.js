@@ -11,6 +11,7 @@ const {maxDistance} = require("./algorithms/distance");
 const {splitAvgMinDistance} = require("./algorithms/splitAvgMinDistance");
 const {averageVectorMinDistance, averageVectorDistance} = require("./algorithms/vectorspace");
 const weightFunctions = require("./algorithms/weightFunction");
+const {mapRange} = require("./math");
 
 // Read config file
 fs.readFile("config.json", (err, data) => {
@@ -149,7 +150,11 @@ function rankedgroupsHandler(groupFormation, data, cookies) {
         arr.push({group: newGroup, value});
     }
 
-    return arr;
+    const values = arr.map((pair) => pair.value);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+
+    return arr.map((pair) => { pair.value = mapRange(pair.value, min, max, 0, 10); return pair });
 }
 
 function leavegroupHandler(groupFormation, data, cookies) {
