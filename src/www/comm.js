@@ -1,6 +1,6 @@
 (function() {
     function postRequest(url, postData) {
-        return fetch("/api/" + url, {
+        return fetch("api/" + url, {
             method: "POST",
             body: new URLSearchParams(postData),
             headers: {"Content-Type": "application/x-www-form-urlencoded"}
@@ -8,7 +8,7 @@
     }
 
     function getRequest(url, data = {}) {
-        return fetch(`/api/${url}?${new URLSearchParams(data)}`)
+        return fetch(`api/${url}?${new URLSearchParams(data)}`)
             .then((response) => response.json());
     }
 
