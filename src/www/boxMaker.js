@@ -1,84 +1,35 @@
 const {invitegroup, rankedgroups, mygroup, registerUpdateHandler} = window.commjs;
 
-function createGroupStudentList(group){
-    
-    const groupElement = document.createElement("details");
-    const summary = document.createElement("summary");
-    const nameList = document.createElement("ul");
-    summary.innerText = group.name;
-    
-    groupElement.appendChild(summary);
-    groupElement.appendChild(nameList);
-    
-    for (const student of group.students) {
-    nameList.appendChild(createListItem(student.name));   
-    }
+updateAll();
+registerUpdateHandler(updateAll);
 
-    return groupElement;
+/**
+ * @summary updates all dynamic html elements of the page
+ */
+function updateAll(){
+    mygroup().then((thisGroup)=>{
+        updateCandidates(thisGroup.response);
+    });
 }
 
-function createListItem(innerText){
-    const listItem = document.createElement("li");
-    listItem.innerText = innerText;
-    return listItem;
+/**
+ * @summary fetches candidates and updates candidate table
+ * @param {object} thisGroup The groups whose candidates this is
+ */
+function updateCandidates(thisGroup){
+    rankedgroups().then((group)=>{
+        const sortedGroup = group.response.sort((a, b)=>b.value - a.value);
+        let table = document.getElementById("candidatesTable");
+        updateCandidateTable(table, sortedGroup, thisGroup);
+    });
 }
 
-function createButton(group, thisGroup) {
-    const button = document.createElement("button");
-    button.setAttribute("id", group.id);
-    button.innerText = "Invite";
-    if (group.isInvited){
-        console.log("meme");
-        button.style.backgroundColor = "lightgreen";
-    }
-    else if (thisGroup.invitations.includes(group.id)){
-        button.style.backgroundColor = "yellow";
-    }
-    mygroup().then((response) => console.log(response));
-    button.addEventListener("click", () => 
-        invitegroup(group)
-            .then((response) => console.log(response))
-            .catch((e)=>console.log(e)));
-    //button.onclick;0
-    return button;
-}
-
-function changeButtonColor(id){
-    if(document.getElementById(id).style.backgroundColor === "white"){
-        document.getElementById(id).style.backgroundColor = "blue";
-     }
-    else{
-        document.getElementById(id).style.backgroundColor = "white";
-    }
-}
-
-function createCandidateRow(candidate, thisGroup){
-    let tableRow = document.createElement("TR");
-    tableRow.appendChild(createGroupColumn(candidate.group));
-    tableRow.appendChild(createScoreColumn(candidate.value));
-    tableRow.appendChild(createInvColumn(candidate.group, thisGroup));
-    return tableRow;
-}
-
-function createGroupColumn(group){
-    let groupColumn = document.createElement("TD");
-    groupColumn.appendChild(createGroupStudentList(group));
-
-    return groupColumn;
-}
-
-function createScoreColumn(score){
-    let scoreColumn = document.createElement("TD");
-    scoreColumn.textContent = score;
-    return scoreColumn;
-}
-
-function createInvColumn(group, thisGroup){
-    let invColumn = document.createElement("TD");
-    invColumn.appendChild(createButton(group, thisGroup));
-    return invColumn;
-}
-
+/**
+ * @summary Updates candidate table to new candidate list and group
+ * @param {string} table table HTML element to update
+ * @param {object[]} candidateList Sorted array of candidates
+ * @param {object} thisGroup The groups whose candidates this is
+ */
 function updateCandidateTable(table, candidateList, thisGroup){
     clearTable(table);
     table.appendChild(createCandidateTableHeader());
@@ -87,12 +38,20 @@ function updateCandidateTable(table, candidateList, thisGroup){
     }
 }
 
+/**
+ * @summary Removes all child elements from HTML table
+ * @param {string} table table HTML element to clear
+ */
 function clearTable(table){
     while (table.lastChild){
         table.removeChild(table.lastChild);
     }
 }
 
+/**
+ * @summary creates the candidate table header HTML element and returns it
+ * @returns {string} HTML element representing table header
+ */
 function createCandidateTableHeader(){
     let tableRow = document.createElement("TR");
     tableRow.appendChild(document.createElement("TH")).textContent = "Group Name";
@@ -100,24 +59,107 @@ function createCandidateTableHeader(){
     tableRow.appendChild(document.createElement("TH")).textContent = "Invitation status";
     return tableRow;
 }
-
-function updateAll(){
-    mygroup().then((thisGroup)=>{
-        console.log(thisGroup);
-        updateCandidates(thisGroup.response);
-
-    })
+/**
+ * @summary creates a candidate table row HTML element and returns it
+ * @param {object} candidate the candidate to create the row of
+ * @param {object} thisGroup the group who has this candidate
+ * @returns {string} the candidate row HTML element
+ */
+function createCandidateRow(candidate, thisGroup){
+    let tableRow = document.createElement("TR");
+    tableRow.appendChild(createGroupColumn(candidate.group));
+    tableRow.appendChild(createScoreColumn(candidate.value));
+    tableRow.appendChild(createInvColumn(candidate.group, thisGroup));
+    return tableRow;
 }
-function updateCandidates(thisGroup){
-    rankedgroups().then((group)=>{
-        const sortedGroup = group.response.sort((a, b)=>b.value - a.value);
-        updateCandidateTable(table, sortedGroup, thisGroup);
-        return sortedGroup;
-        });
+/**
+ * @summary creates a candidate table column HTML element and returns it
+ * @param {object} group the group to represent
+ * @returns {string} the candidate table column HTML element
+ */
+function createGroupColumn(group){
+    let groupColumn = document.createElement("TD");
+    groupColumn.appendChild(createGroupStudentList(group));
+    return groupColumn;
 }
 
-registerUpdateHandler(updateAll);
-updateAll();
-let table = document.getElementById("candidatesTable");
+/**
+ * @summary creates HTML element representing a group, with a drop down for the students
+ * @param {object} group the group to create element over
+ * @returns {string} HTML element representing group
+ */
+function createGroupStudentList(group){
+    const groupElement = document.createElement("details");
+
+    const summary = document.createElement("summary");
+    summary.innerText = group.name;
+    groupElement.appendChild(summary);
+
+    const nameList = document.createElement("ul");
+    for (const student of group.students) {
+        nameList.appendChild(createListItem(student.name));
+    }
+    groupElement.appendChild(nameList);
+
+    return groupElement;
+}
+
+/**
+ * @summary Creates and returns list item HTML element with given text
+ * @param {string} innerText text content of list item
+ * @returns {string} HTML element representing list item
+ */
+function createListItem(innerText){
+    const listItem = document.createElement("li");
+    listItem.innerText = innerText;
+    return listItem;
+}
+
+/**
+ * @summary creates table column HTML element representing score for a candidate
+ * @param {number} score the score of the group
+ * @returns {string} HTML element representing score item
+ */
+function createScoreColumn(score){
+    let scoreColumn = document.createElement("TD");
+    scoreColumn.textContent = score;
+    return scoreColumn;
+}
+
+/**
+ * @summary creates table column HTML element representing invite button and status
+ * @param {object} group the group that the invitation points to
+ * @param {object} thisGroup the group that the invitation points from
+ * @returns {object} invite button table column html element
+ */
+function createInvColumn(group, thisGroup){
+    let invColumn = document.createElement("TD");
+    invColumn.appendChild(createButton(group, thisGroup));
+    return invColumn;
+}
+
+/**
+ * @summary creates invite button with correct status
+ * @param {object} group the group that the invitation points to
+ * @param {object} thisGroup the group that the invitation points from
+ * @returns {object} invite button HTML element with correct status
+ */
+function createButton(group, thisGroup) {
+    const button = document.createElement("button");
+    button.setAttribute("id", group.id);
+    button.innerText = "Invite";
+    if (group.isInvited){
+        button.style.backgroundColor = "lightgreen";
+    }
+    else if (thisGroup.invitations.includes(group.id)){
+        button.style.backgroundColor = "yellow";
+    }
+    button.addEventListener("click", () =>
+        invitegroup(group)
+            .catch((e)=>console.log(e)));
+    return button;
+}
+
+
 
 
