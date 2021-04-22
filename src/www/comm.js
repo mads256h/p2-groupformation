@@ -38,7 +38,7 @@
 
 
     function registerUpdateHandler(callback) {
-        const socket = new WebSocket("ws://" + window.location.host);
+        const socket = new WebSocket("ws://" + window.location.host + window.location.pathname);
         socket.onerror = (e) => console.error(e);
         socket.onopen = (e) => console.log("Opened websocket", e);
         socket.onclose = (e) => console.log("Closed websocket", e);
