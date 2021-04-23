@@ -1,4 +1,4 @@
-(function () {
+(function() {
     const {
         me,
         mygroup,
@@ -10,33 +10,29 @@
         leavegroupButton();
     });
 
+    /**
+     * @summary Reruns the webpage foreach change happening
+     */
     function update(){
-        me().then((res) => {
-            showData(res);
+        const mePromise = me();
+        const myGroupPromise = mygroup();
+        mePromise.then((res) => {
             showNameOnSite(res);
             showWorkEnvironment(res);
             showSubject(res);
-            mygroup().then((group) => {
-                showGroup(group, res.name);
-            }).catch((e)=>{
-                console.log(e);
-            });
+        }).catch((e)=>{
+            console.log(e);
+        });
+        Promise.all([mePromise, myGroupPromise]).then((data) => {
+            showGroup(data[1].students, data[0].name);
         }).catch((e)=>{
             console.log(e);
         });
     }
 
     /**
-     * 
-     * @param {*} content 
-     */
-    function showData(content) {
-        console.log(content);
-    }
-
-    /**
-     * 
-     * @param {*} content 
+     * @summary Sets the title to the name of the logged in user
+     * @param {object} content the object with the logged in users informations
      */
     function showNameOnSite(content) {
         const username = document.getElementById("username");
@@ -44,8 +40,8 @@
     }
 
     /**
-     * 
-     * @param {*} content 
+     * @summary Prints the information about work enviroment from the user
+     * @param {object} content the object with the logged in users informations
      */
     function showWorkEnvironment(content) {
         const work = content.criteria.workingAtHome;
@@ -62,9 +58,9 @@
     }
 
     /**
-     * 
-     * @param {*} work 
-     * @returns 
+     * @summary Converts a number to a string
+     * @param {number} work the number the user has sat about working environment
+     * @returns {string} Returns a string
      */
     function workEnvironmentStringMaker(work) {
         let place;
@@ -85,8 +81,8 @@
     }
 
     /**
-     * 
-     * @param {*} content 
+     * @summary Creates the elements shown on the site about subjects the user have chossen
+     * @param {object} content the object with the logged in users informations
      */
     function showSubject(content) {
         let subjectArray = content.criteria.subjectPreference.subjects.slice();
@@ -106,9 +102,9 @@
     }
 
     /**
-     * 
-     * @param {*} innerText 
-     * @returns 
+     * @summary Creates a button for each file in the data folder
+     * @param {string} innerText A string
+     * @returns {HTMLElement} Returns a html li element with the string sat as innerText
      */
     function createListItem(innerText) {
         const listItem = document.createElement("li");
@@ -116,6 +112,11 @@
         return listItem;
     }
 
+    /**
+     * @summary Creates a html list element with alle the groupmembers
+     * @param {object} group One group as a object
+     * @param {string} myName Name of the logged in user
+     */
     function showGroup(group, myName) {
         const groupMembersList = document.createElement("ul");
         const groupMemberDiv = document.getElementById("currentGroup");
@@ -133,12 +134,19 @@
         groupMemberDiv.appendChild(groupMembersList);
     }
 
+    /**
+     * @summary Remove all children of a element
+     * @param {HTMLDivElement} element The div element where the children shold be removed
+     */
     function clearChild(element){
         while (element.firstChild){
             element.removeChild(element.firstChild);
         }
     }
 
+    /**
+     * @summary Removes the logged in user from the group when clicking the button with the id "leaveButton"
+     */
     function leavegroupButton(){
         const button = document.getElementById("leaveButton");
         button.addEventListener("click", ()=> {
