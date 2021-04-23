@@ -1,4 +1,4 @@
-(function () {
+(function() {
     const {invitegroup, rankedgroups, mygroup, registerUpdateHandler} = window.commjs;
 
     registerUpdateHandler(updateAll);
@@ -34,31 +34,8 @@
         for (const candidate of candidateList) {
             table.appendChild(createCandidateRow(candidate, thisGroup));
         }
-
-        /**
-         * @summary fetches candidates and updates candidate table
-         * @param {object} thisGroup The groups whose candidates this is
-         */
-        function updateCandidates(thisGroup) {
-            rankedgroups().then((group) => {
-                const sortedGroup = group.sort((a, b) => b.value - a.value);
-                let table = document.getElementById("candidatesTable");
-                updateCandidateTable(table, sortedGroup, thisGroup);
-            });
-        }
     }
 
-    /**
-     * @summary creates the candidate table header HTML element and returns it
-     * @returns {string} HTML element representing table header
-     */
-    function createCandidateTableHeader() {
-        const tableRow = document.createElement("TR");
-        tableRow.appendChild(document.createElement("TH")).textContent = "Group Name";
-        tableRow.appendChild(document.createElement("TH")).textContent = "Score";
-        tableRow.appendChild(document.createElement("TH")).textContent = "Invitation status";
-        return tableRow;
-    }
     /**
      * @summary creates a candidate table row HTML element and returns it
      * @param {object} candidate the candidate to create the row of
@@ -118,28 +95,26 @@
         tableRow.appendChild(document.createElement("TH")).textContent = "Invitation status";
         return tableRow;
     }
-    /**
-     * @summary creates a candidate table row HTML element and returns it
-     * @param {object} candidate the candidate to create the row of
-     * @param {object} thisGroup the group who has this candidate
-     * @returns {string} the candidate row HTML element
-     */
-    function createCandidateRow(candidate, thisGroup) {
-        let tableRow = document.createElement("TR");
-        tableRow.appendChild(createGroupColumn(candidate.group));
-        tableRow.appendChild(createScoreColumn(candidate.value));
-        tableRow.appendChild(createInvColumn(candidate.group, thisGroup));
-        return tableRow;
-    }
+
     /**
      * @summary creates a candidate table column HTML element and returns it
      * @param {object} group the group to represent
      * @returns {string} the candidate table column HTML element
      */
     function createGroupColumn(group) {
-        let groupColumn = document.createElement("TD");
+        const groupColumn = document.createElement("TD");
         groupColumn.appendChild(createGroupStudentList(group));
         return groupColumn;
+    }
+
+    /**
+     * @summary Removes all child elements from HTML table
+     * @param {string} table table HTML element to clear
+     */
+    function clearTable(table) {
+        while (table.lastChild) {
+            table.removeChild(table.lastChild);
+        }
     }
 
     /**
@@ -180,7 +155,7 @@
      * @returns {string} HTML element representing score item
      */
     function createScoreColumn(score) {
-        let scoreColumn = document.createElement("TD");
+        const scoreColumn = document.createElement("TD");
         scoreColumn.textContent = score.toFixed(2);
         return scoreColumn;
     }
@@ -192,7 +167,7 @@
      * @returns {object} invite button table column html element
      */
     function createInvColumn(group, thisGroup) {
-        let invColumn = document.createElement("TD");
+        const invColumn = document.createElement("TD");
         invColumn.appendChild(createButton(group, thisGroup));
         return invColumn;
     }
