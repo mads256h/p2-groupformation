@@ -36,3 +36,10 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+.titles {
+  font-size: x-large;
+}
+
+#leaveButton {
+  display: none;
+}

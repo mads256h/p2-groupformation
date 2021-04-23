@@ -24,7 +24,7 @@
             console.log(e);
         });
         Promise.all([mePromise, myGroupPromise]).then((data) => {
-            showGroup(data[1].students, data[0].name);
+            showGroup(data[1], data[0].name);
         }).catch((e)=>{
             console.log(e);
         });
@@ -95,7 +95,7 @@
         subjectDiv.appendChild(paragraph);
 
         for (const subject of subjectArray) {
-            const subjectPart = createListItem(subject.name + ": " + subject.score.toFixed(2));
+            const subjectPart = createListItem(subject.name + ": " + (subject.score * 10).toFixed(2));
             subjectList.appendChild(subjectPart);
             subjectDiv.appendChild(subjectList);
         }
@@ -121,14 +121,23 @@
         const groupMembersList = document.createElement("ul");
         const groupMemberDiv = document.getElementById("currentGroup");
         const paragraph = document.createElement("h3");
-        paragraph.innerText = "Your group " + group.name + ":";
+        const button = document.getElementById("leaveButton");
         clearChild(groupMemberDiv);
-        console.log(group.name);
         for (const member of group.students) {
             if (member.name !== myName){
                 const memberName = createListItem(member.name);
                 groupMembersList.appendChild(memberName);
             }
+        }
+        if (group.students.length === 1){
+            const notInGroup = document.createElement("h3");
+            notInGroup.innerText = "Not in a group yet";
+            groupMemberDiv.appendChild(notInGroup);
+            button.style.display = "none";
+        }
+        else {
+            paragraph.innerText = "Your group " + group.name + ":";
+            button.style.display = "block";
         }
         groupMemberDiv.appendChild(paragraph);
         groupMemberDiv.appendChild(groupMembersList);
