@@ -17,7 +17,7 @@
             showWorkEnvironment(res);
             showSubject(res);
             mygroup().then((group) => {
-                showGroup(group.students, res.name);
+                showGroup(group, res.name);
             }).catch((e)=>{
                 console.log(e);
             });
@@ -51,7 +51,12 @@
         const work = content.criteria.workingAtHome;
         const workingEnvironmentDiv = document.getElementById("workFromHome");
         const workingEnvironment = document.createElement("p");
+        const paragraph = document.createElement("h3");
+        paragraph.innerText = "Your prefered place to work:";
+
         clearChild(workingEnvironmentDiv);
+
+        workingEnvironmentDiv.appendChild(paragraph);
         workingEnvironmentDiv.appendChild(workingEnvironment);
         workingEnvironment.innerText = workEnvironmentStringMaker(work);
     }
@@ -86,11 +91,13 @@
     function showSubject(content) {
         let subjectArray = content.criteria.subjectPreference.subjects.slice();
         const subjectList = document.createElement("ul");
-        // subjectArray.score.sort((a, b) => {
-        //     return a.value - b.value;
-        // });
         const subjectDiv = document.getElementById("subjectPreference");
+        const paragraph = document.createElement("h3");
+        paragraph.innerText = "Your subject preferences:";
+
         clearChild(subjectDiv);
+        subjectDiv.appendChild(paragraph);
+
         for (const subject of subjectArray) {
             const subjectPart = createListItem(subject.name + ": " + subject.score.toFixed(2));
             subjectList.appendChild(subjectPart);
@@ -112,11 +119,11 @@
     function showGroup(group, myName) {
         const groupMembersList = document.createElement("ul");
         const groupMemberDiv = document.getElementById("currentGroup");
-        const paragraph = document.createElement("p");
-        paragraph.innerText = "Your group members:";
+        const paragraph = document.createElement("h3");
+        paragraph.innerText = "Your group " + group.name + ":";
         clearChild(groupMemberDiv);
-
-        for (const member of group) {
+        console.log(group.name);
+        for (const member of group.students) {
             if (member.name !== myName){
                 const memberName = createListItem(member.name);
                 groupMembersList.appendChild(memberName);
