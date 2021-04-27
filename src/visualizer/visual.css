@@ -1,0 +1,35 @@
+#cssTest {
+  color: blue;
+}
+
+.groupsize {
+  color: black;
+  display: inline-block;
+  vertical-align: top;
+  line-height: 100%;
+  text-align: left;
+  width: 300;
+  font-size: 100%;
+}
+
+table {
+  margin: 10px;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 5px;
+}
+
+.studentClass {
+  font-size: 150%;
+  background-color: lightgrey;
+}

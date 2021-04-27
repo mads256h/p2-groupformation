@@ -19,8 +19,10 @@ if (argv.length !== 4) {
 
 const algorithmMap =
 {
+    "random": {alg: () => Math.random(), highBetter: true},
     "0point": {alg: balance, highBetter: false},
     "distance": {alg: maxDistance, highBetter: true},
+    "amalgemation": {alg: (criteria) => 22 - maxDistance(criteria) + balance(criteria), highBetter: false},
     "mindistance": {alg: splitAvgMinDistance, highBetter: true},
     "vectormindistance0.5constant": {alg: (criteria) => averageVectorMinDistance(criteria, 0.5, weightFunctions.constant), highBetter: true},
     "vectormindistance1constant": {alg: (criteria) => averageVectorMinDistance(criteria, 1, weightFunctions.constant), highBetter: true},
