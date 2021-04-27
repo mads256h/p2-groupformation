@@ -12,6 +12,7 @@ const {splitAvgMinDistance} = require("./algorithms/splitAvgMinDistance");
 const {averageVectorMinDistance, averageVectorDistance} = require("./algorithms/vectorspace");
 const weightFunctions = require("./algorithms/weightFunction");
 const {mapRange} = require("./math");
+const Cookies = require("cookies");
 
 // Idk what to do about this callback hell
 
@@ -48,7 +49,7 @@ fs.readFile("config.json", (err, data) => {
 
                 typeassert.assertArray(students);
 
-                // Convert students to Students
+                // Convert all student data to Student instances
                 students = convertStudents(students);
 
                 typeassert.assertArrayItemsInstanceOf(students, Student);
