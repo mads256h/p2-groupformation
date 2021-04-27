@@ -49,7 +49,7 @@ class GroupFormation {
         typeassert.assertInstanceOf(group, FMGroup);
 
         removeItemFromArray(student, group.students);
-
+        group.name = generateName(group.students);
         this.groups.push(new FMGroup(student.name, this.nextGroupId++, [student], this, true));
     }
 
@@ -153,6 +153,15 @@ class WeightedCriteria {
 }
 
 /**
+ * @summary Generates a group name from a list of students
+ * @param {object[]} students list of students in group
+ * @returns {String} name of the group
+ */
+function generateName(students){
+    return students.reduce((acc, curStud) => acc + " " + curStud.name, "");
+}
+
+/**
  * @summary An extension of group for use in the group formation process
  * @property {GroupFormation} groupFormation The groupFormation object
  * @property {FMGroup[]} invitations Array of groups that has invited this group
@@ -193,10 +202,11 @@ class FMGroup extends Group {
      * @returns {FMGroup} A new group that is a result of merging this group and group
      */
     merge(group, isUsed = false) {
+        let mergedStudents = this.students.concat(group.students);
         return new FMGroup(
-            this.name + group.name,
+            generateName(mergedStudents),
             this.groupFormation.nextGroupId++,
-            this.students.concat(group.students),
+            mergedStudents,
             this.groupFormation,
             isUsed
         );
