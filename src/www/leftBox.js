@@ -25,6 +25,7 @@
         });
         Promise.all([mePromise, myGroupPromise]).then((data) => {
             showGroup(data[1], data[0].name);
+            addNumberFromArray(data[1]);
         }).catch((e)=>{
             console.log(e);
         });
@@ -123,6 +124,7 @@
         const groupMemberDiv = document.getElementById("currentGroup");
         const paragraph = document.createElement("h3");
         const button = document.getElementById("leaveButton");
+
         clearChild(groupMemberDiv);
         for (const member of group.students) {
             if (member.name !== myName){
@@ -142,6 +144,31 @@
         }
         groupMemberDiv.appendChild(paragraph);
         groupMemberDiv.appendChild(groupMembersList);
+        console.log(group);
+        groupMemberDiv.appendChild(showGroupSubjects(group));
+    }
+
+    function showGroupSubjects(group){
+        let counter = 0;
+        const paragraph = document.createElement("h3");
+        const groupSubjectList = document.createElement("ul");
+        const subjectArray = addSubjectScore(group);
+
+        subjectArray.sort((a, b) => b.score - a.score);
+
+        paragraph.innerText = "Your group prefered 3 subjects:";
+        
+        for (const subject of subjectArray) {
+            if (counter >= 3){
+                break;
+            }
+            const groupSubjectPart = document.createElement("li");
+            groupSubjectPart.innerText = subject.name + ": " + (subject.score * 10).toFixed(2);
+            groupSubjectList.appendChild(groupSubjectPart);
+            counter++;
+        }
+        paragraph.appendChild(groupSubjectList);
+        return paragraph;
     }
 
     /**
@@ -164,5 +191,23 @@
                 console.log(e);
             });
         });
+    }
+
+    function addSubjectScore(group){
+        let masterSubject = [];
+        for (let i = 0; i < group.students[0].criteria.subjectPreference.subjects.length; i++){
+            const subjectObject = {
+                name: group.students[0].criteria.subjectPreference.subjects[i].name,
+                score: 0
+            };
+            masterSubject[i] = subjectObject;
+        }
+
+        for (const students of group.students) {
+            for (let i = 0; i < students.criteria.subjectPreference.subjects.length; i++){
+                masterSubject[i].score += students.criteria.subjectPreference.subjects[i].score;
+            }
+        }
+        return masterSubject;
     }
 }());
