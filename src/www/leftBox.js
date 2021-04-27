@@ -91,6 +91,7 @@
         const paragraph = document.createElement("h3");
         paragraph.innerText = "Your subject preferences:";
 
+        subjectArray.sort((a, b) => b.score - a.score);
         clearChild(subjectDiv);
         subjectDiv.appendChild(paragraph);
 
