@@ -61,20 +61,6 @@
     }
 
     /**
-     * @summary Updates candidate table to new candidate list and group
-     * @param {string} table table HTML element to update
-     * @param {object[]} candidateList Sorted array of candidates
-     * @param {object} thisGroup The groups whose candidates this is
-     */
-    function updateCandidateTable(table, candidateList, thisGroup) {
-        clearTable(table);
-        table.appendChild(createCandidateTableHeader());
-        for (const candidate of candidateList) {
-            table.appendChild(createCandidateRow(candidate, thisGroup));
-        }
-    }
-
-    /**
      * @summary Removes all child elements from HTML table
      * @param {string} table table HTML element to clear
      */
@@ -94,27 +80,6 @@
         tableRow.appendChild(document.createElement("TH")).textContent = "Score";
         tableRow.appendChild(document.createElement("TH")).textContent = "Invitation status";
         return tableRow;
-    }
-
-    /**
-     * @summary creates a candidate table column HTML element and returns it
-     * @param {object} group the group to represent
-     * @returns {string} the candidate table column HTML element
-     */
-    function createGroupColumn(group) {
-        const groupColumn = document.createElement("TD");
-        groupColumn.appendChild(createGroupStudentList(group));
-        return groupColumn;
-    }
-
-    /**
-     * @summary Removes all child elements from HTML table
-     * @param {string} table table HTML element to clear
-     */
-    function clearTable(table) {
-        while (table.lastChild) {
-            table.removeChild(table.lastChild);
-        }
     }
 
     /**
