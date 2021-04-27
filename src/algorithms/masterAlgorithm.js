@@ -5,34 +5,10 @@
  * @author Mati-AAU and thom776g
  */
 
-module.exports = {preferenceAlg, masterAlg};
+module.exports = {masterAlg};
 const {
-    assertArrayItemsType,
-    assertArrayNotEmpty,
     assertFunction
 } = require("../typeassert");
-
-/**
- * @summary Calculates score for preferences (i.e. working from home)
- * @param {number[]} preferences preference array. 0 is do not care, positive or negative is a preference.
- * @returns {number} Calculated score for preferences
- */
-function preferenceAlg(preferences){
-    assertArrayNotEmpty(preferences);
-    assertArrayItemsType(preferences, "number");
-    let fromHome = 0, inOffice = 0;
-    for (const preference of preferences) {
-        if (preference < -Number.EPSILON){
-            fromHome++;
-        }
-        if (preference > Number.EPSILON){
-            inOffice++;
-        }
-    }
-    let min = Math.min(fromHome, inOffice);
-    let max = Math.max(fromHome, inOffice);
-    return -(min / max);
-}
 
 /**
  * @summary Calculates the overall score based on input subfunctions
