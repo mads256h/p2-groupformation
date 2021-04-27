@@ -113,9 +113,9 @@ class WeightedCriteria {
      * @returns {number} The score of the set of criteria
      */
     score(criteria) {
-        const {heterogenous} = this.asNumberArrays(criteria);
-
-        return this.algorithm(heterogenous);
+        const criteriaWeighted = this.weighCriteria(criteria);
+        const {heterogenous, homogenous, subjects} = this.asNumberArrays(criteriaWeighted);
+        return this.algorithm(heterogenous, homogenous, subjects);
     }
 
     /**
@@ -147,8 +147,15 @@ class WeightedCriteria {
                 c.learningStyles.sequentialGlobal
             ]
                 .map((a) => mapRange(a, -11, 11, -1, 1)));
-
-        return {homogenous: [[]], heterogenous};
+        const homogenous = criteria.map((c) =>
+            [
+                c.workingAtHome
+            ]
+        );
+        const subjects = criteria.map((c) =>
+            c.subjectPreference.subjects
+        );
+        return {heterogenous, homogenous, subjects};
     }
 }
 
