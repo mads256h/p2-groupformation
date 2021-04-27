@@ -1,7 +1,9 @@
 (function() {
     const {invitegroup, rankedgroups, mygroup, registerUpdateHandler} = window.commjs;
 
-    registerUpdateHandler(updateAll);
+    window.addEventListener("DOMContentLoaded", () => {
+        registerUpdateHandler(updateAll);
+    });
 
     /**
      * @summary updates all dynamic html elements of the page
