@@ -5,13 +5,21 @@ const {removeItemFromArray} = require("./math.js");
 
 
 /**
+ * @description WebSocketServer module
+ * @module websocketserver
+ * @see module:websocketserver
+ * @author mads256h
+ */
+
+/**
+ * @public
  * @summary A websocket server wrapper
  * @property {WSServer} websocket
  * @property {connection[]} clients
  */
 class WebSocketServer {
     /**
-     * @param {WebServer} server
+     * @param {WebServer} server The server to add websocket functionality to
      */
     constructor(server) {
         typeassert.assertInstanceOf(server, WebServer);
@@ -35,14 +43,18 @@ class WebSocketServer {
                 console.log(`Closing connection: code: ${code} desc: ${desc}`);
                 removeItemFromArray(conn, this.clients);
             });
+
+            conn.on("error", (err) => console.log("Error", err));
         });
     }
 
     /**
      * @summary Send a message to all connected clients
-     * @param {string} message
+     * @param {string} message The message to broadcast
      */
     broadcastMessage(message) {
+        typeassert.assertString(message);
+
         this.clients.forEach((c) => c.sendUTF(message));
     }
 
