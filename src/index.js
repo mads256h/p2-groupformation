@@ -13,6 +13,8 @@ const {averageVectorMinDistance, averageVectorDistance} = require("./algorithms/
 const weightFunctions = require("./algorithms/weightFunction");
 const {mapRange} = require("./math");
 
+// Idk what to do about this callback hell
+
 // Read config file
 fs.readFile("config.json", (err, data) => {
     if (err) {
@@ -96,12 +98,13 @@ function loginHandler(groupFormation, data, cookies) {
     cookies.set("session", data.username, {sameSite: true});
 }
 
+/**
+ * @param {GroupFormation} groupFormation
+ * @param {any} data
+ * @param {Cookies} cookies
+ */
 function meHandler(groupFormation, data, cookies) {
-    const session = cookies.get("session");
-
-    if (session === undefined) {
-        throw new HttpError(403, "Missing session cookie");
-    }
+    const session = validateSessionCookie(cookies);
 
     const student = getStudent(groupFormation, session);
 
@@ -114,11 +117,7 @@ function meHandler(groupFormation, data, cookies) {
  * @param {Cookies} cookies
  */
 function mygroupHandler(groupFormation, data, cookies) {
-    const session = cookies.get("session");
-
-    if (session === undefined) {
-        throw new HttpError(403, "Missing session cookie");
-    }
+    const session = validateSessionCookie(cookies);
 
     const student = getStudent(groupFormation, session);
     const group = student.group;
@@ -129,12 +128,13 @@ function mygroupHandler(groupFormation, data, cookies) {
     return groupToSend;
 }
 
+/**
+ * @param {GroupFormation} groupFormation
+ * @param {any} data
+ * @param {Cookies} cookies
+ */
 function rankedgroupsHandler(groupFormation, data, cookies) {
-    const session = cookies.get("session");
-
-    if (session === undefined) {
-        throw new HttpError(403, "Missing session cookie");
-    }
+    const session = validateSessionCookie(cookies);
 
     const student = getStudent(groupFormation, session);
     const group = student.group;
@@ -157,12 +157,14 @@ function rankedgroupsHandler(groupFormation, data, cookies) {
     return arr.map((pair) => { pair.value = mapRange(pair.value, min, max, 0, 10); return pair });
 }
 
+/**
+ * @param {WebSocketServer} webSocketServer
+ * @param {GroupFormation} groupFormation
+ * @param {any} data
+ * @param {Cookies} cookies
+ */
 function leavegroupHandler(webSocketServer, groupFormation, data, cookies) {
-    const session = cookies.get("session");
-
-    if (session === undefined) {
-        throw new HttpError(403, "Missing session cookie");
-    }
+    const session = validateSessionCookie(cookies);
 
     const student = getStudent(groupFormation, session);
     if (student.group.students.length === 1) {
@@ -174,12 +176,14 @@ function leavegroupHandler(webSocketServer, groupFormation, data, cookies) {
     webSocketServer.broadcastMessage("update");
 }
 
+/**
+ * @param {WebSocketServer} webSocketServer
+ * @param {GroupFormation} groupFormation
+ * @param {any} data
+ * @param {Cookies} cookies
+ */
 function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
-    const session = cookies.get("session");
-
-    if (session === undefined) {
-        throw new HttpError(403, "Missing session cookie");
-    }
+    const session = validateSessionCookie(cookies);
 
     if (typeof data.groupid === "undefined") {
         throw new HttpError(400, "Missing groupid");
@@ -209,6 +213,23 @@ function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
     webSocketServer.broadcastMessage("update");
 }
 
+/**
+ * @param {Cookies} cookies
+ * @returns {string} session
+ * @throws {HttpError} session cookie is invalid
+ */
+function validateSessionCookie(cookies) {
+    typeassert.assertInstanceOf(cookies, Cookies);
+
+    const session = cookies.get("session");
+
+    if (session === undefined) {
+        throw new HttpError(403, "Invalid session cookie");
+    }
+
+    return session;
+}
+
 function getStudent(groupFormation, name) {
     const student = groupFormation.students.find((s) => s.name === name);
     if (student === undefined) {
@@ -219,6 +240,11 @@ function getStudent(groupFormation, name) {
     }
 }
 
+/**
+ * @summary Convert student objects from json to student objects that is an instance of Student
+ * @param {Student[]} students an array of students read in from json
+ * @returns {Student[]} An array of students that is an instance of Student
+ */
 function convertStudents(students) {
     students.forEach((s) => {
         s.__proto__ = Student.prototype;
