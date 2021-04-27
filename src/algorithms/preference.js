@@ -27,7 +27,7 @@ function preferenceAlg(preferences){
             inOffice++;
         }
     }
-    let min = Math.min(fromHome, inOffice);
-    let max = Math.max(fromHome, inOffice);
+    const min = Math.min(fromHome, inOffice);
+    const max = Math.max(fromHome, inOffice);
     return -(min / max);
 }
