@@ -6,7 +6,7 @@
  * @author mads256h
  */
 
-(function () {
+(function() {
     // Requests
 
     /**
