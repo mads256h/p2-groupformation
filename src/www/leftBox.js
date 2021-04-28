@@ -1,13 +1,15 @@
 (function() {
-    const {leavegroup} = window.commjs;
+    const { leavegroup } = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
         leavegroupButton();
     });
 
     /**
+     * @param {object} meRes Obejct with the data from the logged in user
+     * @param {object} mygroupRes Object with the groupdata from the logged in user
      * @summary Reruns the webpage foreach change happening
      */
-    function updateMyInfo(meRes, mygroupRes){
+    function updateMyInfo(meRes, mygroupRes) {
         showNameOnSite(meRes);
         showWorkEnvironment(meRes);
         showSubject(meRes);
@@ -30,17 +32,17 @@
      * @param {object} content the object with the logged in users informations
      */
     function showWorkEnvironment(content) {
-      const workingEnvironmentDiv = document.getElementById("workFromHome");
-      const work = content.criteria.workingAtHome;
-      const workingEnvironment = document.createElement("p");
-      const paragraph = document.createElement("h3");
-      paragraph.innerText = "Your prefered place to work:";
+        const workingEnvironmentDiv = document.getElementById("workFromHome");
+        const work = content.criteria.workingAtHome;
+        const workingEnvironment = document.createElement("p");
+        const paragraph = document.createElement("h3");
+        paragraph.innerText = "Your prefered place to work:";
 
-      clearChilds(workingEnvironmentDiv);
+        clearChilds(workingEnvironmentDiv);
 
-      workingEnvironmentDiv.appendChild(paragraph);
-      workingEnvironmentDiv.appendChild(workingEnvironment);
-      workingEnvironment.innerText = workEnvironmentStringMaker(work);
+        workingEnvironmentDiv.appendChild(paragraph);
+        workingEnvironmentDiv.appendChild(workingEnvironment);
+        workingEnvironment.innerText = workEnvironmentStringMaker(work);
     }
 
     /**
@@ -100,40 +102,44 @@
     }
 
     /**
-     * @summary Creates a html list element with alle the groupmembers
+     * @summary Creates a html list element with all the group members
      * @param {object} group One group as a object
      * @param {string} myName Name of the logged in user
      */
     function showGroup(group, myName) {
-      const groupMemberDiv = document.getElementById("currentGroup");
-      const button = document.getElementById("leaveButton");
-      const groupMembersList = document.createElement("ul");
-      const paragraph = document.createElement("h3");
-      clearChilds(groupMemberDiv);
-      for (const member of group.students) {
-          if (member.name !== myName){
-              const memberName = createListItem(member.name);
-              groupMembersList.appendChild(memberName);
-          }
-      }
-      if (group.students.length === 1){
-          const notInGroup = document.createElement("h3");
-          notInGroup.innerText = "Not in a group yet";
-          groupMemberDiv.appendChild(notInGroup);
-          button.style.display = "none";
-      }
-      else {
-          paragraph.innerText = "Your group " + group.name + ":";
-          button.style.display = "block";
-      }
-      groupMemberDiv.appendChild(paragraph);
-      groupMemberDiv.appendChild(groupMembersList);
-      if(group.students.length > 1){
-        groupMemberDiv.appendChild(createGroupSubjectsElement(group));
-      }
+        const groupMemberDiv = document.getElementById("currentGroup");
+        const button = document.getElementById("leaveButton");
+        const groupMembersList = document.createElement("ul");
+        const paragraph = document.createElement("h3");
+        clearChilds(groupMemberDiv);
+        for (const member of group.students) {
+            if (member.name !== myName) {
+                const memberName = createListItem(member.name);
+                groupMembersList.appendChild(memberName);
+            }
+        }
+        if (group.students.length === 1) {
+            const notInGroup = document.createElement("h3");
+            notInGroup.innerText = "Not in a group yet";
+            groupMemberDiv.appendChild(notInGroup);
+            button.style.display = "none";
+        }
+        else {
+            paragraph.innerText = "Your group " + group.name + ":";
+            button.style.display = "block";
+        }
+        groupMemberDiv.appendChild(paragraph);
+        groupMemberDiv.appendChild(groupMembersList);
+        if (group.students.length > 1) {
+            groupMemberDiv.appendChild(createGroupSubjectsElement(group));
+        }
     }
-
-    function createGroupSubjectsElement(group){
+    /**
+     * @summary Creates a html list element with all the group members subjects added together
+     * @param {object} group One group as a object
+     * @returns {HTMLElement} Returns a H3 Element with a ul child element with the subjects from the group
+     */
+    function createGroupSubjectsElement(group) {
         let counter = 0;
         const paragraph = document.createElement("h3");
         const groupSubjectList = document.createElement("ul");
@@ -142,9 +148,9 @@
         subjectArray.sort((a, b) => b.score - a.score);
 
         paragraph.innerText = "Your group prefered 3 subjects:";
-        
+
         for (const subject of subjectArray) {
-            if (counter >= 3){
+            if (counter >= 3) {
                 break;
             }
             const groupSubjectPart = document.createElement("li");
@@ -160,8 +166,8 @@
      * @summary Remove all children of a element
      * @param {HTMLDivElement} element The div element where the children shold be removed
      */
-    function clearChilds(element){
-        while (element.firstChild){
+    function clearChilds(element) {
+        while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
     }
@@ -169,18 +175,22 @@
     /**
      * @summary Removes the logged in user from the group when clicking the button with the id "leaveButton"
      */
-    function leavegroupButton(){
+    function leavegroupButton() {
         const button = document.getElementById("leaveButton");
-        button.addEventListener("click", ()=> {
-            leavegroup().catch((e)=>{
+        button.addEventListener("click", () => {
+            leavegroup().catch((e) => {
                 console.log(e);
             });
         });
     }
-
-    function addSubjectScore(group){
+    /**
+     * @summary Adds subjects together from each student in the group
+     * @param {object} group One group as a object
+     * @returns {Array} Returns a array with the subjects
+     */
+    function addSubjectScore(group) {
         let masterSubject = [];
-        for (let i = 0; i < group.students[0].criteria.subjectPreference.subjects.length; i++){
+        for (let i = 0; i < group.students[0].criteria.subjectPreference.subjects.length; i++) {
             const subjectObject = {
                 name: group.students[0].criteria.subjectPreference.subjects[i].name,
                 score: 0
@@ -189,61 +199,69 @@
         }
 
         for (const students of group.students) {
-            for (let i = 0; i < students.criteria.subjectPreference.subjects.length; i++){
+            for (let i = 0; i < students.criteria.subjectPreference.subjects.length; i++) {
                 masterSubject[i].score += students.criteria.subjectPreference.subjects[i].score;
             }
         }
         return masterSubject;
     }
-
-    function showLearningstyles(data){
-      const learningstylesDiv = document.getElementById("learningstyles");
-      const learningstyleList = document.createElement("ul");
-      const cases = data.criteria.learningStyles
-      for (const learningstyle in cases) {
-        if(cases[learningstyle] < 0){
-          cases[learningstyle] *= -1;
+    /**
+     * @summary Prints the learningstyle on the server as a ul element from the logged in user
+     * @param {object} data Data about the logged in user
+     */
+    function showLearningstyles(data) {
+        const learningstylesDiv = document.getElementById("learningstyles");
+        const learningstyleList = document.createElement("ul");
+        const cases = data.criteria.learningStyles;
+        for (const learningstyle in cases) {
+            if (cases[learningstyle] < 0) {
+                cases[learningstyle] *= -1;
+            }
+            const learningstylePart = document.createElement("li");
+            const learningStyleName = switchCase(learningstyle, cases[learningstyle]);
+            learningstylePart.innerText = learningStyleName + ": " + cases[learningstyle];
+            learningstyleList.appendChild(learningstylePart);
         }
-        const learningstylePart = document.createElement("li");
-        const learningStyleName = switchCase(learningstyle, cases[learningstyle]);
-        learningstylePart.innerText = learningStyleName + ": " + cases[learningstyle];
-        learningstyleList.appendChild(learningstylePart);
-      }
-      learningstylesDiv.appendChild(learningstyleList);
+        learningstylesDiv.appendChild(learningstyleList);
     }
 
-    function switchCase(learningstyleName, value){
-      let string;
-      switch (learningstyleName) {
+    /**
+     * @summary Creates a html list element with alle the groupmembers
+     * @param {string} learningstyleName Name of the learningstyle from the 4 dimensions in FS-learningstyles
+     * @param {number} value Value of the dimension looking at
+     * @returns {string} Returns a string with the specific learningstyle we are looking at from the value in the 4 dimensions
+     */
+    function switchCase(learningstyleName, value) {
+        let string;
+        switch (learningstyleName) {
         case "activeReflective":
-          if(value > 0){
-            string = "Reflective";
-          }
-          string = "Active";
-          break;
+            if (value > 0) {
+                string = "Reflective";
+            }
+            string = "Active";
+            break;
         case "visualVerbal":
-          if(value > 0){
-            string = "Verbal";
-          }
-          string = "Visual";
-          break;
+            if (value > 0) {
+                string = "Verbal";
+            }
+            string = "Visual";
+            break;
         case "sensingIntuitive":
-          if(value > 0){
-            string = "Intuitive";
-          }
-          string = "Sensing";
-          break;
+            if (value > 0) {
+                string = "Intuitive";
+            }
+            string = "Sensing";
+            break;
         case "sequentialGlobal":
-          if(value > 0){
-            string = "Global";
-          }
-          string = "Sequential";
-          break;
+            if (value > 0) {
+                string = "Global";
+            }
+            string = "Sequential";
+            break;
         default:
-          break;
-      }
-      return string;
+            break;
+        }
+        return string;
     }
-    window.myInfo = {updateMyInfo};
-
+    window.myInfo = { updateMyInfo };
 }());
