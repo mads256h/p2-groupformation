@@ -46,7 +46,7 @@
 
         workingEnvironmentDiv.appendChild(paragraph);
         workingEnvironmentDiv.appendChild(workingEnvironment);
-        workingEnvironment.innerText = workEnvironmentStringMaker(work);
+        workingEnvironment.innerText = workEnvironmentToString(work);
     }
 
     /**
@@ -54,7 +54,7 @@
      * @param {number} work the number the user has sat about working environment
      * @returns {string} Returns a string
      */
-    function workEnvironmentStringMaker(work) {
+    function workEnvironmentToString(work) {
         switch (work) {
         case 0:
             return "Work from home";
@@ -180,7 +180,7 @@
         let groupSubjectPreferences = [];
         /* Initialize the masterSubject array with all the subjects as objects and their score sat to 0 */
         const initializeSubject = group.students[0].criteria.subjectPreference.subjects;
-        for (let i = 0; i < initializeSubject.length; i++) {
+        for (const i in initializeSubject) {
             const subjectObject = {
                 name: initializeSubject[i].name,
                 score: 0
@@ -189,7 +189,7 @@
         }
         for (const students of group.students) {
             const subjects = students.criteria.subjectPreference.subjects;
-            for (let i = 0; i < subjects.length; i++) {
+            for (const i in subjects) {
                 groupSubjectPreferences[i].score += subjects[i].score;
             }
         }
@@ -208,10 +208,10 @@
         learningstylesDivElement.appendChild(title);
         const learningstyles = data.criteria.learningStyles;
         for (const learningstyle in learningstyles) {
-            learningstyles[learningstyle] = Math.abs(learningstyles[learningstyle]);
+            const absLearningstyleValue = Math.abs(learningstyles[learningstyle]);
             const learningstylePart = document.createElement("li");
             const learningStyleName = switchCase(learningstyle, learningstyles[learningstyle]);
-            learningstylePart.innerText = learningStyleName + ": " + learningstyles[learningstyle];
+            learningstylePart.innerText = learningStyleName + ": " + absLearningstyleValue;
             learningstyleList.appendChild(learningstylePart);
         }
         learningstylesDivElement.appendChild(learningstyleList);
