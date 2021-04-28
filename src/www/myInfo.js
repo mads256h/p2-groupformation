@@ -1,4 +1,5 @@
 (function(){
+    const { clearChildren, createListItem } = window.utiljs;
     const { leavegroup } = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
         const button = document.getElementById("leaveButton");
@@ -90,17 +91,6 @@
     }
 
     /**
-     * @summary Creates a button for each file in the data folder
-     * @param {string} innerText A string
-     * @returns {HTMLElement} Returns a html li element with the string sat as innerText
-     */
-    function createListItem(innerText) {
-        const listItem = document.createElement("li");
-        listItem.innerText = innerText;
-        return listItem;
-    }
-
-    /**
      * @summary Creates a html list element with all the group members
      * @param {object} group One group as a object
      * @param {string} userName Name of the logged in user
@@ -153,16 +143,6 @@
         }
         paragraph.appendChild(groupSubjectList);
         return paragraph;
-    }
-
-    /**
-     * @summary Remove all children of a element
-     * @param {HTMLElement} element The element where the children will be removed
-     */
-    function clearChildren(element) {
-        while (element.firstChild) {
-            element.removeChild(element.firstChild);
-        }
     }
 
     /**
