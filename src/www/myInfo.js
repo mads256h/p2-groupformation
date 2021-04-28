@@ -141,7 +141,6 @@
      * @returns {HTMLElement} Returns a H3 Element with a ul child element with the subjects from the group
      */
     function createGroupSubjectsElement(group) {
-        let counter = 0;
         const paragraph = document.createElement("h3");
         const groupSubjectList = document.createElement("ul");
         const subjectArray = addSubjectScore(group);
@@ -149,13 +148,8 @@
         subjectArray.sort((a, b) => b.score - a.score);
 
         paragraph.innerText = "Your group prefered 3 subjects:";
-
-        for (const subject of subjectArray) {
-            if (counter >= 3) {
-                break;
-            }
+        for (const subject of subjectArray.slice(0, 3)) {
             groupSubjectList.appendChild(createListItem(subject.name + ": " + (subject.score * 10).toFixed(2)));
-            counter++;
         }
         paragraph.appendChild(groupSubjectList);
         return paragraph;
