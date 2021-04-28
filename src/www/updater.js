@@ -9,7 +9,9 @@ const {updateMyInfo} = window.myInfo;
 const {updateCandidateList} = window.candidateList;
 
 let running = true;
-
+/**
+ * @summary gets data from server and updates the clients site accordingly
+ */
 function updateSite(){
     if (running){
         const promises = [me(), mygroup(), rankedgroups()];

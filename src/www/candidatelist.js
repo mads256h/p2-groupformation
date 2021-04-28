@@ -1,5 +1,5 @@
 (function() {
-    const {invitegroup, rankedgroups, mygroup, registerUpdateHandler} = window.commjs;
+    const {invitegroup} = window.commjs;
 
     window.addEventListener("DOMContentLoaded", () => {
 
@@ -7,6 +7,8 @@
 
     /**
      * @summary updates all dynamic html elements of the page
+     * @param {object} mygroupRes this students group
+     * @param {object} rankedgroupsRes this students list of candidates
      */
     function updateCandidateList(mygroupRes, rankedgroupsRes) {
         const sortedGroup = rankedgroupsRes.sort((a, b) => b.value - a.value);
