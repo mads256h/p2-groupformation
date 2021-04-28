@@ -30,17 +30,17 @@
      * @param {object} content the object with the logged in users informations
      */
     function showWorkEnvironment(content) {
-        const work = content.criteria.workingAtHome;
-        const workingEnvironmentDiv = document.getElementById("workFromHome");
-        const workingEnvironment = document.createElement("p");
-        const paragraph = document.createElement("h3");
-        paragraph.innerText = "Your prefered place to work:";
+      const workingEnvironmentDiv = document.getElementById("workFromHome");
+      const work = content.criteria.workingAtHome;
+      const workingEnvironment = document.createElement("p");
+      const paragraph = document.createElement("h3");
+      paragraph.innerText = "Your prefered place to work:";
 
-        clearChild(workingEnvironmentDiv);
+      clearChilds(workingEnvironmentDiv);
 
-        workingEnvironmentDiv.appendChild(paragraph);
-        workingEnvironmentDiv.appendChild(workingEnvironment);
-        workingEnvironment.innerText = workEnvironmentStringMaker(work);
+      workingEnvironmentDiv.appendChild(paragraph);
+      workingEnvironmentDiv.appendChild(workingEnvironment);
+      workingEnvironment.innerText = workEnvironmentStringMaker(work);
     }
 
     /**
@@ -78,7 +78,7 @@
         paragraph.innerText = "Your subject preferences:";
 
         subjectArray.sort((a, b) => b.score - a.score);
-        clearChild(subjectDiv);
+        clearChilds(subjectDiv);
         subjectDiv.appendChild(paragraph);
 
         for (const subject of subjectArray) {
@@ -105,36 +105,35 @@
      * @param {string} myName Name of the logged in user
      */
     function showGroup(group, myName) {
-        const groupMembersList = document.createElement("ul");
-        const groupMemberDiv = document.getElementById("currentGroup");
-        const paragraph = document.createElement("h3");
-        const button = document.getElementById("leaveButton");
-
-        clearChild(groupMemberDiv);
-        for (const member of group.students) {
-            if (member.name !== myName){
-                const memberName = createListItem(member.name);
-                groupMembersList.appendChild(memberName);
-            }
-        }
-        if (group.students.length === 1){
-            const notInGroup = document.createElement("h3");
-            notInGroup.innerText = "Not in a group yet";
-            groupMemberDiv.appendChild(notInGroup);
-            button.style.display = "none";
-        }
-        else {
-            paragraph.innerText = "Your group " + group.name + ":";
-            button.style.display = "block";
-        }
-        groupMemberDiv.appendChild(paragraph);
-        groupMemberDiv.appendChild(groupMembersList);
-        if(group.students.length > 1){
-          groupMemberDiv.appendChild(showGroupSubjects(group));
-        }
+      const groupMemberDiv = document.getElementById("currentGroup");
+      const button = document.getElementById("leaveButton");
+      const groupMembersList = document.createElement("ul");
+      const paragraph = document.createElement("h3");
+      clearChilds(groupMemberDiv);
+      for (const member of group.students) {
+          if (member.name !== myName){
+              const memberName = createListItem(member.name);
+              groupMembersList.appendChild(memberName);
+          }
+      }
+      if (group.students.length === 1){
+          const notInGroup = document.createElement("h3");
+          notInGroup.innerText = "Not in a group yet";
+          groupMemberDiv.appendChild(notInGroup);
+          button.style.display = "none";
+      }
+      else {
+          paragraph.innerText = "Your group " + group.name + ":";
+          button.style.display = "block";
+      }
+      groupMemberDiv.appendChild(paragraph);
+      groupMemberDiv.appendChild(groupMembersList);
+      if(group.students.length > 1){
+        groupMemberDiv.appendChild(createGroupSubjectsElement(group));
+      }
     }
 
-    function showGroupSubjects(group){
+    function createGroupSubjectsElement(group){
         let counter = 0;
         const paragraph = document.createElement("h3");
         const groupSubjectList = document.createElement("ul");
@@ -161,7 +160,7 @@
      * @summary Remove all children of a element
      * @param {HTMLDivElement} element The div element where the children shold be removed
      */
-    function clearChild(element){
+    function clearChilds(element){
         while (element.firstChild){
             element.removeChild(element.firstChild);
         }
@@ -202,18 +201,19 @@
       const learningstyleList = document.createElement("ul");
       const cases = data.criteria.learningStyles
       for (const learningstyle in cases) {
-        const learningstylePart = document.createElement("li");
         if(cases[learningstyle] < 0){
           cases[learningstyle] *= -1;
         }
-        learningstylePart.innerText = switchCase(learningstyle, cases[learningstyle]) + ": " + cases[learningstyle];
+        const learningstylePart = document.createElement("li");
+        const learningStyleName = switchCase(learningstyle, cases[learningstyle]);
+        learningstylePart.innerText = learningStyleName + ": " + cases[learningstyle];
         learningstyleList.appendChild(learningstylePart);
       }
       learningstylesDiv.appendChild(learningstyleList);
     }
 
     function switchCase(learningstyleName, value){
-      let string = "";
+      let string;
       switch (learningstyleName) {
         case "activeReflective":
           if(value > 0){
