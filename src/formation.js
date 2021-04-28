@@ -155,10 +155,10 @@ class WeightedCriteria {
 /**
  * @summary Generates a group name from a list of students
  * @param {object[]} students list of students in group
- * @returns {String} name of the group
+ * @returns {string} name of the group
  */
 function generateName(students){
-    return students.reduce((acc, curStud) => acc + " " + curStud.name, "");
+    return students.reduce((acc, curStud) => acc + " " + curStud.name, "").trim();
 }
 
 /**

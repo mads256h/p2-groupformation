@@ -33,7 +33,7 @@ test("GroupFormation", () => {
 
     expect(() => groupFormation.mergeGroup(groupFormation.groups[0], groupFormation.groups[1])).not.toThrow();
 
-    expect(groupFormation.groups[0].name).toBe("student1student2");
+    expect(groupFormation.groups[0].name).toBe("student1 student2");
     expect(groupFormation.groups[0].students.length).toBe(2);
     expect(groupFormation.groups[0].candidates().length).toBe(0);
 });
