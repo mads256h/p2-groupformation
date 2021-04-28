@@ -157,7 +157,7 @@
 
     /**
      * @summary Remove all children of a element
-     * @param {HTMLDivElement} element The element where the children will be removed
+     * @param {HTMLElement} element The element where the children will be removed
      */
     function clearChildren(element) {
         while (element.firstChild) {
