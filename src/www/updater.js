@@ -23,7 +23,7 @@ function updateSite(){
             })
             .catch((e) => {
                 console.error(e);
-                alert("Der skete en fejl! Venligst forsøg at logge ind igen. \n Fejl: " + e.message);
+                alert("An error occured! Please try logging in again. \n Error: " + e.message);
                 running = false;
             });
     }

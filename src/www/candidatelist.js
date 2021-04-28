@@ -69,7 +69,7 @@
      * @returns {string} HTML element representing table header
      */
     function createCandidateTableHeader() {
-        let tableRow = document.createElement("TR");
+        const tableRow = document.createElement("TR");
         tableRow.appendChild(document.createElement("TH")).textContent = "Group Name";
         tableRow.appendChild(document.createElement("TH")).textContent = "Score";
         tableRow.appendChild(document.createElement("TH")).textContent = "Invitation status";
@@ -139,7 +139,6 @@
      */
     function createButton(group, thisGroup) {
         const button = document.createElement("button");
-        button.setAttribute("id", group.id);
         button.innerText = "Invite";
         if (group.isInvited) {
             button.style.backgroundColor = "lightgreen";
@@ -149,7 +148,10 @@
         }
         button.addEventListener("click", () =>
             invitegroup(group)
-                .catch((e) => console.log(e)));
+                .catch((e) => {
+                    console.error(e);
+                    alert("Invitation failed! \n Error: " + e.message);
+                }));
         return button;
     }
 
