@@ -1,13 +1,18 @@
 (function(){
     const { leavegroup } = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
-        leavegroupButton();
+        const button = document.getElementById("leaveButton");
+        button.addEventListener("click", () => {
+            leavegroup().catch((e) => {
+                alert(e);
+            });
+        });
     });
 
     /**
+     * @summary Returns the webpage foreach change happening
      * @param {object} meRes Obejct with the data from the logged in user
      * @param {object} mygroupRes Object with the groupdata from the logged in user
-     * @summary Reruns the webpage foreach change happening
      */
     function updateMyInfo(meRes, mygroupRes) {
         showNameOnSite(meRes);
@@ -19,7 +24,7 @@
 
     /**
      * @summary Sets the title to the name of the logged in user
-     * @param {object} content the object with the logged in users informations
+     * @param {object} content The object with the logged in users informations
      */
     function showNameOnSite(content) {
         const username = document.getElementById("username");
@@ -50,21 +55,16 @@
      * @returns {string} Returns a string
      */
     function workEnvironmentStringMaker(work) {
-        let place;
         switch (work) {
         case 0:
-            place = "Work from home";
-            break;
-
+            return "Work from home";
         case 1:
-            place = "Don't care";
-            break;
-
+            return "Don't care";
         case 2:
-            place = "Work in office";
-            break;
+            return "Work in office";
+        default:
+            return "ERROR";
         }
-        return place;
     }
 
     /**
@@ -72,7 +72,7 @@
      * @param {object} content the object with the logged in users informations
      */
     function showSubject(content) {
-        let subjectArray = content.criteria.subjectPreference.subjects.slice();
+        const subjectArray = content.criteria.subjectPreference.subjects.slice();
         const subjectList = document.createElement("ul");
         const subjectDiv = document.getElementById("subjectPreference");
         const paragraph = document.createElement("h3");
@@ -154,9 +154,7 @@
             if (counter >= 3) {
                 break;
             }
-            const groupSubjectPart = document.createElement("li");
-            groupSubjectPart.innerText = subject.name + ": " + (subject.score * 10).toFixed(2);
-            groupSubjectList.appendChild(groupSubjectPart);
+            groupSubjectList.appendChild(createListItem(subject.name + ": " + (subject.score * 10).toFixed(2)));
             counter++;
         }
         paragraph.appendChild(groupSubjectList);
@@ -165,7 +163,7 @@
 
     /**
      * @summary Remove all children of a element
-     * @param {HTMLDivElement} element The div element where the children shold be removed
+     * @param {HTMLDivElement} element The element where the children will be removed
      */
     function clearChildren(element) {
         while (element.firstChild) {
@@ -174,38 +172,28 @@
     }
 
     /**
-     * @summary Removes the logged in user from the group when clicking the button with the id "leaveButton"
-     */
-    function leavegroupButton() {
-        const button = document.getElementById("leaveButton");
-        button.addEventListener("click", () => {
-            leavegroup().catch((e) => {
-                console.log(e);
-            });
-        });
-    }
-    /**
      * @summary Adds subjects together from each student in the group
      * @param {object} group One group as a object
      * @returns {Array} Returns a array with the subjects
      */
     function addSubjectScore(group) {
-        let masterSubject = [];
+        let groupSubjectPreferences = [];
         /* Initialize the masterSubject array with all the subjects as objects and their score sat to 0 */
-        for (let i = 0; i < group.students[0].criteria.subjectPreference.subjects.length; i++) {
+        const initializeSubject = group.students[0].criteria.subjectPreference.subjects;
+        for (let i = 0; i < initializeSubject.length; i++) {
             const subjectObject = {
-                name: group.students[0].criteria.subjectPreference.subjects[i].name,
+                name: initializeSubject[i].name,
                 score: 0
             };
-            masterSubject[i] = subjectObject;
+            groupSubjectPreferences[i] = subjectObject;
         }
         for (const students of group.students) {
             const subjects = students.criteria.subjectPreference.subjects;
             for (let i = 0; i < subjects.length; i++) {
-                masterSubject[i].score += subjects[i].score;
+                groupSubjectPreferences[i].score += subjects[i].score;
             }
         }
-        return masterSubject;
+        return groupSubjectPreferences;
     }
     /**
      * @summary Prints the learningstyle on the server as a ul element from the logged in user
@@ -221,7 +209,7 @@
         const learningstyles = data.criteria.learningStyles;
         for (const learningstyle in learningstyles) {
             if (learningstyles[learningstyle] < 0) {
-                learningstyles[learningstyle] *= -1;
+                learningstyles[learningstyle] = Math.abs(learningstyles[learningstyle]);
             }
             const learningstylePart = document.createElement("li");
             const learningStyleName = switchCase(learningstyle, learningstyles[learningstyle]);
@@ -238,36 +226,30 @@
      * @returns {string} Returns a string with the specific learningstyle we are looking at from the value in the 4 dimensions
      */
     function switchCase(learningstyleName, value) {
-        let string;
         switch (learningstyleName) {
         case "activeReflective":
             if (value > 0) {
-                string = "Reflective";
+                return "Reflective";
             }
-            string = "Active";
-            break;
+            return "Active";
         case "visualVerbal":
             if (value > 0) {
-                string = "Verbal";
+                return "Verbal";
             }
-            string = "Visual";
-            break;
+            return "Visual";
         case "sensingIntuitive":
             if (value > 0) {
-                string = "Intuitive";
+                return "Intuitive";
             }
-            string = "Sensing";
-            break;
+            return "Sensing";
         case "sequentialGlobal":
             if (value > 0) {
-                string = "Global";
+                return "Global";
             }
-            string = "Sequential";
-            break;
+            return "Sequential";
         default:
-            break;
+            return "ERROR";
         }
-        return string;
     }
     window.myInfo = { updateMyInfo };
 }());
