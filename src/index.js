@@ -201,7 +201,7 @@ function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
     const group = groupFormation.groups.find((g) => g.id === groupid);
 
     if (group === undefined) {
-        throw new HttpError(500, "could not group to invite");
+        throw new HttpError(500, "Group does not exist");
     }
 
     if (student.group.invitations.includes(group)) {
