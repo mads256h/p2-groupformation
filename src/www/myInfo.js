@@ -1,7 +1,12 @@
 (function(){
     const { leavegroup } = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
-        leavegroupButton();
+        const button = document.getElementById("leaveButton");
+        button.addEventListener("click", () => {
+            leavegroup().catch((e) => {
+                alert(e);
+            });
+        });
     });
 
     /**
@@ -166,17 +171,6 @@
         }
     }
 
-    /**
-     * @summary Removes the logged in user from the group when clicking the button with the id "leaveButton"
-     */
-    function leavegroupButton() {
-        const button = document.getElementById("leaveButton");
-        button.addEventListener("click", () => {
-            leavegroup().catch((e) => {
-                alert(e);
-            });
-        });
-    }
     /**
      * @summary Adds subjects together from each student in the group
      * @param {object} group One group as a object
