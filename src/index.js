@@ -17,14 +17,14 @@ const Cookies = require("cookies");
 // Idk what to do about this callback hell
 
 // Read config file
-fs.readFile("config.json", (err, data) => {
-    if (err) {
-        console.error("Could not read config.json", err);
+fs.readFile("config.json", (configErr, configData) => {
+    if (configErr) {
+        console.error("Could not read config.json", configErr);
     }
     else {
         let config;
         try {
-            config = JSON.parse(data);
+            config = JSON.parse(configData);
         }
         catch (e) {
             console.error("Could not parse config file", e);
@@ -33,14 +33,14 @@ fs.readFile("config.json", (err, data) => {
 
 
         // Read students
-        fs.readFile(config.studentsFile, (err, data) => {
-            if (err) {
-                console.error("Could not read " + config.studentsFile, err);
+        fs.readFile(config.studentsFile, (studentsErr, studentsData) => {
+            if (studentsErr) {
+                console.error("Could not read " + config.studentsFile, studentsErr);
             }
             else {
                 let students;
                 try {
-                    students = JSON.parse(data);
+                    students = JSON.parse(studentsData);
                 }
                 catch (e) {
                     console.error("Could not parse students file", e);
@@ -145,9 +145,9 @@ function rankedgroupsHandler(groupFormation, data, cookies) {
 
     const arr = [];
 
-    for (let [g, value] of rankedGroups.entries()) {
-        const newGroup = g.toGroup();
-        newGroup.isInvited = g.invitations.some((g) => g === group);
+    for (let [rankedGroup, value] of rankedGroups.entries()) {
+        const newGroup = rankedGroup.toGroup();
+        newGroup.isInvited = rankedGroup.invitations.some((g) => g === group);
         arr.push({group: newGroup, value});
     }
 
@@ -155,7 +155,10 @@ function rankedgroupsHandler(groupFormation, data, cookies) {
     const min = Math.min(...values);
     const max = Math.max(...values);
 
-    return arr.map((pair) => { pair.value = mapRange(pair.value, min, max, 0, 10); return pair });
+    return arr.map((pair) => {
+        pair.value = mapRange(pair.value, min, max, 0, 10);
+        return pair;
+    });
 }
 
 /**
@@ -256,10 +259,10 @@ function convertStudents(students) {
 
 function configToAlgorithmFunction(config) {
     switch (config.algorithm) {
-        case "random": return () => Math.random();
-        case "0point": return balance;
-        case "distance": return maxDistance;
-        case "amalgemation": return (criteria) => 22 - maxDistance(criteria) + balance(criteria);
+    case "random": return () => Math.random();
+    case "0point": return balance;
+    case "distance": return maxDistance;
+    case "amalgemation": return (criteria) => 22 - maxDistance(criteria) + balance(criteria);
     }
 
     console.error("Unknown algorithm");

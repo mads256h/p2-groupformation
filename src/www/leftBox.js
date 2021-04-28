@@ -211,6 +211,7 @@
      */
     function showLearningstyles(data) {
         const learningstylesDiv = document.getElementById("learningstyles");
+        clearChilds(learningstylesDiv);
         const learningstyleList = document.createElement("ul");
         const cases = data.criteria.learningStyles;
         for (const learningstyle in cases) {
