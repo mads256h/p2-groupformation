@@ -11,7 +11,7 @@
         showNameOnSite(meRes);
         showWorkEnvironment(meRes);
         showSubject(meRes);
-        showLearningstyles(res);
+        showLearningstyles(meRes);
 
         showGroup(mygroupRes, meRes.name);
     }
