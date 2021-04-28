@@ -2,26 +2,20 @@
     const {invitegroup, rankedgroups, mygroup, registerUpdateHandler} = window.commjs;
 
     window.addEventListener("DOMContentLoaded", () => {
-        registerUpdateHandler(updateAll);
+
     });
 
     /**
      * @summary updates all dynamic html elements of the page
      */
-    function updateAll() {
-        mygroup().then((thisGroup) => updateCandidates(thisGroup));
-    }
+    function updateCandidateList(mygroupRes, rankedgroupsRes) {
+        console.log(mygroupRes);
+        console.log(rankedgroupsRes);
 
-    /**
-     * @summary fetches candidates and updates candidate table
-     * @param {object} thisGroup The groups whose candidates this is
-     */
-    function updateCandidates(thisGroup) {
-        rankedgroups().then((group) => {
-            const sortedGroup = group.sort((a, b) => b.value - a.value);
-            const table = document.getElementById("candidatesTable");
-            updateCandidateTable(table, sortedGroup, thisGroup);
-        });
+        const sortedGroup = rankedgroupsRes.sort((a, b) => b.value - a.value);
+        console.log(sortedGroup);
+        const table = document.getElementById("candidatesTable");
+        updateCandidateTable(table, sortedGroup, mygroupRes);
     }
 
     /**
@@ -160,4 +154,6 @@
                 .catch((e) => console.log(e)));
         return button;
     }
+
+    window.candidateList = {updateCandidateList};
 }());

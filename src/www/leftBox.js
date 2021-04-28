@@ -1,34 +1,18 @@
 (function() {
-    const {
-        me,
-        mygroup,
-        registerUpdateHandler,
-        leavegroup
-    } = window.commjs;
+    const {leavegroup} = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
-        registerUpdateHandler(update);
         leavegroupButton();
     });
 
     /**
      * @summary Reruns the webpage foreach change happening
      */
-    function update(){
-        const mePromise = me();
-        const myGroupPromise = mygroup();
-        mePromise.then((res) => {
-            showNameOnSite(res);
-            showWorkEnvironment(res);
-            showSubject(res);
-        }).catch((e)=>{
-            console.log(e);
-        });
-        Promise.all([mePromise, myGroupPromise]).then((data) => {
-            showGroup(data[1], data[0].name);
-            addNumberFromArray(data[1]);
-        }).catch((e)=>{
-            console.log(e);
-        });
+    function updateMyInfo(meRes, mygroupRes){
+        showNameOnSite(meRes);
+        showWorkEnvironment(meRes);
+        showSubject(meRes);
+
+        showGroup(mygroupRes, meRes.name);
     }
 
     /**
@@ -210,4 +194,6 @@
         }
         return masterSubject;
     }
+
+    window.myInfo = {updateMyInfo};
 }());
