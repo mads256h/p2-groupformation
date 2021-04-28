@@ -6,7 +6,7 @@
  * @author mads256h
  */
 
-(function() {
+(function () {
     // Requests
 
     /**
@@ -161,21 +161,29 @@
 
     // When everything has loaded start the websocket and run the callbacks once
     window.addEventListener("load", () => {
-        // Start websocket
-        const socket = new WebSocket("ws://" + window.location.host + window.location.pathname);
-        socket.onerror = (e) => {
-            console.error("Could not create websocket!", e);
-            console.log("Using a timer instead!");
-            setInterval(executeCallbacks, 1000);
-        };
-        socket.onopen = (e) => console.log("Opened websocket", e);
-        socket.onclose = (e) => console.log("Closed websocket", e);
+        // Chromium throws and firefox does an socket.onerror ;)
+        try {
+            // Start websocket
+            const socket = new WebSocket("ws://" + window.location.host + window.location.pathname);
+            socket.onerror = websocketError;
+            socket.onopen = (e) => console.log("Opened websocket", e);
+            socket.onclose = (e) => console.log("Closed websocket", e);
 
-        socket.onmessage = executeCallbacks;
+            socket.onmessage = executeCallbacks;
+        }
+        catch (e) {
+            websocketError(e);
+        }
 
         // Start with calling the callbacks
         executeCallbacks();
     });
+
+    function websocketError(e) {
+        console.error("Could not create websocket!", e);
+        console.log("Using a timer instead!");
+        setInterval(executeCallbacks, 1000);
+    }
 
     /**
      * @summary Executes all update-callbacks
