@@ -75,7 +75,7 @@ fs.readFile("config.json", (configErr, configData) => {
 
                 webServer.run()
                     .then(() => console.log(`Server running on ${config.hostname}:${config.port}`))
-                    .catch(() => console.error("Could not start server!"));
+                    .catch((e) => console.error("Could not start server!", e));
             }
         });
     }
