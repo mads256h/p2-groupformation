@@ -1,4 +1,4 @@
-(function() {
+(function(){
     const { leavegroup } = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
         leavegroupButton();
@@ -14,7 +14,6 @@
         showWorkEnvironment(meRes);
         showSubject(meRes);
         showLearningstyles(meRes);
-
         showGroup(mygroupRes, meRes.name);
     }
 
@@ -38,7 +37,7 @@
         const paragraph = document.createElement("h3");
         paragraph.innerText = "Your prefered place to work:";
 
-        clearChilds(workingEnvironmentDiv);
+        clearChildren(workingEnvironmentDiv);
 
         workingEnvironmentDiv.appendChild(paragraph);
         workingEnvironmentDiv.appendChild(workingEnvironment);
@@ -80,7 +79,7 @@
         paragraph.innerText = "Your subject preferences:";
 
         subjectArray.sort((a, b) => b.score - a.score);
-        clearChilds(subjectDiv);
+        clearChildren(subjectDiv);
         subjectDiv.appendChild(paragraph);
 
         for (const subject of subjectArray) {
@@ -104,16 +103,18 @@
     /**
      * @summary Creates a html list element with all the group members
      * @param {object} group One group as a object
-     * @param {string} myName Name of the logged in user
+     * @param {string} userName Name of the logged in user
      */
-    function showGroup(group, myName) {
+    function showGroup(group, userName) {
         const groupMemberDiv = document.getElementById("currentGroup");
         const button = document.getElementById("leaveButton");
         const groupMembersList = document.createElement("ul");
         const paragraph = document.createElement("h3");
-        clearChilds(groupMemberDiv);
+
+        clearChildren(groupMemberDiv);
+
         for (const member of group.students) {
-            if (member.name !== myName) {
+            if (member.name !== userName) {
                 const memberName = createListItem(member.name);
                 groupMembersList.appendChild(memberName);
             }
@@ -124,7 +125,7 @@
             groupMemberDiv.appendChild(notInGroup);
             button.style.display = "none";
         }
-        else {
+        if (group.students.length > 1) {
             paragraph.innerText = "Your group " + group.name + ":";
             button.style.display = "block";
         }
@@ -144,7 +145,7 @@
         const paragraph = document.createElement("h3");
         const groupSubjectList = document.createElement("ul");
         const subjectArray = addSubjectScore(group);
-
+        /* Sorting the array, the bigest score will be in the first index of the array */
         subjectArray.sort((a, b) => b.score - a.score);
 
         paragraph.innerText = "Your group prefered 3 subjects:";
@@ -166,7 +167,7 @@
      * @summary Remove all children of a element
      * @param {HTMLDivElement} element The div element where the children shold be removed
      */
-    function clearChilds(element) {
+    function clearChildren(element) {
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
@@ -190,6 +191,7 @@
      */
     function addSubjectScore(group) {
         let masterSubject = [];
+        /* Initialize the masterSubject array with all the subjects as objects and their score sat to 0 */
         for (let i = 0; i < group.students[0].criteria.subjectPreference.subjects.length; i++) {
             const subjectObject = {
                 name: group.students[0].criteria.subjectPreference.subjects[i].name,
@@ -197,10 +199,10 @@
             };
             masterSubject[i] = subjectObject;
         }
-
         for (const students of group.students) {
-            for (let i = 0; i < students.criteria.subjectPreference.subjects.length; i++) {
-                masterSubject[i].score += students.criteria.subjectPreference.subjects[i].score;
+            const subjects = students.criteria.subjectPreference.subjects;
+            for (let i = 0; i < subjects.length; i++) {
+                masterSubject[i].score += subjects[i].score;
             }
         }
         return masterSubject;
@@ -210,20 +212,23 @@
      * @param {object} data Data about the logged in user
      */
     function showLearningstyles(data) {
-        const learningstylesDiv = document.getElementById("learningstyles");
-        clearChilds(learningstylesDiv);
+        const learningstylesDivElement = document.getElementById("learningstyles");
+        clearChildren(learningstylesDivElement);
         const learningstyleList = document.createElement("ul");
-        const cases = data.criteria.learningStyles;
-        for (const learningstyle in cases) {
-            if (cases[learningstyle] < 0) {
-                cases[learningstyle] *= -1;
+        const title = document.createElement("h3");
+        title.innerText = "Your learningstyle data:";
+        learningstylesDivElement.appendChild(title);
+        const learningstyles = data.criteria.learningStyles;
+        for (const learningstyle in learningstyles) {
+            if (learningstyles[learningstyle] < 0) {
+                learningstyles[learningstyle] *= -1;
             }
             const learningstylePart = document.createElement("li");
-            const learningStyleName = switchCase(learningstyle, cases[learningstyle]);
-            learningstylePart.innerText = learningStyleName + ": " + cases[learningstyle];
+            const learningStyleName = switchCase(learningstyle, learningstyles[learningstyle]);
+            learningstylePart.innerText = learningStyleName + ": " + learningstyles[learningstyle];
             learningstyleList.appendChild(learningstylePart);
         }
-        learningstylesDiv.appendChild(learningstyleList);
+        learningstylesDivElement.appendChild(learningstyleList);
     }
 
     /**
