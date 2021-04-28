@@ -7,7 +7,8 @@
         sumOfArray,
         distanceBetweenExtremes,
         getLSValuesOfGroup,
-        getSubjectValuesOfGroup
+        getSubjectValuesOfGroup,
+        getWorkingAtHomeOfGroup
     };
     /**
      * @summary Finds the distance between the min and max value in the array
@@ -84,5 +85,14 @@
      */
     function getSubjectValuesOfGroup(group, subjectName){
         return group.students.map((s) => s.criteria.subjectPreference.subjects[subjectName].score);
+    }
+
+    /**
+     * @summary Creates and returns a new array with the workingAtHome scores of the students in the group
+     * @param {object} group the group from which to get the data
+     * @returns {object} returns an object with the students of the groups values in workingAtHome, the key is the students idx in the groups
+     */
+    function getWorkingAtHomeOfGroup(group){
+        return group.students.map((s) => s.criteria.workingAtHome);
     }
 }());
