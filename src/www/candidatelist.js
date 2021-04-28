@@ -9,11 +9,7 @@
      * @summary updates all dynamic html elements of the page
      */
     function updateCandidateList(mygroupRes, rankedgroupsRes) {
-        console.log(mygroupRes);
-        console.log(rankedgroupsRes);
-
         const sortedGroup = rankedgroupsRes.sort((a, b) => b.value - a.value);
-        console.log(sortedGroup);
         const table = document.getElementById("candidatesTable");
         updateCandidateTable(table, sortedGroup, mygroupRes);
     }
