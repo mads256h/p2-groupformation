@@ -46,7 +46,7 @@
     /**
      * @summary creates a candidate table column HTML element and returns it
      * @param {object} group the group to represent
-     * @returns {HTMLTableDataCellElement} the candidate table column HTML element
+     * @returns {HTMLTableCellElement} the candidate table column HTML element
      */
     function createGroupColumn(group) {
         const groupColumn = document.createElement("TD");
@@ -111,7 +111,7 @@
     /**
      * @summary creates table column HTML element representing score for a candidate
      * @param {number} score the score of the group
-     * @returns {HTMLTableDataCellElement} HTML element representing score item
+     * @returns {HTMLTableCellElement} HTML element representing score item
      */
     function createScoreColumn(score) {
         const scoreColumn = document.createElement("TD");
@@ -123,7 +123,7 @@
      * @summary creates table column HTML element representing invite button and status
      * @param {object} group the group that the invitation points to
      * @param {object} thisGroup the group that the invitation points from
-     * @returns {HTMLTableDataCellElement} invite button table column html element
+     * @returns {HTMLTableCellElement} invite button table column html element
      */
     function createInvColumn(group, thisGroup) {
         const invColumn = document.createElement("TD");
