@@ -20,12 +20,12 @@
             showNameOnSite(res);
             showWorkEnvironment(res);
             showSubject(res);
+            showLearningstyles(res);
         }).catch((e)=>{
             console.log(e);
         });
         Promise.all([mePromise, myGroupPromise]).then((data) => {
             showGroup(data[1], data[0].name);
-            addNumberFromArray(data[1]);
         }).catch((e)=>{
             console.log(e);
         });
@@ -144,8 +144,9 @@
         }
         groupMemberDiv.appendChild(paragraph);
         groupMemberDiv.appendChild(groupMembersList);
-        console.log(group);
-        groupMemberDiv.appendChild(showGroupSubjects(group));
+        if(group.students.length > 1){
+          groupMemberDiv.appendChild(showGroupSubjects(group));
+        }
     }
 
     function showGroupSubjects(group){
@@ -209,5 +210,53 @@
             }
         }
         return masterSubject;
+    }
+
+    function showLearningstyles(data){
+      const learningstylesDiv = document.getElementById("learningstyles");
+      const learningstyleList = document.createElement("ul");
+      const cases = data.criteria.learningStyles
+      for (const learningstyle in cases) {
+        const learningstylePart = document.createElement("li");
+        if(cases[learningstyle] < 0){
+          cases[learningstyle] *= -1;
+        }
+        learningstylePart.innerText = switchCase(learningstyle, cases[learningstyle]) + ": " + cases[learningstyle];
+        learningstyleList.appendChild(learningstylePart);
+      }
+      learningstylesDiv.appendChild(learningstyleList);
+    }
+
+    function switchCase(learningstyleName, value){
+      let string = "";
+      switch (learningstyleName) {
+        case "activeReflective":
+          if(value > 0){
+            string = "Reflective";
+          }
+          string = "Active";
+          break;
+        case "visualVerbal":
+          if(value > 0){
+            string = "Verbal";
+          }
+          string = "Visual";
+          break;
+        case "sensingIntuitive":
+          if(value > 0){
+            string = "Intuitive";
+          }
+          string = "Sensing";
+          break;
+        case "sequentialGlobal":
+          if(value > 0){
+            string = "Global";
+          }
+          string = "Sequential";
+          break;
+        default:
+          break;
+      }
+      return string;
     }
 }());
