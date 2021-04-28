@@ -6,7 +6,8 @@
         distribution,
         sumOfArray,
         distanceBetweenExtremes,
-        getLSValuesOfGroup
+        getLSValuesOfGroup,
+        getSubjectValuesOfGroup
     };
     /**
      * @summary Finds the distance between the min and max value in the array
@@ -72,5 +73,16 @@
      */
     function getLSValuesOfGroup(group, learnStyleName){
         return group.students.map((s) => s.criteria.learningStyles[learnStyleName]);
+    }
+
+    /**
+     * @summary Creates and returns a new array with the subject scores
+     * of the subject with the subject name provided in the subjectName argument
+     * @param {object} group the group from which to get the data
+     * @param {string} subjectName the name of the subject
+     * @returns {object} returns an object with the students of the groups values in the given subjects, the key is the students idx in the groups.students object
+     */
+    function getSubjectValuesOfGroup(group, subjectName){
+        return group.students.map((s) => s.criteria.subjectPreference.subjects[subjectName].score);
     }
 }());
