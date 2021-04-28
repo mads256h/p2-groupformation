@@ -208,9 +208,7 @@
         learningstylesDivElement.appendChild(title);
         const learningstyles = data.criteria.learningStyles;
         for (const learningstyle in learningstyles) {
-            if (learningstyles[learningstyle] < 0) {
-                learningstyles[learningstyle] = Math.abs(learningstyles[learningstyle]);
-            }
+            learningstyles[learningstyle] = Math.abs(learningstyles[learningstyle]);
             const learningstylePart = document.createElement("li");
             const learningStyleName = switchCase(learningstyle, learningstyles[learningstyle]);
             learningstylePart.innerText = learningStyleName + ": " + learningstyles[learningstyle];
