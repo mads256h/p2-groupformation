@@ -9,9 +9,9 @@
         }
     }
     /**
-     * @summary Creates a button for each file in the data folder
+     * @summary Creates a li element with an innerText
      * @param {string} innerText A string
-     * @returns {HTMLElement} Returns a html li element with the string sat as innerText
+     * @returns {HTMLLIElement} Returns a html li element with the string sat as innerText
      */
     function createListItem(innerText) {
         const listItem = document.createElement("li");
