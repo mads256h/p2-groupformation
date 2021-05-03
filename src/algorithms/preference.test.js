@@ -2,6 +2,7 @@ const { preferenceAlg } = require("./preference.js");
 
 test("Return values of preferenceAlgorithm", () => {
     expect(preferenceAlg([0, 1, 0, 0])).toBeCloseTo(0);
+    expect(preferenceAlg([0, 0, 0])).toBeCloseTo(0);
     expect(preferenceAlg([-1, -1, -1, -1])).toBeCloseTo(0);
     expect(preferenceAlg([-1, 1, -1, -1])).toBeCloseTo(-1 / 3);
     expect(preferenceAlg([1, 1, -1, -1])).toBeCloseTo(-1);

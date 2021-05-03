@@ -29,5 +29,10 @@ function preferenceAlg(preferences){
     }
     const min = Math.min(fromHome, inOffice);
     const max = Math.max(fromHome, inOffice);
-    return -(min / max);
+    if (max === 0){
+        return 0;
+    }
+    else {
+        return -(min / max);
+    }
 }
