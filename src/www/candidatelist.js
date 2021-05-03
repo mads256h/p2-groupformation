@@ -23,7 +23,7 @@
      * @param {object} thisGroup The groups whose candidates this is
      */
     function updateCandidateTable(table, candidateList, thisGroup) {
-        clearTable(table);
+        window.utiljs.clearChildren(table);
         table.appendChild(createCandidateTableHeader());
         for (const candidate of candidateList) {
             table.appendChild(createCandidateRow(candidate, thisGroup));
@@ -55,16 +55,6 @@
     }
 
     /**
-     * @summary Removes all child elements from HTML table
-     * @param {HTMLTableElement} table table HTML element to clear
-     */
-    function clearTable(table) {
-        while (table.lastChild) {
-            table.removeChild(table.lastChild);
-        }
-    }
-
-    /**
      * @summary creates the candidate table header HTML element and returns it
      * @returns {HTMLTableRowElement} HTML element representing table header
      */
@@ -90,22 +80,11 @@
 
         const nameList = document.createElement("ul");
         for (const student of group.students) {
-            nameList.appendChild(createListItem(student.name));
+            nameList.appendChild(window.utiljs.createListItem(student.name));
         }
         groupElement.appendChild(nameList);
 
         return groupElement;
-    }
-
-    /**
-     * @summary Creates and returns list item HTML element with given text
-     * @param {string} innerText text content of list item
-     * @returns {HTMLLIElement} HTML element representing list item
-     */
-    function createListItem(innerText) {
-        const listItem = document.createElement("li");
-        listItem.innerText = innerText;
-        return listItem;
     }
 
     /**
