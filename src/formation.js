@@ -202,7 +202,7 @@ class FMGroup extends Group {
      * @returns {FMGroup} A new group that is a result of merging this group and group
      */
     merge(group, isUsed = false) {
-        let mergedStudents = this.students.concat(group.students);
+        const mergedStudents = this.students.concat(group.students);
         return new FMGroup(
             generateName(mergedStudents),
             this.groupFormation.nextGroupId++,
