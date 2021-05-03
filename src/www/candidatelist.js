@@ -1,6 +1,6 @@
 (function() {
     const {invitegroup} = window.commjs;
-
+    const {clearChildren, createListItem} = window.utiljs;
     window.addEventListener("DOMContentLoaded", () => {
 
     });
@@ -11,9 +11,9 @@
      * @param {object} rankedgroupsRes this students list of candidates
      */
     function updateCandidateList(mygroupRes, rankedgroupsRes) {
-        const sortedGroup = rankedgroupsRes.sort((a, b) => b.value - a.value);
+        const sortedGroups = rankedgroupsRes.sort((a, b) => b.value - a.value);
         const table = document.getElementById("candidatesTable");
-        updateCandidateTable(table, sortedGroup, mygroupRes);
+        updateCandidateTable(table, sortedGroups, mygroupRes);
     }
 
     /**
@@ -23,7 +23,7 @@
      * @param {object} thisGroup The groups whose candidates this is
      */
     function updateCandidateTable(table, candidateList, thisGroup) {
-        window.utiljs.clearChildren(table);
+        clearChildren(table);
         table.appendChild(createCandidateTableHeader());
         for (const candidate of candidateList) {
             table.appendChild(createCandidateRow(candidate, thisGroup));
@@ -38,20 +38,20 @@
      */
     function createCandidateRow(candidate, thisGroup) {
         const tableRow = document.createElement("TR");
-        tableRow.appendChild(createGroupColumn(candidate.group));
-        tableRow.appendChild(createScoreColumn(candidate.value));
-        tableRow.appendChild(createInvColumn(candidate.group, thisGroup));
+        tableRow.appendChild(createGroupDataCell(candidate.group));
+        tableRow.appendChild(createScoreDataCell(candidate.value));
+        tableRow.appendChild(createInvDataCell(candidate.group, thisGroup));
         return tableRow;
     }
     /**
-     * @summary creates a candidate table column HTML element and returns it
+     * @summary creates a candidate table data cell HTML element and returns it
      * @param {object} group the group to represent
-     * @returns {HTMLTableCellElement} the candidate table column HTML element
+     * @returns {HTMLTableCellElement} the candidate table dataCell HTML element
      */
-    function createGroupColumn(group) {
-        const groupColumn = document.createElement("TD");
-        groupColumn.appendChild(createGroupStudentList(group));
-        return groupColumn;
+    function createGroupDataCell(group) {
+        const groupDataCell = document.createElement("TD");
+        groupDataCell.appendChild(createGroupStudentList(group));
+        return groupDataCell;
     }
 
     /**
@@ -80,7 +80,7 @@
 
         const nameList = document.createElement("ul");
         for (const student of group.students) {
-            nameList.appendChild(window.utiljs.createListItem(student.name));
+            nameList.appendChild(createListItem(student.name));
         }
         groupElement.appendChild(nameList);
 
@@ -88,26 +88,26 @@
     }
 
     /**
-     * @summary creates table column HTML element representing score for a candidate
+     * @summary creates table data cell HTML element representing score for a candidate
      * @param {number} score the score of the group
      * @returns {HTMLTableCellElement} HTML element representing score item
      */
-    function createScoreColumn(score) {
-        const scoreColumn = document.createElement("TD");
-        scoreColumn.textContent = score.toFixed(2);
-        return scoreColumn;
+    function createScoreDataCell(score) {
+        const scoreDataCell = document.createElement("TD");
+        scoreDataCell.textContent = score.toFixed(2);
+        return scoreDataCell;
     }
 
     /**
-     * @summary creates table column HTML element representing invite button and status
+     * @summary creates table dataCell HTML element representing invite button and status
      * @param {object} group the group that the invitation points to
      * @param {object} thisGroup the group that the invitation points from
-     * @returns {HTMLTableCellElement} invite button table column html element
+     * @returns {HTMLTableCellElement} invite button table dataCell html element
      */
-    function createInvColumn(group, thisGroup) {
-        const invColumn = document.createElement("TD");
-        invColumn.appendChild(createButton(group, thisGroup));
-        return invColumn;
+    function createInvDataCell(group, thisGroup) {
+        const invDataCell = document.createElement("TD");
+        invDataCell.appendChild(createButton(group, thisGroup));
+        return invDataCell;
     }
 
     /**
