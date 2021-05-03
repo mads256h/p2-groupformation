@@ -25,11 +25,11 @@
 
     /**
      * @summary Sets the title to the name of the logged in user
-     * @param {object} content The object with the logged in users informations
+     * @param {object} student The object with the logged in users informations
      */
-    function showNameOnSite(content) {
+    function showNameOnSite(student) {
         const username = document.getElementById("username");
-        username.innerText = "Welcome, " + content.name;
+        username.innerText = "Welcome, " + student.name;
     }
 
     /**
@@ -40,12 +40,7 @@
         const workingEnvironmentDiv = document.getElementById("workFromHome");
         const work = content.criteria.workingAtHome;
         const workingEnvironment = document.createElement("p");
-        const paragraph = document.createElement("h3");
-        paragraph.innerText = "Your prefered place to work:";
-
         clearChildren(workingEnvironmentDiv);
-
-        workingEnvironmentDiv.appendChild(paragraph);
         workingEnvironmentDiv.appendChild(workingEnvironment);
         workingEnvironment.innerText = workEnvironmentToString(work);
     }
