@@ -60,7 +60,7 @@ if (algorithm === undefined) {
 
 const weightedCriteria = new WeightedCriteria(null,
     (heterogenousCri, homogenousCri, subjectCri) =>
-        masterAlg(algorithm.alg, subjectAlg, subjectAlg, heterogenousCri, homogenousCri, subjectCri));
+        masterAlg(algorithm.alg, subjectAlg, subjectAlg, heterogenousCri, homogenousCri, subjectCri)); // we use subjectalg instead of preference alg because it is functionally identical, and preference alg takes an array of numbers instead of an array of array of numbers
 const groupFormation = new GroupFormation(studentArray, Number(argv[1]), weightedCriteria);
 
 createBestGroups();
