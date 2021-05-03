@@ -1,4 +1,7 @@
 (function(){
+    const paragrafElement = document.createElement("p");
+    const classString = "titles";
+
     const { clearChildren, createListItem } = window.utiljs;
     const { leavegroup } = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
@@ -39,7 +42,7 @@
     function showWorkEnvironment(content) {
         const workingEnvironmentDiv = document.getElementById("workFromHome");
         const work = content.criteria.workingAtHome;
-        const workingEnvironment = document.createElement("p");
+        const workingEnvironment = paragrafElement;
         clearChildren(workingEnvironmentDiv);
         workingEnvironmentDiv.appendChild(workingEnvironment);
         workingEnvironment.innerText = workEnvironmentToString(work);
@@ -59,7 +62,7 @@
         case 2:
             return "Work in office";
         default:
-            return "ERROR";
+            return RangeError;
         }
     }
 
@@ -71,12 +74,8 @@
         const subjectArray = content.criteria.subjectPreference.subjects.slice();
         const subjectList = document.createElement("ul");
         const subjectDiv = document.getElementById("subjectPreference");
-        const paragraph = document.createElement("h3");
-        paragraph.innerText = "Your subject preferences:";
-
         subjectArray.sort((a, b) => b.score - a.score);
         clearChildren(subjectDiv);
-        subjectDiv.appendChild(paragraph);
 
         for (const subject of subjectArray) {
             const subjectPart = createListItem(subject.name + ": " + (subject.score * 10).toFixed(2));
@@ -94,7 +93,7 @@
         const groupMemberDiv = document.getElementById("currentGroup");
         const button = document.getElementById("leaveButton");
         const groupMembersList = document.createElement("ul");
-        const paragraph = document.createElement("h3");
+        const groupTitle = document.getElementById("groupTitle");
 
         clearChildren(groupMemberDiv);
 
@@ -105,18 +104,15 @@
             }
         }
         if (group.students.length === 1) {
-            const notInGroup = document.createElement("h3");
-            notInGroup.innerText = "Not in a group yet";
-            groupMemberDiv.appendChild(notInGroup);
+            groupTitle.innerText = "Not in a group yet";
             button.style.display = "none";
         }
         if (group.students.length > 1) {
-            paragraph.innerText = "Your group " + group.name + ":";
+            groupTitle.innerText = "Your group " + group.name + ":";
             button.style.display = "block";
-        }
-        groupMemberDiv.appendChild(paragraph);
-        groupMemberDiv.appendChild(groupMembersList);
-        if (group.students.length > 1) {
+            groupMemberDiv.appendChild(groupMembersList);
+            const groupSubjectTitle = createTitleElement("Your group prefered 3 subjects:", classString);
+            groupMemberDiv.appendChild(groupSubjectTitle);
             groupMemberDiv.appendChild(createGroupSubjectsElement(group));
         }
     }
@@ -126,18 +122,15 @@
      * @returns {HTMLElement} Returns a H3 Element with a ul child element with the subjects from the group
      */
     function createGroupSubjectsElement(group) {
-        const paragraph = document.createElement("h3");
         const groupSubjectList = document.createElement("ul");
         const subjectArray = addSubjectScore(group);
         /* Sorting the array, the bigest score will be in the first index of the array */
         subjectArray.sort((a, b) => b.score - a.score);
 
-        paragraph.innerText = "Your group prefered 3 subjects:";
         for (const subject of subjectArray.slice(0, 3)) {
             groupSubjectList.appendChild(createListItem(subject.name + ": " + (subject.score * 10).toFixed(2)));
         }
-        paragraph.appendChild(groupSubjectList);
-        return paragraph;
+        return groupSubjectList;
     }
 
     /**
@@ -165,22 +158,18 @@
         return groupSubjectPreferences;
     }
     /**
-     * @summary Prints the learningstyle on the server as a ul element from the logged in user
-     * @param {object} data Data about the logged in user
+     * @summary Prints the learningstyle on the group site as a ul element from the logged in user
+     * @param {object} student Data about the logged in user
      */
-    function showLearningstyles(data) {
+    function showLearningstyles(student) {
         const learningstylesDivElement = document.getElementById("learningstyles");
         clearChildren(learningstylesDivElement);
         const learningstyleList = document.createElement("ul");
-        const title = document.createElement("h3");
-        title.innerText = "Your learningstyle data:";
-        learningstylesDivElement.appendChild(title);
-        const learningstyles = data.criteria.learningStyles;
+        const learningstyles = student.criteria.learningStyles;
         for (const learningstyle in learningstyles) {
             const absLearningstyleValue = Math.abs(learningstyles[learningstyle]);
-            const learningstylePart = document.createElement("li");
             const learningStyleName = switchCase(learningstyle, learningstyles[learningstyle]);
-            learningstylePart.innerText = learningStyleName + ": " + absLearningstyleValue;
+            const learningstylePart = createListItem(learningStyleName + ": " + absLearningstyleValue);
             learningstyleList.appendChild(learningstylePart);
         }
         learningstylesDivElement.appendChild(learningstyleList);
@@ -195,28 +184,28 @@
     function switchCase(learningstyleName, value) {
         switch (learningstyleName) {
         case "activeReflective":
-            if (value > 0) {
-                return "Reflective";
-            }
-            return "Active";
+            return value > 0 ? "Reflective" : "Active";
         case "visualVerbal":
-            if (value > 0) {
-                return "Verbal";
-            }
-            return "Visual";
+            return value > 0 ? "Verbal" : "Visual";
         case "sensingIntuitive":
-            if (value > 0) {
-                return "Intuitive";
-            }
-            return "Sensing";
+            return value > 0 ? "Intuitive" : "Sensing";
         case "sequentialGlobal":
-            if (value > 0) {
-                return "Global";
-            }
-            return "Sequential";
+            return value > 0 ? "Global" : "Sequential";
         default:
             return "ERROR";
         }
+    }
+    /**
+     * @summary Creates a html p element with a class and innerText
+     * @param {string} innerText The string of the inneText
+     * @param {string} className String of the class the element should be in
+     * @returns {HTMLElement} Returns a p element with a classname sat and inneText
+     */
+    function createTitleElement(innerText, className){
+        const element = document.createElement("p");
+        element.className = className;
+        element.innerText = innerText;
+        return element;
     }
     window.myInfo = { updateMyInfo };
 }());

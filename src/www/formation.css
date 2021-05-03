@@ -14,7 +14,7 @@
   grid-column-start: 2;
 }
 p.titles {
-  text-align: center;
+  text-align: left;
   text-decoration: underline;
 }
 #candidatesTable, th, td {
@@ -36,10 +36,20 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-.titles {
+.title {
   font-size: x-large;
 }
 
 #leaveButton {
   display: none;
+}
+
+.titles {
+  text-align: left;
+  font-size: medium;
+}
+h1 {
+  text-align: center;
+  font-size: 150%;
+  text-decoration: underline;
 }
