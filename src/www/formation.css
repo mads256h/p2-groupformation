@@ -36,9 +36,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-.title {
-  font-size: x-large;
-}
 
 #leaveButton {
   display: none;
