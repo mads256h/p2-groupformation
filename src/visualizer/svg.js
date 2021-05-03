@@ -77,7 +77,6 @@ const {
         createBar(yValue, -11, LSRANGEWIDTH, svg, learnStyleName);
         // Create the circles
         const arrCircleSize = closeby(getLSValuesOfGroup(group, learnStyleName), 0.5);
-        console.log(arrCircleSize);
         for (const i in arrCircleSize) {
             const xValue = circleXValue(group.students[i].criteria.learningStyles[learnStyleName], LSRANGEWIDTH, LSRANGEWIDTH / 2);
             const studentColor = colorArr[i];
