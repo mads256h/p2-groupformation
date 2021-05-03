@@ -12,6 +12,7 @@ test("Return values of subjects Algorithm", () => {
 
 
 test("subject algorithm throws", () => {
+    expect(() => subjectAlg(1)).toThrow(TypeError);
     expect(() => subjectAlg([0, 1, 0, 0, "s"], [0, 1, -1, 0, 1])).toThrow(TypeError);
     expect(() => subjectAlg([[], []])).toThrow(RangeError);
 });
