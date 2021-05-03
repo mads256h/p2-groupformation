@@ -8,6 +8,9 @@ const weightFunctions = require("../algorithms/weightFunction");
 const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("../group");
 const {GroupFormation, WeightedCriteria, FMGroup} = require("../formation");
 const fs = require("fs");
+const { masterAlg } = require("../algorithms/masterAlgorithm");
+const { preferenceAlg } = require("../algorithms/preference");
+const { subjectAlg } = require("../algorithms/subjectPreferences");
 
 
 const argv = process.argv.splice(2);
@@ -55,7 +58,9 @@ if (algorithm === undefined) {
     process.exit(1);
 }
 
-const weightedCriteria = new WeightedCriteria(null, algorithm.alg);
+const weightedCriteria = new WeightedCriteria(null,
+    (heterogenousCri, homogenousCri, subjectCri) =>
+        masterAlg(algorithm.alg, subjectAlg, subjectAlg, heterogenousCri, homogenousCri, subjectCri));
 const groupFormation = new GroupFormation(studentArray, Number(argv[1]), weightedCriteria);
 
 createBestGroups();

@@ -153,7 +153,7 @@ class WeightedCriteria {
             ]
         );
         const subjects = criteria.map((c) =>
-            c.subjectPreference.subjects
+            c.subjectPreference.subjects.map((s) => s.score)
         );
         return {heterogenous, homogenous, subjects};
     }
