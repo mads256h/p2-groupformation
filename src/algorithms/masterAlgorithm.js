@@ -12,14 +12,17 @@ const {
 
 /**
  * @summary Calculates the overall score based on input subfunctions
- * @param {Function} heterogenousFunction Parameterless function for calculating heterogenous score
- * @param {Function} homogenousFunction Parameterless function for calculating homogenous score
- * @param {Function} subjectFunction Parameterless function for calculating subject score
+ * @param {Function} heterogenousFunction function for calculating heterogenous score
+ * @param {Function} homogenousFunction function for calculating homogenous score
+ * @param {Function} subjectFunction function for calculating subject score
+ * @param {number[][]} heterogenousCriteria criteria for calculating heterogenous score
+ * @param {number[][]} homogenousCriteria criteria for calculating homogenous score
+ * @param {number[][]} subjectCriteria criteria for calculating subject score
  * @returns {number} Calculated score for preferences
  */
-function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction){
+function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction, heterogenousCriteria, homogenousCriteria, subjectCriteria){
     assertFunction(heterogenousFunction);
     assertFunction(homogenousFunction);
     assertFunction(subjectFunction);
-    return heterogenousFunction() + homogenousFunction() + subjectFunction();
+    return heterogenousFunction(heterogenousCriteria) + homogenousFunction(homogenousCriteria) + subjectFunction(subjectCriteria);
 }
