@@ -179,6 +179,10 @@
         executeCallbacks();
     });
 
+    /**
+     * @summary On websocket error
+     * @param {Error} e The error
+     */
     function websocketError(e) {
         console.error("Could not create websocket!", e);
         console.log("Using a timer instead!");
