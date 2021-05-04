@@ -1,10 +1,24 @@
 (function(){
     const paragrafElement = document.createElement("p");
     const classString = "titles";
+    let userNameId;
+    let workFromHomeId;
+    let subjectPreferenceId;
+    let groupTitleId;
+    let currentGroupId;
+    let leaveButtonId;
+    let learningstyleId;
 
     const { clearChildren, createListItem } = window.utiljs;
     const { leavegroup } = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
+        userNameId = document.getElementById("username");
+        workFromHomeId = document.getElementById("workFromHome");
+        subjectPreferenceId = document.getElementById("subjectPreference");
+        groupTitleId = document.getElementById("groupTitle");
+        currentGroupId = document.getElementById("currentGroup");
+        leaveButtonId = document.getElementById("leaveButton");
+        learningstyleId = document.getElementById("learningstyles");
         const button = document.getElementById("leaveButton");
         button.addEventListener("click", () => {
             leavegroup().catch((e) => {
@@ -31,7 +45,7 @@
      * @param {object} student The object with the logged in users informations
      */
     function showNameOnSite(student) {
-        const username = document.getElementById("username");
+        const username = userNameId;
         username.innerText = "Welcome, " + student.name;
     }
 
@@ -40,7 +54,7 @@
      * @param {object} content the object with the logged in users informations
      */
     function showWorkEnvironment(content) {
-        const workingEnvironmentDiv = document.getElementById("workFromHome");
+        const workingEnvironmentDiv = workFromHomeId;
         const work = content.criteria.workingAtHome;
         const workingEnvironment = paragrafElement;
         clearChildren(workingEnvironmentDiv);
@@ -73,7 +87,7 @@
     function showSubject(content) {
         const subjectArray = content.criteria.subjectPreference.subjects.slice();
         const subjectList = document.createElement("ul");
-        const subjectDiv = document.getElementById("subjectPreference");
+        const subjectDiv = subjectPreferenceId;
         subjectArray.sort((a, b) => b.score - a.score);
         clearChildren(subjectDiv);
 
@@ -90,10 +104,10 @@
      * @param {string} userName Name of the logged in user
      */
     function showGroup(group, userName) {
-        const groupMemberDiv = document.getElementById("currentGroup");
-        const button = document.getElementById("leaveButton");
+        const groupMemberDiv = currentGroupId;
+        const button = leaveButtonId;
         const groupMembersList = document.createElement("ul");
-        const groupTitle = document.getElementById("groupTitle");
+        const groupTitle = groupTitleId;
 
         clearChildren(groupMemberDiv);
 
@@ -162,7 +176,7 @@
      * @param {object} student Data about the logged in user
      */
     function showLearningstyles(student) {
-        const learningstylesDivElement = document.getElementById("learningstyles");
+        const learningstylesDivElement = learningstyleId;
         clearChildren(learningstylesDivElement);
         const learningstyleList = document.createElement("ul");
         const learningstyles = student.criteria.learningStyles;
