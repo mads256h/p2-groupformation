@@ -1,4 +1,4 @@
-const {Group, Student, Criteria} = require("./group");
+const {Group, Student, Criteria, LearningStyles, SubjectPreference} = require("./group");
 const {removeItemFromArray, mapRange} = require("./math");
 const typeassert = require("./typeassert");
 
@@ -101,7 +101,8 @@ class WeightedCriteria {
      */
     constructor(config, algorithm) {
         typeassert.assertFunction(algorithm);
-
+        typeassert.assertObject(config);
+        this.config = config;
         this.algorithm = algorithm;
 
         Object.freeze(this);
@@ -121,15 +122,28 @@ class WeightedCriteria {
     /**
      * @private
      * @summary Weigh criteria
-     * @param {Criteria[]} criteria The criteria to weigh
-     * @returns {Criteria[]} Weighed criteria
+     * @param {Criteria} criteria The criteria to weigh
+     * @returns {Criteria} Weighed criteria
      */
     weighCriteria(criteria) {
-        typeassert.assertArray(criteria);
-        typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
-
-        // TODO: Do the magic ;)
-        return criteria;
+        typeassert.assertInstanceOf(criteria, Criteria);
+        let weightedCriteria = new Criteria(
+            criteria.ambitions * this.config.algorithm.weights.homogenous,
+            criteria.workingAtHome * this.config.algorithm.weights.homogenous,
+            new LearningStyles(
+                criteria.learningStyles.activeReflective * this.config.algorithm.weights.heterogenous,
+                criteria.learningStyles.visualVerbal * this.config.algorithm.weights.heterogenous,
+                criteria.learningStyles.sensingIntuitive * this.config.algorithm.weights.heterogenous,
+                criteria.learningStyles.sequentialGlobal * this.config.algorithm.weights.heterogenous,
+            ),
+            new SubjectPreference(
+                criteria.subjectPreference.subjects.map((s) => {
+                    s.score *= this.config.algorithm.weights.subjects;
+                    return s;
+                })
+            )
+        );
+        return weightedCriteria;
     }
 
     /**

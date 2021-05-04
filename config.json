@@ -3,7 +3,12 @@
     "homoAlgo": "0point",
     "p": 0.5,
     "weighFunction": "constant",
-    "maxGroupSize": 7
+    "maxGroupSize": 7,
+    "weights": {
+      "heterogenous": 1,
+      "homogenous": 1,
+      "subjects": 1
+    }
   },
   "server": {
     "hostname": "localhost",
