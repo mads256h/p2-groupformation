@@ -11,7 +11,7 @@
     const { clearChildren, createListItem } = window.utiljs;
     const { leavegroup } = window.commjs;
 
-    document.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("DOMContentLoaded", () => {
         userNameIdH1Element = document.getElementById("username");
         workFromHomeIdDiv = document.getElementById("workFromHome");
         subjectPreferenceIdDiv = document.getElementById("subjectPreference");
@@ -72,7 +72,7 @@
         case 2:
             return "Work in office";
         default:
-            return new RangeError();
+            return new RangeError("Working enviroment could be transmittet");
         }
     }
 
@@ -101,7 +101,9 @@
     function showGroup(group, userName) {
         clearChildren(currentGroupIdDiv);
         const groupMembersList = document.createElement("ul");
-
+        if (group.students.length < 0) {
+            throw new RangeError("Missing group information");
+        }
         for (const member of group.students) {
             if (member.name !== userName) {
                 const memberName = createListItem(member.name);
@@ -112,7 +114,7 @@
             groupTitleIdParagraf.innerText = "Not in a group yet";
             leaveButtonId.style.display = "none";
         }
-        if (group.students.length > 1) {
+        else {
             leaveButtonId.style.display = "block";
             groupTitleIdParagraf.innerText = "Your group " + group.name + ":";
             currentGroupIdDiv.appendChild(groupMembersList);
@@ -196,7 +198,7 @@
         case "sequentialGlobal":
             return value > 0 ? "Global" : "Sequential";
         default:
-            return "ERROR";
+            return new RangeError("Could not transmit the learningstyle strings");
         }
     }
     /**
