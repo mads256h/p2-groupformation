@@ -16,11 +16,12 @@ const Cookies = require("cookies");
  */
 
 /**
+ * @summary The callback signature for an endpoint handler
  * @callback handlerCallback
- * @param {object} data
- * @param {Cookies} cookies
- * @returns {any|Promise}
- * @throws HttpError
+ * @param {object} data GET or POST data
+ * @param {Cookies} cookies An object used to get and set cookies
+ * @returns {any|Promise} The response to the client
+ * @throws HttpError When an error is to be reported to the client
  */
 
 
