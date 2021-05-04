@@ -1,5 +1,4 @@
 (function(){
-    const paragrafElement = document.createElement("p");
     const classString = "titles";
     let userNameIdH1Element;
     let workFromHomeIdDiv;
@@ -11,6 +10,7 @@
 
     const { clearChildren, createListItem } = window.utiljs;
     const { leavegroup } = window.commjs;
+
     document.addEventListener("DOMContentLoaded", () => {
         userNameIdH1Element = document.getElementById("username");
         workFromHomeIdDiv = document.getElementById("workFromHome");
@@ -52,10 +52,10 @@
      * @param {object} student the object with the logged in users informations
      */
     function showWorkEnvironment(student) {
-        const workingEnvironment = paragrafElement;
         clearChildren(workFromHomeIdDiv);
-        workingEnvironment.innerText = workEnvironmentToString(student.criteria.workingAtHome);
-        workFromHomeIdDiv.appendChild(workingEnvironment);
+        const workingEnvironmentparagrafElement = document.createElement("p");
+        workingEnvironmentparagrafElement.innerText = workEnvironmentToString(student.criteria.workingAtHome);
+        workFromHomeIdDiv.appendChild(workingEnvironmentparagrafElement);
     }
 
     /**
@@ -81,10 +81,10 @@
      * @param {object} content the object with the logged in users informations
      */
     function showSubject(content) {
+        clearChildren(subjectPreferenceIdDiv);
         const subjectArray = content.criteria.subjectPreference.subjects.slice();
         const subjectList = document.createElement("ul");
         subjectArray.sort((a, b) => b.score - a.score);
-        clearChildren(subjectPreferenceIdDiv);
 
         for (const subject of subjectArray) {
             const subjectPart = createListItem(subject.name + ": " + (subject.score * 10).toFixed(2));
@@ -99,9 +99,8 @@
      * @param {string} userName Name of the logged in user
      */
     function showGroup(group, userName) {
-        const groupMembersList = document.createElement("ul");
-
         clearChildren(currentGroupIdDiv);
+        const groupMembersList = document.createElement("ul");
 
         for (const member of group.students) {
             if (member.name !== userName) {
@@ -111,8 +110,10 @@
         }
         if (group.students.length === 1) {
             groupTitleIdParagraf.innerText = "Not in a group yet";
+            leaveButtonId.style.display = "none";
         }
         if (group.students.length > 1) {
+            leaveButtonId.style.display = "block";
             groupTitleIdParagraf.innerText = "Your group " + group.name + ":";
             currentGroupIdDiv.appendChild(groupMembersList);
             const groupSubjectTitle = createTitleElement("Your group prefered 3 subjects:", classString);
