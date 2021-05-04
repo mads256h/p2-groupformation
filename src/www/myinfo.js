@@ -1,7 +1,7 @@
 (function(){
     const classString = "titles";
     let userNameIdH1Element;
-    let workFromHomeIdDiv;
+    let workingEnvironmentparagrafElementId;
     let subjectPreferenceIdDiv;
     let groupTitleIdParagraf;
     let currentGroupIdDiv;
@@ -13,7 +13,7 @@
 
     window.addEventListener("DOMContentLoaded", () => {
         userNameIdH1Element = document.getElementById("username");
-        workFromHomeIdDiv = document.getElementById("workFromHome");
+        workingEnvironmentparagrafElementId = document.getElementById("workFromHome");
         subjectPreferenceIdDiv = document.getElementById("subjectPreference");
         groupTitleIdParagraf = document.getElementById("groupTitle");
         currentGroupIdDiv = document.getElementById("currentGroup");
@@ -52,10 +52,7 @@
      * @param {object} student the object with the logged in users informations
      */
     function showWorkEnvironment(student) {
-        clearChildren(workFromHomeIdDiv);
-        const workingEnvironmentparagrafElement = document.createElement("p");
-        workingEnvironmentparagrafElement.innerText = workEnvironmentToString(student.criteria.workingAtHome);
-        workFromHomeIdDiv.appendChild(workingEnvironmentparagrafElement);
+        workingEnvironmentparagrafElementId.innerText = workEnvironmentToString(student.criteria.workingAtHome);
     }
 
     /**
