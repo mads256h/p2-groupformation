@@ -85,12 +85,11 @@ fs.readFile("config.json", (configErr, configData) => {
 /**
  * @summary Handles the /api/login endpoint
  * @param {GroupFormation} groupFormation The object representing the group formation process
- * @param {URLSearchParams} data Post data
+ * @param {object} data Post data
  * @param {Cookies} cookies A cookie object used to get and set cookies
  */
 function loginHandler(groupFormation, data, cookies) {
     typeassert.assertInstanceOf(groupFormation, GroupFormation);
-    typeassert.assertInstanceOf(data, URLSearchParams);
     typeassert.assertInstanceOf(cookies, Cookies);
 
     if (typeof data.username !== "string") {
@@ -205,13 +204,12 @@ function leavegroupHandler(webSocketServer, groupFormation, cookies) {
  * @summary Handles the /api/invitegroup endpoint
  * @param {WebSocketServer} webSocketServer The websocket server
  * @param {GroupFormation} groupFormation The object representing the group formation process
- * @param {URLSearchParams} data Post data
+ * @param {object} data Post data
  * @param {Cookies} cookies A cookie object used to get and set cookies
  */
 function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
     typeassert.assertInstanceOf(webSocketServer, WebSocketServer);
     typeassert.assertInstanceOf(groupFormation, GroupFormation);
-    typeassert.assertInstanceOf(data, URLSearchParams);
     typeassert.assertInstanceOf(cookies, Cookies);
 
     const session = validateSessionCookie(cookies);

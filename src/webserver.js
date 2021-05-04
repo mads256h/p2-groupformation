@@ -17,7 +17,7 @@ const Cookies = require("cookies");
 
 /**
  * @callback handlerCallback
- * @param {URLSearchParams} data
+ * @param {object} data
  * @param {Cookies} cookies
  * @returns {any|Promise}
  * @throws HttpError
