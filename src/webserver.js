@@ -89,6 +89,7 @@ class WebServer {
 
     /**
      * @summary Run the server
+     * @returns {Promise} A promise with the server
      */
     run() {
         return new Promise((resolve, reject) => {
@@ -100,6 +101,7 @@ class WebServer {
 
     /**
      * @summary Stop the server
+     * @returns {Promise} A promise that resolves when the server is closed
      */
     stop() {
         return new Promise((resolve) => {
