@@ -1,7 +1,13 @@
 {
-  "algorithm": "0point",
-  "hostname": "localhost",
-  "port": 3000,
-  "studentsFile": "students.json",
-  "maxGroupSize": 7
+  "algorithm": {
+    "homoAlgo": "0point",
+    "p": 0.5,
+    "weighFunction": "constant",
+    "maxGroupSize": 7
+  },
+  "server": {
+    "hostname": "localhost",
+    "port": 3000
+  },
+  "studentsFile": "students.json"
 }

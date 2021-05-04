@@ -2,7 +2,7 @@
 
 const {WebServer, HttpError} = require("./webserver");
 const {WebSocketServer} = require("./websocketserver");
-const {Student, Criteria, LearningStyles, SubjectPreference, Subject} = require("./group");
+const {Group, Student, Criteria} = require("./group");
 const {GroupFormation, WeightedCriteria} = require("./formation");
 const fs = require("fs");
 const typeassert = require("./typeassert");
@@ -57,24 +57,24 @@ fs.readFile("config.json", (configErr, configData) => {
 
                 const algorithm = configToAlgorithmFunction(config);
                 const weightedCriteria = new WeightedCriteria(null, algorithm);
-                const groupFormation = new GroupFormation(students, config.maxGroupSize, weightedCriteria);
+                const groupFormation = new GroupFormation(students, config.algorithm.maxGroupSize, weightedCriteria);
 
 
-                const webServer = new WebServer(config.hostname, config.port, "src/www");
+                const webServer = new WebServer(config.server.hostname, config.server.port, "src/www");
                 const webSocketServer = new WebSocketServer(webServer);
 
                 webServer.addPostHandler("/api/login", (data, cookies) => loginHandler(groupFormation, data, cookies));
 
-                webServer.addGetHandler("/api/me", (data, cookies) => meHandler(groupFormation, data, cookies));
-                webServer.addGetHandler("/api/mygroup", (data, cookies) => mygroupHandler(groupFormation, data, cookies));
-                webServer.addGetHandler("/api/rankedgroups", (data, cookies) => rankedgroupsHandler(groupFormation, data, cookies));
-                webServer.addGetHandler("/api/leavegroup", (data, cookies) => leavegroupHandler(webSocketServer, groupFormation, data, cookies));
+                webServer.addGetHandler("/api/me", (_, cookies) => meHandler(groupFormation, cookies));
+                webServer.addGetHandler("/api/mygroup", (_, cookies) => mygroupHandler(groupFormation, cookies));
+                webServer.addGetHandler("/api/rankedgroups", (_, cookies) => rankedgroupsHandler(groupFormation, cookies));
+                webServer.addGetHandler("/api/leavegroup", (_, cookies) => leavegroupHandler(webSocketServer, groupFormation, cookies));
                 webServer.addPostHandler("/api/invitegroup", (data, cookies) => invitegroupHandler(webSocketServer, groupFormation, data, cookies));
 
 
 
                 webServer.run()
-                    .then(() => console.log(`Server running on ${config.hostname}:${config.port}`))
+                    .then(() => console.log(`Server running on ${config.server.hostname}:${config.server.port}`))
                     .catch((e) => console.error("Could not start server!", e));
             }
         });
@@ -83,11 +83,16 @@ fs.readFile("config.json", (configErr, configData) => {
 
 
 /**
- * @param {GroupFormation} groupFormation
- * @param {any} data
- * @param {Cookies} cookies
+ * @summary Handles the /api/login endpoint
+ * @param {GroupFormation} groupFormation The object representing the group formation process
+ * @param {URLSearchParams} data Post data
+ * @param {Cookies} cookies A cookie object used to get and set cookies
  */
 function loginHandler(groupFormation, data, cookies) {
+    typeassert.assertInstanceOf(groupFormation, GroupFormation);
+    typeassert.assertInstanceOf(data, URLSearchParams);
+    typeassert.assertInstanceOf(cookies, Cookies);
+
     if (typeof data.username !== "string") {
         throw new HttpError(400, "Invalid username");
     }
@@ -100,11 +105,15 @@ function loginHandler(groupFormation, data, cookies) {
 }
 
 /**
- * @param {GroupFormation} groupFormation
- * @param {any} data
- * @param {Cookies} cookies
+ * @summary Handles the /api/me endpoint
+ * @param {GroupFormation} groupFormation The object representing the group formation process
+ * @param {Cookies} cookies A cookie object used to get and set cookies
+ * @returns {Student} The session student
  */
-function meHandler(groupFormation, data, cookies) {
+function meHandler(groupFormation, cookies) {
+    typeassert.assertInstanceOf(groupFormation, GroupFormation);
+    typeassert.assertInstanceOf(cookies, Cookies);
+
     const session = validateSessionCookie(cookies);
 
     const student = getStudent(groupFormation, session);
@@ -113,11 +122,15 @@ function meHandler(groupFormation, data, cookies) {
 }
 
 /**
- * @param {GroupFormation} groupFormation
- * @param {any} data
- * @param {Cookies} cookies
+ * @summary Handles the /api/mygroup endpoint
+ * @param {GroupFormation} groupFormation The object representing the group formation process
+ * @param {Cookies} cookies A cookie object used to get and set cookies
+ * @returns {Group} My group
  */
-function mygroupHandler(groupFormation, data, cookies) {
+function mygroupHandler(groupFormation, cookies) {
+    typeassert.assertInstanceOf(groupFormation, GroupFormation);
+    typeassert.assertInstanceOf(cookies, Cookies);
+
     const session = validateSessionCookie(cookies);
 
     const student = getStudent(groupFormation, session);
@@ -130,11 +143,15 @@ function mygroupHandler(groupFormation, data, cookies) {
 }
 
 /**
- * @param {GroupFormation} groupFormation
- * @param {any} data
- * @param {Cookies} cookies
+ * @summary Handles the /api/rankedgroups endpoint
+ * @param {GroupFormation} groupFormation The object representing the group formation process
+ * @param {Cookies} cookies A cookie object used to get and set cookies
+ * @returns {Array} An array of ranked groups by tuple {group, value}
  */
-function rankedgroupsHandler(groupFormation, data, cookies) {
+function rankedgroupsHandler(groupFormation, cookies) {
+    typeassert.assertInstanceOf(groupFormation, GroupFormation);
+    typeassert.assertInstanceOf(cookies, Cookies);
+
     const session = validateSessionCookie(cookies);
 
     const student = getStudent(groupFormation, session);
@@ -162,12 +179,16 @@ function rankedgroupsHandler(groupFormation, data, cookies) {
 }
 
 /**
- * @param {WebSocketServer} webSocketServer
- * @param {GroupFormation} groupFormation
- * @param {any} data
- * @param {Cookies} cookies
+ * @summary Handles the /api/leavegroup endpoint
+ * @param {WebSocketServer} webSocketServer The websocket server
+ * @param {GroupFormation} groupFormation The object representing the group formation process
+ * @param {Cookies} cookies A cookie object used to get and set cookies
  */
-function leavegroupHandler(webSocketServer, groupFormation, data, cookies) {
+function leavegroupHandler(webSocketServer, groupFormation, cookies) {
+    typeassert.assertInstanceOf(webSocketServer, WebSocketServer);
+    typeassert.assertInstanceOf(groupFormation, GroupFormation);
+    typeassert.assertInstanceOf(cookies, Cookies);
+
     const session = validateSessionCookie(cookies);
 
     const student = getStudent(groupFormation, session);
@@ -181,12 +202,18 @@ function leavegroupHandler(webSocketServer, groupFormation, data, cookies) {
 }
 
 /**
- * @param {WebSocketServer} webSocketServer
- * @param {GroupFormation} groupFormation
- * @param {any} data
- * @param {Cookies} cookies
+ * @summary Handles the /api/invitegroup endpoint
+ * @param {WebSocketServer} webSocketServer The websocket server
+ * @param {GroupFormation} groupFormation The object representing the group formation process
+ * @param {URLSearchParams} data Post data
+ * @param {Cookies} cookies A cookie object used to get and set cookies
  */
 function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
+    typeassert.assertInstanceOf(webSocketServer, WebSocketServer);
+    typeassert.assertInstanceOf(groupFormation, GroupFormation);
+    typeassert.assertInstanceOf(data, URLSearchParams);
+    typeassert.assertInstanceOf(cookies, Cookies);
+
     const session = validateSessionCookie(cookies);
 
     if (typeof data.groupid === "undefined") {
@@ -218,8 +245,9 @@ function invitegroupHandler(webSocketServer, groupFormation, data, cookies) {
 }
 
 /**
- * @param {Cookies} cookies
- * @returns {string} session
+ * @summary Validates and returns the session cookie
+ * @param {Cookies} cookies A cookie object used to get and set cookies
+ * @returns {string} session Value of the session cookie
  * @throws {HttpError} session cookie is invalid
  */
 function validateSessionCookie(cookies) {
@@ -234,7 +262,17 @@ function validateSessionCookie(cookies) {
     return session;
 }
 
+/**
+ * @summary Gets a student by name
+ * @param {GroupFormation} groupFormation The object representing the group formation process
+ * @param {string} name The name of the student
+ * @returns {Student} The student
+ * @throws {HttpError} Student with name name does not exist
+ */
 function getStudent(groupFormation, name) {
+    typeassert.assertInstanceOf(groupFormation, GroupFormation);
+    typeassert.assertStringNotEmpty(name);
+
     const student = groupFormation.students.find((s) => s.name === name);
     if (student === undefined) {
         throw new HttpError(400, "student name is invalid");
@@ -250,6 +288,8 @@ function getStudent(groupFormation, name) {
  * @returns {Student[]} An array of students that is an instance of Student
  */
 function convertStudents(students) {
+    typeassert.assertArray(students);
+
     students.forEach((s) => {
         s.__proto__ = Student.prototype;
         s.criteria.__proto__ = Criteria.prototype;
@@ -257,13 +297,39 @@ function convertStudents(students) {
     return students;
 }
 
+/**
+ * @summary Takes config data and returns homogenus algorithm function
+ * @param {object} config The config
+ * @returns {Function} The algorithm
+ * @throws {RangeError} Invalid algorithm
+ */
 function configToAlgorithmFunction(config) {
-    switch (config.algorithm) {
+    typeassert.assertStringNotEmpty(config.algorithm.homoAlgo);
+
+    switch (config.algorithm.homoAlgo) {
     case "random": return () => Math.random();
     case "0point": return balance;
     case "distance": return maxDistance;
     case "amalgemation": return (criteria) => 22 - maxDistance(criteria) + balance(criteria);
+    case "splitAvgMinDistance": return splitAvgMinDistance;
+    case "averageVectorMinDistance": return (criteria) => averageVectorMinDistance(criteria, config.algorithm.p, configToWeightFunction(config));
+    case "averageVectorDistance": return (criteria) => averageVectorDistance(criteria, config.algorithm.p, configToWeightFunction(config));
+    default: throw new RangeError("Invalid algorithm");
     }
+}
 
-    console.error("Unknown algorithm");
+/**
+ * @summary Takes config data and returns a weigh function
+ * @param {object} config The config
+ * @returns {Function} The weigh function
+ * @throws {RangeError} Invalid weigh function
+ */
+function configToWeightFunction(config) {
+    typeassert.assertStringNotEmpty(config.algorithm.weighFunction);
+
+    switch (config.algorithm.weighFunction) {
+    case "constant": return weightFunctions.constant;
+    case "sigmoid0to2": return weightFunctions.sigmoid0to2;
+    default: throw new RangeError("Invalid weighfunction");
+    }
 }
