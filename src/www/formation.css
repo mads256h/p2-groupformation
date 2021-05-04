@@ -4,8 +4,8 @@
   height: min-content;
   margin: 25px;
   grid-column-start: 1;
-/*   position: fixed; */
 }
+
 #groupExamples {
   overflow: auto;
   margin: 25px;
@@ -13,26 +13,32 @@
   border-spacing: 15px;
   grid-column-start: 2;
 }
+
 p.titles {
   text-align: left;
   text-decoration: underline;
 }
-#candidatesTable, th, td {
+
+#candidatesTable,
+th,
+td {
   border: 1px solid white;
   border-collapse: collapse;
   padding: 10px;
   width: 100%;
 }
+
 th {
   text-align: center;
 }
+
 td {
   text-align: left;
 }
 
 body {
   background-color: grey;
-  color:white;
+  color: white;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -45,6 +51,7 @@ body {
   text-align: left;
   font-size: medium;
 }
+
 h1 {
   text-align: center;
   font-size: 150%;
