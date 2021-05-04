@@ -1,6 +1,8 @@
-#informationBox {
-  height: min-content;
-  grid-column-start: 1;
+body {
+  background-color: grey;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .box {
@@ -9,8 +11,12 @@
   border-spacing: 15px;
 }
 
+#informationBox {
+  grid-column-start: 1;
+  height: min-content;
+}
+
 #groupExamples {
-  overflow: auto;
   grid-column-start: 2;
 }
 
@@ -37,15 +43,14 @@ td {
   text-align: left;
 }
 
-body {
-  background-color: grey;
-  color: white;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
 #leaveButton {
   display: none;
+}
+
+h1 {
+  text-align: center;
+  font-size: 150%;
+  text-decoration: underline;
 }
 
 h2 {
@@ -55,10 +60,4 @@ h2 {
 
 #groupExamples h2 {
   text-align: center;
-}
-
-h1 {
-  text-align: center;
-  font-size: 150%;
-  text-decoration: underline;
 }
