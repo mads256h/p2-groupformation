@@ -1,26 +1,25 @@
 (function(){
     const paragrafElement = document.createElement("p");
     const classString = "titles";
-    let userNameId;
-    let workFromHomeId;
-    let subjectPreferenceId;
-    let groupTitleId;
-    let currentGroupId;
+    let userNameIdH1Element;
+    let workFromHomeIdDiv;
+    let subjectPreferenceIdDiv;
+    let groupTitleIdParagraf;
+    let currentGroupIdDiv;
+    let learningstyleIdDiv;
     let leaveButtonId;
-    let learningstyleId;
 
     const { clearChildren, createListItem } = window.utiljs;
     const { leavegroup } = window.commjs;
     document.addEventListener("DOMContentLoaded", () => {
-        userNameId = document.getElementById("username");
-        workFromHomeId = document.getElementById("workFromHome");
-        subjectPreferenceId = document.getElementById("subjectPreference");
-        groupTitleId = document.getElementById("groupTitle");
-        currentGroupId = document.getElementById("currentGroup");
+        userNameIdH1Element = document.getElementById("username");
+        workFromHomeIdDiv = document.getElementById("workFromHome");
+        subjectPreferenceIdDiv = document.getElementById("subjectPreference");
+        groupTitleIdParagraf = document.getElementById("groupTitle");
+        currentGroupIdDiv = document.getElementById("currentGroup");
+        learningstyleIdDiv = document.getElementById("learningstyles");
         leaveButtonId = document.getElementById("leaveButton");
-        learningstyleId = document.getElementById("learningstyles");
-        const button = document.getElementById("leaveButton");
-        button.addEventListener("click", () => {
+        leaveButtonId.addEventListener("click", () => {
             leavegroup().catch((e) => {
                 alert(e);
             });
@@ -45,21 +44,18 @@
      * @param {object} student The object with the logged in users informations
      */
     function showNameOnSite(student) {
-        const username = userNameId;
-        username.innerText = "Welcome, " + student.name;
+        userNameIdH1Element.innerText = "Welcome, " + student.name;
     }
 
     /**
      * @summary Prints the information about work enviroment from the user
-     * @param {object} content the object with the logged in users informations
+     * @param {object} student the object with the logged in users informations
      */
-    function showWorkEnvironment(content) {
-        const workingEnvironmentDiv = workFromHomeId;
-        const work = content.criteria.workingAtHome;
+    function showWorkEnvironment(student) {
         const workingEnvironment = paragrafElement;
-        clearChildren(workingEnvironmentDiv);
-        workingEnvironmentDiv.appendChild(workingEnvironment);
-        workingEnvironment.innerText = workEnvironmentToString(work);
+        clearChildren(workFromHomeIdDiv);
+        workingEnvironment.innerText = workEnvironmentToString(student.criteria.workingAtHome);
+        workFromHomeIdDiv.appendChild(workingEnvironment);
     }
 
     /**
@@ -87,14 +83,13 @@
     function showSubject(content) {
         const subjectArray = content.criteria.subjectPreference.subjects.slice();
         const subjectList = document.createElement("ul");
-        const subjectDiv = subjectPreferenceId;
         subjectArray.sort((a, b) => b.score - a.score);
-        clearChildren(subjectDiv);
+        clearChildren(subjectPreferenceIdDiv);
 
         for (const subject of subjectArray) {
             const subjectPart = createListItem(subject.name + ": " + (subject.score * 10).toFixed(2));
             subjectList.appendChild(subjectPart);
-            subjectDiv.appendChild(subjectList);
+            subjectPreferenceIdDiv.appendChild(subjectList);
         }
     }
 
@@ -104,12 +99,9 @@
      * @param {string} userName Name of the logged in user
      */
     function showGroup(group, userName) {
-        const groupMemberDiv = currentGroupId;
-        const button = leaveButtonId;
         const groupMembersList = document.createElement("ul");
-        const groupTitle = groupTitleId;
 
-        clearChildren(groupMemberDiv);
+        clearChildren(currentGroupIdDiv);
 
         for (const member of group.students) {
             if (member.name !== userName) {
@@ -118,16 +110,14 @@
             }
         }
         if (group.students.length === 1) {
-            groupTitle.innerText = "Not in a group yet";
-            button.style.display = "none";
+            groupTitleIdParagraf.innerText = "Not in a group yet";
         }
         if (group.students.length > 1) {
-            groupTitle.innerText = "Your group " + group.name + ":";
-            button.style.display = "block";
-            groupMemberDiv.appendChild(groupMembersList);
+            groupTitleIdParagraf.innerText = "Your group " + group.name + ":";
+            currentGroupIdDiv.appendChild(groupMembersList);
             const groupSubjectTitle = createTitleElement("Your group prefered 3 subjects:", classString);
-            groupMemberDiv.appendChild(groupSubjectTitle);
-            groupMemberDiv.appendChild(createGroupSubjectsElement(group));
+            currentGroupIdDiv.appendChild(groupSubjectTitle);
+            currentGroupIdDiv.appendChild(createGroupSubjectsElement(group));
         }
     }
     /**
@@ -176,8 +166,7 @@
      * @param {object} student Data about the logged in user
      */
     function showLearningstyles(student) {
-        const learningstylesDivElement = learningstyleId;
-        clearChildren(learningstylesDivElement);
+        clearChildren(learningstyleIdDiv);
         const learningstyleList = document.createElement("ul");
         const learningstyles = student.criteria.learningStyles;
         for (const learningstyle in learningstyles) {
@@ -186,7 +175,7 @@
             const learningstylePart = createListItem(learningStyleName + ": " + absLearningstyleValue);
             learningstyleList.appendChild(learningstylePart);
         }
-        learningstylesDivElement.appendChild(learningstyleList);
+        learningstyleIdDiv.appendChild(learningstyleList);
     }
 
     /**
