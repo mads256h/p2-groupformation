@@ -158,7 +158,7 @@ class WeightedCriteria {
  * @returns {string} name of the group
  */
 function generateName(students){
-    return students.reduce((acc, curStud) => acc + " " + curStud.name, "").trim();
+    return students.map((s) => s.name).join(" ");
 }
 
 /**
