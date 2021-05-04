@@ -168,10 +168,13 @@ class WeightedCriteria {
 
 /**
  * @summary Generates a group name from a list of students
- * @param {object[]} students list of students in group
+ * @param {Student[]} students list of students in group
  * @returns {string} name of the group
  */
 function generateName(students){
+    typeassert.assertArray(students);
+    typeassert.assertArrayItemsInstanceOf(students, Student);
+
     return students.map((s) => s.name).join(" ");
 }
 

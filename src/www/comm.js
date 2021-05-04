@@ -163,6 +163,9 @@
     window.addEventListener("load", () => {
         // Chromium throws and firefox does an socket.onerror ;)
         try {
+            // Dont do anything if no callbacks are registered
+            if (callbacks.length === 0) return;
+
             // Start websocket
             const socket = new WebSocket("ws://" + window.location.host + window.location.pathname);
             socket.onerror = websocketError;

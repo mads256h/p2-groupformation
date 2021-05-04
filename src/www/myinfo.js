@@ -1,23 +1,26 @@
 (function(){
-    const classString = "titles";
     let userNameIdH1Element;
-    let workFromHomeIdDiv;
+    let workingEnvironmentparagrafElementId;
     let subjectPreferenceIdDiv;
+    let learningstyleIdDiv;
     let groupTitleIdParagraf;
     let currentGroupIdDiv;
-    let learningstyleIdDiv;
+    let groupSubjectsTitle;
+    let subjectGroupIdDiv;
     let leaveButtonId;
 
     const { clearChildren, createListItem } = window.utiljs;
     const { leavegroup } = window.commjs;
 
-    document.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("DOMContentLoaded", () => {
         userNameIdH1Element = document.getElementById("username");
-        workFromHomeIdDiv = document.getElementById("workFromHome");
+        learningstyleIdDiv = document.getElementById("learningstyles");
+        workingEnvironmentparagrafElementId = document.getElementById("workFromHome");
         subjectPreferenceIdDiv = document.getElementById("subjectPreference");
         groupTitleIdParagraf = document.getElementById("groupTitle");
         currentGroupIdDiv = document.getElementById("currentGroup");
-        learningstyleIdDiv = document.getElementById("learningstyles");
+        groupSubjectsTitle = document.getElementById("groupSubjectsTitle");
+        subjectGroupIdDiv = document.getElementById("groupSubjects");
         leaveButtonId = document.getElementById("leaveButton");
         leaveButtonId.addEventListener("click", () => {
             leavegroup().catch((e) => {
@@ -52,10 +55,7 @@
      * @param {object} student the object with the logged in users informations
      */
     function showWorkEnvironment(student) {
-        clearChildren(workFromHomeIdDiv);
-        const workingEnvironmentparagrafElement = document.createElement("p");
-        workingEnvironmentparagrafElement.innerText = workEnvironmentToString(student.criteria.workingAtHome);
-        workFromHomeIdDiv.appendChild(workingEnvironmentparagrafElement);
+        workingEnvironmentparagrafElementId.innerText = workEnvironmentToString(student.criteria.workingAtHome);
     }
 
     /**
@@ -72,7 +72,7 @@
         case 2:
             return "Work in office";
         default:
-            return new RangeError();
+            return new RangeError("Working enviroment could be transmittet");
         }
     }
 
@@ -101,7 +101,9 @@
     function showGroup(group, userName) {
         clearChildren(currentGroupIdDiv);
         const groupMembersList = document.createElement("ul");
-
+        if (group.students.length < 0) {
+            throw new RangeError("Missing group information");
+        }
         for (const member of group.students) {
             if (member.name !== userName) {
                 const memberName = createListItem(member.name);
@@ -111,14 +113,17 @@
         if (group.students.length === 1) {
             groupTitleIdParagraf.innerText = "Not in a group yet";
             leaveButtonId.style.display = "none";
+            subjectGroupIdDiv.style.display = "none";
+            groupSubjectsTitle.style.display = "none";
         }
-        if (group.students.length > 1) {
+        else {
             leaveButtonId.style.display = "block";
+            subjectGroupIdDiv.style.display = "block";
+            groupSubjectsTitle.style.display = "block";
             groupTitleIdParagraf.innerText = "Your group " + group.name + ":";
             currentGroupIdDiv.appendChild(groupMembersList);
-            const groupSubjectTitle = createTitleElement("Your group prefered 3 subjects:", classString);
-            currentGroupIdDiv.appendChild(groupSubjectTitle);
-            currentGroupIdDiv.appendChild(createGroupSubjectsElement(group));
+            groupSubjectsTitle.innerText = "Your group prefered 3 subjects:";
+            subjectGroupIdDiv.appendChild(createGroupSubjectsElement(group));
         }
     }
     /**
@@ -196,7 +201,7 @@
         case "sequentialGlobal":
             return value > 0 ? "Global" : "Sequential";
         default:
-            return "ERROR";
+            return new RangeError("Could not transmit the learningstyle strings");
         }
     }
     /**
@@ -205,11 +210,5 @@
      * @param {string} className String of the class the element should be in
      * @returns {HTMLElement} Returns a p element with a classname sat and inneText
      */
-    function createTitleElement(innerText, className){
-        const element = document.createElement("p");
-        element.className = className;
-        element.innerText = innerText;
-        return element;
-    }
     window.myInfo = { updateMyInfo };
 }());

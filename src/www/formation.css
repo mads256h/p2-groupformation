@@ -1,16 +1,22 @@
-#informationBox {
+body {
+  background-color: grey;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.box {
   border: 2px solid white;
-  border-spacing: 15px;
-  height: min-content;
   margin: 25px;
+  border-spacing: 15px;
+}
+
+#informationBox {
   grid-column-start: 1;
+  height: min-content;
 }
 
 #groupExamples {
-  overflow: auto;
-  margin: 25px;
-  border: 2px solid white;
-  border-spacing: 15px;
   grid-column-start: 2;
 }
 
@@ -22,7 +28,8 @@ p.titles {
 #candidatesTable,
 th,
 td {
-  border: 1px solid white;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
   border-collapse: collapse;
   padding: 10px;
   width: 100%;
@@ -36,24 +43,21 @@ td {
   text-align: left;
 }
 
-body {
-  background-color: grey;
-  color: white;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
 #leaveButton {
   display: none;
-}
-
-.titles {
-  text-align: left;
-  font-size: medium;
 }
 
 h1 {
   text-align: center;
   font-size: 150%;
   text-decoration: underline;
+}
+
+h2 {
+  text-decoration: underline;
+  font-size: medium;
+}
+
+#groupExamples h2 {
+  text-align: center;
 }
