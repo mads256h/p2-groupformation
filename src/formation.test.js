@@ -52,14 +52,10 @@ test("WeightedCriteria", () => {
 
 
 test("weighfunction", () => {
-    const weightConfig = {  // snippet of config containing only relevant data
-        "algorithm": {
-            "weights": {
-                "heterogenous": 2,
-                "homogenous": 10,
-                "subjects": 100
-            }
-        },
+    const weightConfig = {  // valid weight object
+        "heterogenous": 2,
+        "homogenous": 10,
+        "subjects": 100
     };
     const testCriteria = new Criteria(
         1,

@@ -96,13 +96,13 @@ class GroupFormation {
  */
 class WeightedCriteria {
     /**
-     * @param {any} config An object that specifies how the criteria should be weighted
+     * @param {object} weights An object that specifies how the criteria should be weighted
      * @param {Function} algorithm The algorithm to use
      */
-    constructor(config, algorithm) {
+    constructor(weights, algorithm) {
         typeassert.assertFunction(algorithm);
-        typeassert.assertObject(config);
-        this.config = config;
+        typeassert.assertObject(weights);
+        this.weights = weights;
         this.algorithm = algorithm;
 
         Object.freeze(this);
@@ -114,7 +114,8 @@ class WeightedCriteria {
      * @returns {number} The score of the set of criteria
      */
     score(criteria) {
-        const {heterogenous} = this.asNumberArrays(criteria);
+        let weighed = criteria.map((c) => this.weighCriteria(c));
+        const {heterogenous} = this.asNumberArrays(weighed);
 
         return this.algorithm(heterogenous);
     }
@@ -127,18 +128,18 @@ class WeightedCriteria {
      */
     weighCriteria(criteria) {
         typeassert.assertInstanceOf(criteria, Criteria);
-        let weightedCriteria = new Criteria(
-            criteria.ambitions * this.config.algorithm.weights.homogenous,
-            criteria.workingAtHome * this.config.algorithm.weights.homogenous,
+        const weightedCriteria = new Criteria(
+            criteria.ambitions * this.weights.homogenous,
+            criteria.workingAtHome * this.weights.homogenous,
             new LearningStyles(
-                criteria.learningStyles.activeReflective * this.config.algorithm.weights.heterogenous,
-                criteria.learningStyles.visualVerbal * this.config.algorithm.weights.heterogenous,
-                criteria.learningStyles.sensingIntuitive * this.config.algorithm.weights.heterogenous,
-                criteria.learningStyles.sequentialGlobal * this.config.algorithm.weights.heterogenous,
+                criteria.learningStyles.activeReflective * this.weights.heterogenous,
+                criteria.learningStyles.visualVerbal * this.weights.heterogenous,
+                criteria.learningStyles.sensingIntuitive * this.weights.heterogenous,
+                criteria.learningStyles.sequentialGlobal * this.weights.heterogenous,
             ),
             new SubjectPreference(
                 criteria.subjectPreference.subjects.map((s) => {
-                    s.score *= this.config.algorithm.weights.subjects;
+                    s.score *= this.weights.subjects;
                     return s;
                 })
             )
