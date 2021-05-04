@@ -24,5 +24,6 @@ function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction, he
     assertFunction(heterogenousFunction);
     assertFunction(homogenousFunction);
     assertFunction(subjectFunction);
+    // The algorithms needs to be normalized, so they can be weighted properly...
     return heterogenousFunction(heterogenousCriteria) + homogenousFunction(homogenousCriteria) + subjectFunction(subjectCriteria);
 }
