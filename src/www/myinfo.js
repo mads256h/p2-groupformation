@@ -72,7 +72,7 @@
         case 2:
             return "Work in office";
         default:
-            return RangeError;
+            return new RangeError();
         }
     }
 
