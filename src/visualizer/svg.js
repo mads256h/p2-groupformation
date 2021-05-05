@@ -17,8 +17,8 @@ const {
     const svgLineSpace = svgWidth * 0.04; // the amount of space between each line, by the width of the svg
     const svgLineWidth = svgWidth * 0.01;
     const svgTextSize = svgLineSpace * 0.5;
-    const LSRANGEWIDTH = 22; // Learningstyle rangewith, from -11 to 11 = 22
-    const WAHRANGEWIDTH = 2; // Working At Home rangewith, from -1 to 1 = 2
+    const learningStyleRangeWidth = 22; // Learningstyle rangewith, from -11 to 11 = 22
+    const workingAtHhomeRangeWidth = 2; // Working At Home rangewith, from -1 to 1 = 2
 
     /**
      * @summary Creates and appends a div element with the svg of the learningstyles
@@ -74,11 +74,11 @@ const {
      */
     function createLearningStyleDimension(group, learnStyleName, svg, yValue){
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        createBar(yValue, -11, LSRANGEWIDTH, svg, learnStyleName);
+        createBar(yValue, -11, learningStyleRangeWidth, svg, learnStyleName);
         // Create the circles
         const arrCircleSize = closeby(getLSValuesOfGroup(group, learnStyleName), 0.5);
         for (const i in arrCircleSize) {
-            const xValue = circleXValue(group.students[i].criteria.learningStyles[learnStyleName], LSRANGEWIDTH, LSRANGEWIDTH / 2);
+            const xValue = circleXValue(group.students[i].criteria.learningStyles[learnStyleName], learningStyleRangeWidth, learningStyleRangeWidth / 2);
             const studentColor = colorArr[i];
             svg.appendChild(createCircle(xValue, yValue, studentColor, arrCircleSize[i]));
         }
@@ -128,12 +128,12 @@ const {
         const svg = createSvgElement(2 * svgLineSpace);
         const yValue = svgLineSpace;
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        createBar(yValue, -1, WAHRANGEWIDTH, svg, "Working at home");
+        createBar(yValue, -1, workingAtHhomeRangeWidth, svg, "Working at home");
 
         // Create the circles
         const arrCircleSize = closeby(getWorkingAtHomeOfGroup(group), 0.1);
         for (const i in arrCircleSize) {
-            const xValue = circleXValue(group.students[i].criteria.workingAtHome, WAHRANGEWIDTH, WAHRANGEWIDTH / 2);
+            const xValue = circleXValue(group.students[i].criteria.workingAtHome, workingAtHhomeRangeWidth, workingAtHhomeRangeWidth / 2);
             const studentColor = colorArr[i];
             svg.appendChild(createCircle(xValue, yValue, studentColor, arrCircleSize[i]));
         }
@@ -291,6 +291,6 @@ const {
      * @returns {boolean} Returns boolean whether the distance between a & b is smaller than 'distance'
      */
     function range(a, b, distance){
-        return (Math.abs(a - b) <= Math.abs(distance));
+        return Math.abs(a - b) <= Math.abs(distance);
     }
 }());
