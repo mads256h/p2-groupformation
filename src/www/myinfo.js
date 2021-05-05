@@ -72,7 +72,7 @@
         case 1:
             return "Work in office";
         default:
-            return new RangeError("Working enviroment could be transmittet");
+            throw new RangeError("Invalid work value");
         }
     }
 
@@ -102,15 +102,9 @@
         clearChildren(currentGroupIdDiv);
         const groupMembersList = document.createElement("ul");
         if (group.students.length < 0) {
-            throw new RangeError("Missing group information");
+            throw new RangeError("Invalid group size");
         }
-        for (const member of group.students) {
-            if (member.name !== userName) {
-                const memberName = createListItem(member.name);
-                groupMembersList.appendChild(memberName);
-            }
-        }
-        if (group.students.length === 1) {
+        else if (group.students.length === 1) {
             groupTitleIdParagraf.innerText = "Not in a group yet";
             leaveButtonId.style.display = "none";
             subjectGroupIdDiv.style.display = "none";
@@ -124,6 +118,13 @@
             currentGroupIdDiv.appendChild(groupMembersList);
             groupSubjectsTitle.innerText = "Your group prefered 3 subjects:";
             subjectGroupIdDiv.appendChild(createGroupSubjectsElement(group));
+        }
+
+        for (const member of group.students) {
+            if (member.name !== userName) {
+                const memberName = createListItem(member.name);
+                groupMembersList.appendChild(memberName);
+            }
         }
     }
     /**
@@ -201,7 +202,7 @@
         case "sequentialGlobal":
             return value > 0 ? "Global" : "Sequential";
         default:
-            return new RangeError("Could not transmit the learningstyle strings");
+            throw new RangeError("Invalid learningstyle");
         }
     }
     /**
