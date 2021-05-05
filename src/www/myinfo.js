@@ -65,11 +65,11 @@
      */
     function workEnvironmentToString(work) {
         switch (work) {
-        case 0:
+        case -1:
             return "Work from home";
-        case 1:
+        case 0:
             return "Don't care";
-        case 2:
+        case 1:
             return "Work in office";
         default:
             return new RangeError("Working enviroment could be transmittet");
