@@ -144,7 +144,6 @@ class Subject {
     constructor(name, score) {
         typeassert.assertString(name);
         typeassert.assertNumber(score);
-        typeassert.assertRangeInclusive(score, -1, 1);
 
         this.name = name;
         this.score = score;
