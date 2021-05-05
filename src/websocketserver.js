@@ -40,7 +40,7 @@ class WebSocketServer {
             });
 
             conn.on("close", (code, desc) => {
-                console.log(`Closing connection: code: ${code} desc: ${desc}`);
+                //console.log(`Closing connection: code: ${code} desc: ${desc}`);
                 removeItemFromArray(conn, this.clients);
             });
 
@@ -63,7 +63,7 @@ class WebSocketServer {
      */
     stop() {
         this.websocket.shutDown();
-        this.clients = [];
+        this.clients.forEach((c) => c.close());
     }
 }
 
