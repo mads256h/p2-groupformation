@@ -22,7 +22,7 @@ const {
 
     /**
      * @summary Creates and appends a div element with the svg of the learningstyles
-     * @param {object} group the group array with students
+     * @param {object} group the group object with students
      * @returns {HTMLDivElement} Html div element with the graphical info of the group from the argument
      */
     function createGroupSvg(group){
@@ -51,7 +51,7 @@ const {
 
     /**
      * @summary Creates and appends a div element with the svg of the learningstyles
-     * @param {object} group the group array with students
+     * @param {object} group the group object with students
      * @returns {SVGElement} Svg element with the graphical info about the groups learningstyles
      */
     function createLearningStyles(group){
@@ -67,8 +67,8 @@ const {
 
     /**
      * @summary Creates and appends a svg learningstyle to the svg element
-     * @param {object} group the group array with students
-     * @param {number} learnStyleName the name of the learningstyle
+     * @param {object} group the group object with students
+     * @param {string} learnStyleName the name of the learningstyle
      * @param {SVGElement} svg svg element on which we append the svg for a learningstyle
      * @param {number} yValue the yValue of this bar and the circles
      */
@@ -86,7 +86,7 @@ const {
 
     /**
      * @summary Calls the createSubject function for each subject
-     * @param {object} group the group array with students
+     * @param {object} group the group object with students
      * @returns {SVGElement} Svg element with the graphical info about the groups subjectPreference
      */
     function createSubjectPreference(group){
@@ -102,8 +102,8 @@ const {
 
     /**
      * @summary Creates and appends a svg element with the subject to the svg element
-     * @param {object} group the group array with students
-     * @param {number} subjectName the name of the subject
+     * @param {object} group the group object with students
+     * @param {string} subjectName the name of the subject
      * @param {SVGElement} svg svg element on which we append the svg for a learningstyle
      * @param {number} yValue the yValue of this bar and the circles
      */
@@ -121,7 +121,7 @@ const {
 
     /**
      * @summary Calls the createSubject function for each subject
-     * @param {object} group the group array with students
+     * @param {object} group the group object with students
      * @returns {SVGElement} Svg element with the graphical info about the groups subjectPreference
      */
     function createWorkingAtHome(group){
