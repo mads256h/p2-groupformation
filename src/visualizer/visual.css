@@ -2,6 +2,11 @@
   color: blue;
 }
 
+.svg {
+  display: inline-block;
+  margin: 5px;
+}
+
 .groupsize {
   color: black;
   display: inline-block;
@@ -10,10 +15,7 @@
   text-align: left;
   width: 300;
   font-size: 100%;
-}
-
-table {
-  margin: 10px;
+  margin: 5px;
 }
 
 table,

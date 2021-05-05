@@ -14,7 +14,6 @@ const weightFunctions = require("./algorithms/weightFunction");
 const {mapRange} = require("./math");
 const Cookies = require("cookies");
 
-// Idk what to do about this callback hell
 
 // Read config file
 fs.readFile("config.json", (configErr, configData) => {
