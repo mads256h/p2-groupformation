@@ -122,7 +122,7 @@
             groupSubjectsTitle.style.display = "block";
             groupTitleIdParagraf.innerText = "Your group " + group.name + ":";
             currentGroupIdDiv.appendChild(groupMembersList);
-            groupSubjectsTitle.innerText = "Your group prefered 3 subjects:";
+            clearChildren(subjectGroupIdDiv);
             subjectGroupIdDiv.appendChild(createGroupSubjectsElement(group));
         }
     }
