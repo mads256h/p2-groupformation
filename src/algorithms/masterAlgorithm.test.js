@@ -17,4 +17,5 @@ test("masterAlg throws", () => {
     expect(() => masterAlg(()=>0,()=>0,()=>0)).toThrow(TypeError);
     expect(() => masterAlg(()=>0,()=>0,()=>0, 1, 2, 3)).toThrow(TypeError);
     expect(() => masterAlg(()=>0,()=>0,()=>0, [[1]], [[2]], [2])).toThrow(TypeError);
+    expect(() => masterAlg(()=>0,()=>0,()=>0, [[1]], [[2]], [[3], [3,2]])).toThrow(RangeError);
 });

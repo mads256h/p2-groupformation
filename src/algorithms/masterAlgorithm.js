@@ -8,7 +8,8 @@
 module.exports = {masterAlg};
 const {
     assertFunction,
-    assertArraysOfArrayNotEmpty
+    assertArraysOfArrayNotEmpty,
+    assertArrayLengthEq
 } = require("../typeassert");
 
 /**
@@ -28,6 +29,9 @@ function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction, he
     assertArraysOfArrayNotEmpty(heterogenousCriteria);
     assertArraysOfArrayNotEmpty(homogenousCriteria);
     assertArraysOfArrayNotEmpty(subjectCriteria);
+    assertArrayLengthEq(...heterogenousCriteria);
+    assertArrayLengthEq(...homogenousCriteria);
+    assertArrayLengthEq(...subjectCriteria);
     // The algorithms needs to be normalized, so they can be weighted properly...
     return heterogenousFunction(heterogenousCriteria) + homogenousFunction(homogenousCriteria) + subjectFunction(subjectCriteria);
 }
