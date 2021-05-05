@@ -87,7 +87,7 @@
         subjectArray.sort((a, b) => b.score - a.score);
 
         for (const subject of subjectArray) {
-            const subjectPart = createListItem(subject.name + ": " + (subject.score * 10).toFixed(2));
+            const subjectPart = createListItem(subject.name + ": " + subject.score);
             subjectList.appendChild(subjectPart);
             subjectPreferenceIdDiv.appendChild(subjectList);
         }

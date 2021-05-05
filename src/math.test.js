@@ -87,4 +87,6 @@ test("mapRange", () => {
     expect(() => mapRange(1, 2, 0, 0, 1)).toThrow(RangeError);
 
     expect(mapRange(10, 0, 100, 0, 10)).toBe(1);
+    expect(mapRange(0, 0, 0, 0, 0)).toBe(0);
+    expect(mapRange(1, 1, 1, 1, 1)).toBe(0);
 });

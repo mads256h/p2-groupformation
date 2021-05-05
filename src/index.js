@@ -173,7 +173,6 @@ function rankedgroupsHandler(groupFormation, cookies) {
     const values = arr.map((pair) => pair.value);
     const min = Math.min(...values);
     const max = Math.max(...values);
-
     return arr.map((pair) => {
         pair.value = mapRange(pair.value, min, max, 0, 10);
         return pair;

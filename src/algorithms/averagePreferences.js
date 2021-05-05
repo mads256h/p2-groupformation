@@ -5,7 +5,8 @@
  * @author Mati-AAU and CasperNS
  */
 const { preferenceAlg } = require("./preference.js");
-const { assertArraysOfArrayNotEmpty } = require("../typeassert");
+const { assertArraysOfArrayNotEmpty, assertArrayNotEmpty } = require("../typeassert");
+const { transposeArray } = require("../math.js");
 
 /**
  * @summary Calculates score for multiple preferences (using the preference algorithm)
@@ -13,9 +14,12 @@ const { assertArraysOfArrayNotEmpty } = require("../typeassert");
  * @returns {number} Calculated score for subjects
  */
 function averagePreferenceAlg(preferencesArray) {
+    assertArrayNotEmpty(preferencesArray);
     assertArraysOfArrayNotEmpty(preferencesArray);
-    const result = preferencesArray.reduce((acc, p) => acc + preferenceAlg(p), 0);
-    return result / preferencesArray.length;
+    const transposed = transposeArray(preferencesArray);
+    const result = transposed.reduce((acc, p) => acc + preferenceAlg(p), 0);
+    console.log(result / transposed.length);
+    return result / transposed.length;
 }
 
 module.exports = {averagePreferenceAlg};
