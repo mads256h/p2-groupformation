@@ -1,8 +1,8 @@
 /**
- * @description The subject algorithm, used for matching common interest in subjects
- * @module masterAlgorithm
- * @see module:masterAlgorithm
- * @author Mati-AAU and CasperNS
+ * @description The average preferencE algorithm, used for matching common interest in preferences, such as subjects
+ * @module averagePreferences
+ * @see module:averagePreferences
+ * @author CasperNS and Mati-AAU
  */
 const { preferenceAlg } = require("./preference.js");
 const { assertArraysOfArrayNotEmpty, assertArrayNotEmpty } = require("../typeassert");

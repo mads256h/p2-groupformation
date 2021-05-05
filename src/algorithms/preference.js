@@ -1,7 +1,7 @@
 /**
  * @description The preference algorithm, used for matching preferences such as working from home
- * @module masterAlgorithm
- * @see module:masterAlgorithm
+ * @module preference
+ * @see module:preference
  * @author Mati-AAU and thom776g
  */
 

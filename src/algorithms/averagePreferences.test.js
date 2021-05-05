@@ -1,6 +1,6 @@
 const { averagePreferenceAlg } = require("./averagePreferences.js");
 
-test("Return values of subjects Algorithm", () => {
+test("Return values of average preferences Algorithm", () => {
     expect(averagePreferenceAlg([[0, 1, 0, 0], [0, 1, 0, 0]])).toBeCloseTo(0);
     expect(averagePreferenceAlg([[0, 0, 0], [0, 0, 0]])).toBeCloseTo(0);
     expect(averagePreferenceAlg([[-1, 1], [-1, -1]])).toBeCloseTo(-0.5);
@@ -15,7 +15,7 @@ test("Return values of subjects Algorithm", () => {
 });
 
 
-test("subject algorithm throws", () => {
+test("average preferences algorithm throws", () => {
     expect(() => averagePreferenceAlg(1)).toThrow(TypeError);
     expect(() => averagePreferenceAlg([0, 1, 0, 0, "s"], [0, 1, -1, 0, 1])).toThrow(TypeError);
     expect(() => averagePreferenceAlg([[], []])).toThrow(RangeError);
