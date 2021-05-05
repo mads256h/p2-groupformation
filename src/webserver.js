@@ -6,6 +6,7 @@ const mimeType = require("mime-type/with-db");
 const typeassert = require("./typeassert");
 const concat = require("concat-stream");
 const qs = require("querystring");
+const Cookies = require("cookies");
 
 /**
  * @description WebServer module.
@@ -15,11 +16,12 @@ const qs = require("querystring");
  */
 
 /**
+ * @summary The callback signature for an endpoint handler
  * @callback handlerCallback
- * @param {URLSearchParams} data
- * @param {http.IncomingMessage} request
- * @returns {any|Promise}
- * @throws HttpError
+ * @param {object} data GET or POST data
+ * @param {Cookies} cookies An object used to get and set cookies
+ * @returns {any|Promise} The response to the client
+ * @throws HttpError When an error is to be reported to the client
  */
 
 
@@ -88,17 +90,19 @@ class WebServer {
 
     /**
      * @summary Run the server
+     * @returns {Promise} A promise with the server
      */
     run() {
         return new Promise((resolve, reject) => {
             this.server.on("error", (e) => reject(e));
-            this.server.on("listening", () => resolve());
+            this.server.on("listening", () => resolve(this.server));
             this.server.listen(this.port, this.hostname);
         });
     }
 
     /**
      * @summary Stop the server
+     * @returns {Promise} A promise that resolves when the server is closed
      */
     stop() {
         return new Promise((resolve) => {
@@ -195,7 +199,6 @@ class WebServer {
 
 
 
-
         if (request.headers.host === undefined || request.headers.host === null) {
             errorResponse(405);
         }
@@ -203,13 +206,14 @@ class WebServer {
         request.setEncoding("utf8");
 
         const url = new URL(request.url, `http://${request.headers.host}`);
+        const cookies = new Cookies(request, response);
 
         if (request.method === "GET") {
             if (thiz.getHandlers.has(url.pathname)) {
                 const handler = thiz.getHandlers.get(url.pathname);
 
                 Promise.resolve()
-                    .then(() => handler(qs.parse(url.searchParams.toString()), request))
+                    .then(() => handler(qs.parse(url.searchParams.toString()), cookies))
                     .then(resp => {
                         const obj = {status: "OK", response: resp};
                         jsonResponse(200, obj);
@@ -233,7 +237,7 @@ class WebServer {
                 const handler = thiz.postHandlers.get(url.pathname);
 
                 extractForm()
-                    .then(postData => handler(postData, request))
+                    .then(postData => handler(postData, cookies))
                     .then(resp => {
                         const obj = {status: "OK", response: resp};
                         jsonResponse(200, obj);

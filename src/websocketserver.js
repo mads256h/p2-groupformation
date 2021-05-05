@@ -5,19 +5,27 @@ const {removeItemFromArray} = require("./math.js");
 
 
 /**
+ * @description WebSocketServer module
+ * @module websocketserver
+ * @see module:websocketserver
+ * @author mads256h
+ */
+
+/**
+ * @public
  * @summary A websocket server wrapper
- * @property {WSServer} websocket
- * @property {connection[]} clients
+ * @property {WSServer} websocket The underlying websocket server
+ * @property {connection[]} clients The connected clients
  */
 class WebSocketServer {
     /**
-     * @param {WebServer} server
+     * @param {WebServer} server The server to add websocket functionality to
      */
     constructor(server) {
         typeassert.assertInstanceOf(server, WebServer);
 
 
-        this.websocket = new WSServer({httpServer: server});
+        this.websocket = new WSServer({httpServer: server.server});
         this.clients = [];
 
         this.websocket.on("request", (request) => {
@@ -31,18 +39,22 @@ class WebSocketServer {
                 conn.drop(0, "Receiving messages not supported");
             });
 
-            conn.on("close", (code, desc) => {
-                console.log(`Closing connection: code: ${code} desc: ${desc}`);
+            conn.on("close", () => {
+                // console.log(`Closing connection: code: ${code} desc: ${desc}`);
                 removeItemFromArray(conn, this.clients);
             });
+
+            conn.on("error", (err) => console.log("Error", err));
         });
     }
 
     /**
      * @summary Send a message to all connected clients
-     * @param {string} message
+     * @param {string} message The message to broadcast
      */
     broadcastMessage(message) {
+        typeassert.assertString(message);
+
         this.clients.forEach((c) => c.sendUTF(message));
     }
 
@@ -51,8 +63,8 @@ class WebSocketServer {
      */
     stop() {
         this.websocket.shutDown();
-        this.clients = [];
+        this.clients.forEach((c) => c.close());
     }
 }
 
-module.exports({WebSocketServer});
+module.exports = {WebSocketServer};

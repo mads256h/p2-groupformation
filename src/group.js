@@ -101,8 +101,6 @@ class LearningStyles {
          */
         function validateParameter(parameter) {
             typeassert.assertNumber(parameter);
-            typeassert.assertInteger(parameter);
-            typeassert.assertRangeInclusive(parameter, -11, 11);
         }
 
         validateParameter(activeReflective);

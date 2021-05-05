@@ -7,7 +7,7 @@
     "main": "node src/index.js",
     "js-lint": "eslint src/",
     "html-lint": "html-validate src/{www,visualizer}/",
-    "css-lint": "stylelint --aei src/{www/**,visualizer}/*.css",
+    "css-lint": "stylelint --aei src/{www,www/**,visualizer}/*.css",
     "test": "jest",
     "doc": "jsdoc -r src/",
     "vis": "node src/visualizer/server.js",
@@ -44,8 +44,10 @@
   "dependencies": {
     "concat-stream": "^2.0.0",
     "content-type": "^1.0.4",
+    "cookies": "^0.8.0",
     "mime-type": "^4.0.0",
     "node-fetch": "^2.6.1",
-    "querystring": "^0.2.1"
+    "querystring": "^0.2.1",
+    "websocket": "^1.0.34"
   }
 }
