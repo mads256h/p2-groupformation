@@ -2,7 +2,7 @@
 
 const {WebServer, HttpError} = require("./webserver");
 const {WebSocketServer} = require("./websocketserver");
-const {Group, Student, Criteria} = require("./group");
+const {Group, Student, Criteria, SubjectPreference, Subject, LearningStyles} = require("./group");
 const {GroupFormation, WeightedCriteria} = require("./formation");
 const fs = require("fs");
 const typeassert = require("./typeassert");
@@ -56,7 +56,7 @@ fs.readFile("config.json", (configErr, configData) => {
 
 
                 const algorithm = configToAlgorithmFunction(config);
-                const weightedCriteria = new WeightedCriteria(null, algorithm);
+                const weightedCriteria = new WeightedCriteria(config.algorithm.weights, algorithm);
                 const groupFormation = new GroupFormation(students, config.algorithm.maxGroupSize, weightedCriteria);
 
 
@@ -291,6 +291,11 @@ function convertStudents(students) {
     students.forEach((s) => {
         s.__proto__ = Student.prototype;
         s.criteria.__proto__ = Criteria.prototype;
+        s.criteria.subjectPreference.__proto__ = SubjectPreference.prototype;
+        s.criteria.subjectPreference.subjects.forEach((sub) =>
+            sub.__proto__ = Subject.prototype
+        );
+        s.criteria.learningStyles.__proto__ = LearningStyles.prototype;
     });
     return students;
 }
