@@ -14,7 +14,6 @@ it("recieve message", () => {
     return new Promise((resolve, reject) => {
         client.on("connectFailed", (e) => reject(e));
         client.on("connect", (c) => {
-            console.log("connected");
             webSocketServer.broadcastMessage("test");
             c.on("error", (e) => reject(c));
             c.on("close", () => reject(c));
@@ -26,7 +25,6 @@ it("recieve message", () => {
                     reject(c);
                 }
                 else {
-                    console.log("yes");
                     resolve(c);
                 }
             });
