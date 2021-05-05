@@ -10,7 +10,7 @@ const {GroupFormation, WeightedCriteria, FMGroup} = require("../formation");
 const fs = require("fs");
 const { masterAlg } = require("../algorithms/masterAlgorithm");
 // const { preferenceAlg } = require("../algorithms/preference");
-const { subjectAlg } = require("../algorithms/subjectPreferences");
+const { averagePreferenceAlg } = require("../algorithms/averagePreferences");
 
 
 const argv = process.argv.splice(2);
@@ -60,7 +60,7 @@ if (algorithm === undefined) {
 
 const weightedCriteria = new WeightedCriteria(null,
     (heterogenousCri, homogenousCri, subjectCri) =>
-        masterAlg(algorithm.alg, subjectAlg, subjectAlg, heterogenousCri, homogenousCri, subjectCri)); // we use subjectalg instead of preference alg because it is functionally identical. The differences is that subjectAlg can handle an array of arrays, which preferenceAlg cannot.
+        masterAlg(algorithm.alg, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjectCri)); // we use subjectalg instead of preference alg because it is functionally identical. The differences is that averagePreferenceAlg can handle an array of arrays, which preferenceAlg cannot.
 const groupFormation = new GroupFormation(studentArray, Number(argv[1]), weightedCriteria);
 
 createBestGroups();
