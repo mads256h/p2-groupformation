@@ -1,9 +1,6 @@
 (function() {
     const {invitegroup} = window.commjs;
     const {clearChildren, createListItem} = window.utiljs;
-    window.addEventListener("DOMContentLoaded", () => {
-
-    });
 
     /**
      * @summary updates all dynamic html elements of the page
