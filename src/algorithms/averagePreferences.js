@@ -18,7 +18,6 @@ function averagePreferenceAlg(preferencesArray) {
     assertArraysOfArrayNotEmpty(preferencesArray);
     const transposed = transposeArray(preferencesArray);
     const result = transposed.reduce((acc, p) => acc + preferenceAlg(p), 0);
-    console.log(result / transposed.length);
     return result / transposed.length;
 }
 
