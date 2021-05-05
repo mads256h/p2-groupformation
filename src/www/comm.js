@@ -59,7 +59,7 @@
      * @memberof module:comm
      * @summary Get a list of groups with a score
      * @description This request requires that a valid session cookie has been set
-     * @returns {Promise<RankedGroup>} A promise with the ranked groups
+     * @returns {Promise<RankedGroup[]>} A promise with the ranked groups
      * @throws {Error} The status of the response is not "OK"
      */
     function rankedgroups() {
