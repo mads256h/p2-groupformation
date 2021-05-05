@@ -3,7 +3,7 @@
 const {WebServer, HttpError} = require("./webserver");
 const {WebSocketServer} = require("./websocketserver");
 const {Group, Student, Criteria, SubjectPreference, Subject, LearningStyles} = require("./group");
-const {GroupFormation, WeightedCriteria} = require("./formation");
+const {GroupFormation} = require("./formation");
 const fs = require("fs");
 const typeassert = require("./typeassert");
 const {balance} = require("./algorithms/0point");
