@@ -92,6 +92,7 @@ class GroupFormation {
 
 /**
  * @summary Weighs criteria and gives them a score
+ * @property {object} weights An object that specifies how the criteria should be weighted
  * @property {Function} algorithm The algorithm to use
  */
 class WeightedCriteria {
@@ -102,6 +103,7 @@ class WeightedCriteria {
     constructor(weights, algorithm) {
         typeassert.assertFunction(algorithm);
         typeassert.assertObject(weights);
+
         this.weights = weights;
         this.algorithm = algorithm;
 
@@ -114,6 +116,8 @@ class WeightedCriteria {
      * @returns {number} The score of the set of criteria
      */
     score(criteria) {
+        typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
+
         const criteriaWeighted = criteria.map((c) => this.weighCriteria(c));
         const {heterogenous, homogenous, subjects} = this.asNumberArrays(criteriaWeighted);
         return this.algorithm(heterogenous, homogenous, subjects);
@@ -127,6 +131,7 @@ class WeightedCriteria {
      */
     weighCriteria(criteria) {
         typeassert.assertInstanceOf(criteria, Criteria);
+
         const weightedCriteria = new Criteria(
             criteria.ambitions * this.weights.homogenous,
             criteria.workingAtHome * this.weights.homogenous,
@@ -153,6 +158,8 @@ class WeightedCriteria {
      * @returns {any} The criteria as numbers
      */
     asNumberArrays(criteria) {
+        typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
+
         const heterogenous = criteria.map((c) =>
             [
                 c.learningStyles.activeReflective,
