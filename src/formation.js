@@ -1,4 +1,4 @@
-const {Group, Student, Criteria} = require("./group");
+const {Group, Student, Criteria, LearningStyles, SubjectPreference} = require("./group");
 const {removeItemFromArray, mapRange} = require("./math");
 const typeassert = require("./typeassert");
 
@@ -49,7 +49,7 @@ class GroupFormation {
         typeassert.assertInstanceOf(group, FMGroup);
 
         removeItemFromArray(student, group.students);
-
+        group.name = generateName(group.students);
         this.groups.push(new FMGroup(student.name, this.nextGroupId++, [student], this, true));
     }
 
@@ -92,16 +92,19 @@ class GroupFormation {
 
 /**
  * @summary Weighs criteria and gives them a score
+ * @property {object} weights An object that specifies how the criteria should be weighted
  * @property {Function} algorithm The algorithm to use
  */
 class WeightedCriteria {
     /**
-     * @param {any} config An object that specifies how the criteria should be weighted
+     * @param {object} weights An object that specifies how the criteria should be weighted
      * @param {Function} algorithm The algorithm to use
      */
-    constructor(config, algorithm) {
+    constructor(weights, algorithm) {
         typeassert.assertFunction(algorithm);
+        typeassert.assertObject(weights);
 
+        this.weights = weights;
         this.algorithm = algorithm;
 
         Object.freeze(this);
@@ -113,7 +116,9 @@ class WeightedCriteria {
      * @returns {number} The score of the set of criteria
      */
     score(criteria) {
-        const criteriaWeighted = this.weighCriteria(criteria);
+        typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
+
+        const criteriaWeighted = criteria.map((c) => this.weighCriteria(c));
         const {heterogenous, homogenous, subjects} = this.asNumberArrays(criteriaWeighted);
         return this.algorithm(heterogenous, homogenous, subjects);
     }
@@ -121,15 +126,29 @@ class WeightedCriteria {
     /**
      * @private
      * @summary Weigh criteria
-     * @param {Criteria[]} criteria The criteria to weigh
-     * @returns {Criteria[]} Weighed criteria
+     * @param {Criteria} criteria The criteria to weigh
+     * @returns {Criteria} Weighed criteria
      */
     weighCriteria(criteria) {
-        typeassert.assertArray(criteria);
-        typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
+        typeassert.assertInstanceOf(criteria, Criteria);
 
-        // TODO: Do the magic ;)
-        return criteria;
+        const weightedCriteria = new Criteria(
+            criteria.ambitions * this.weights.homogenous,
+            criteria.workingAtHome * this.weights.homogenous,
+            new LearningStyles(
+                criteria.learningStyles.activeReflective * this.weights.heterogenous,
+                criteria.learningStyles.visualVerbal * this.weights.heterogenous,
+                criteria.learningStyles.sensingIntuitive * this.weights.heterogenous,
+                criteria.learningStyles.sequentialGlobal * this.weights.heterogenous,
+            ),
+            new SubjectPreference(
+                criteria.subjectPreference.subjects.map((s) => {
+                    s.score *= this.weights.subjects;
+                    return s;
+                })
+            )
+        );
+        return weightedCriteria;
     }
 
     /**
@@ -139,6 +158,8 @@ class WeightedCriteria {
      * @returns {any} The criteria as numbers
      */
     asNumberArrays(criteria) {
+        typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
+
         const heterogenous = criteria.map((c) =>
             [
                 c.learningStyles.activeReflective,
@@ -157,6 +178,18 @@ class WeightedCriteria {
         );
         return {heterogenous, homogenous, subjects};
     }
+}
+
+/**
+ * @summary Generates a group name from a list of students
+ * @param {Student[]} students list of students in group
+ * @returns {string} name of the group
+ */
+function generateName(students){
+    typeassert.assertArray(students);
+    typeassert.assertArrayItemsInstanceOf(students, Student);
+
+    return students.map((s) => s.name).join(" ");
 }
 
 /**
@@ -200,10 +233,11 @@ class FMGroup extends Group {
      * @returns {FMGroup} A new group that is a result of merging this group and group
      */
     merge(group, isUsed = false) {
+        const mergedStudents = this.students.concat(group.students);
         return new FMGroup(
-            this.name + group.name,
+            generateName(mergedStudents),
             this.groupFormation.nextGroupId++,
-            this.students.concat(group.students),
+            mergedStudents,
             this.groupFormation,
             isUsed
         );

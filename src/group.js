@@ -101,8 +101,6 @@ class LearningStyles {
          */
         function validateParameter(parameter) {
             typeassert.assertNumber(parameter);
-            typeassert.assertInteger(parameter);
-            typeassert.assertRangeInclusive(parameter, -11, 11);
         }
 
         validateParameter(activeReflective);
@@ -146,7 +144,6 @@ class Subject {
     constructor(name, score) {
         typeassert.assertString(name);
         typeassert.assertNumber(score);
-        typeassert.assertRangeInclusive(score, 0, 1);
 
         this.name = name;
         this.score = score;

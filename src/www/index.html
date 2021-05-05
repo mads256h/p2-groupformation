@@ -3,12 +3,24 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Test document</title>
-  <script src="bruh.js"></script>
+  <title>Login</title>
+  <script src="comm.js"></script>
+  <script src="login.js"></script>
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
 <body>
-  <h1>Testing the linter</h1>
+  <div class="error" id="error"></div>
+  <div class="center">
+    <fieldset>
+      <legend>Login</legend>
+      <form method="post" action="api/login" id="login">
+        <label for="username"></label>
+        <input name="username" type="text" id="username" placeholder="Username">
+        <button type="submit">Log in</button>
+      </form>
+    </fieldset>
+  </div>
 </body>
 
 </html>
