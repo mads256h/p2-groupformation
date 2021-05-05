@@ -58,10 +58,9 @@ if (algorithm === undefined) {
     process.exit(1);
 }
 const weights = {heterogenous: 1, homogenous: 1, subjects: 1};
-const weightedCriteria = new WeightedCriteria(null,
-    (heterogenousCri, homogenousCri, subjectCri) =>
-        masterAlg(algorithm.alg, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjectCri, weights)); // we use subjectalg instead of preference alg because it is functionally identical. The differences is that averagePreferenceAlg can handle an array of arrays, which preferenceAlg cannot.
-const groupFormation = new GroupFormation(studentArray, Number(argv[1]), weightedCriteria);
+const customMasterAlgorithm = (heterogenousCri, homogenousCri, subjectCri) =>
+    masterAlg(algorithm.alg, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjectCri, weights);
+const groupFormation = new GroupFormation(studentArray, Number(argv[1]), customMasterAlgorithm);
 
 createBestGroups();
 

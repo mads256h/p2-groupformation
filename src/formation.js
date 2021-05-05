@@ -21,16 +21,16 @@ class GroupFormation {
     /**
      * @param {Student[]} students Array of students
      * @param {number} maxGroupSize The maximum number of students allowed in a group
-     * @param {WeightedCriteria} weightedCriteria How much a criteria is weighted
+     * @param {function} algorithm Algorithm for calculating score
      */
-    constructor(students, maxGroupSize, weightedCriteria) {
+    constructor(students, maxGroupSize, algorithm) {
         typeassert.assertArray(students);
         typeassert.assertArrayItemsInstanceOf(students, Student);
         typeassert.assertInteger(maxGroupSize);
         typeassert.assertGreaterThanEq(maxGroupSize, 1);
-        typeassert.assertInstanceOf(weightedCriteria, WeightedCriteria);
+        typeassert.assertFunction(algorithm);
 
-        this.weightedCriteria = weightedCriteria;
+        this.algorithm = algorithm;
         this.maxGroupSize = maxGroupSize;
         this.nextGroupId = 0;
 
@@ -87,28 +87,6 @@ class GroupFormation {
     makeGroups(students) {
         return students.map((s) => new FMGroup(s.name, this.nextGroupId++, [s], this, true));
     }
-}
-
-
-/**
- * @summary Weighs criteria and gives them a score
- * @property {object} weights An object that specifies how the criteria should be weighted
- * @property {Function} algorithm The algorithm to use
- */
-class WeightedCriteria {
-    /**
-     * @param {object} weights An object that specifies how the criteria should be weighted
-     * @param {Function} algorithm The algorithm to use
-     */
-    constructor(weights, algorithm) {
-        typeassert.assertFunction(algorithm);
-        typeassert.assertObject(weights);
-
-        this.weights = weights;
-        this.algorithm = algorithm;
-
-        Object.freeze(this);
-    }
 
     /**
      * @summary Get the score of a set of criteria
@@ -118,37 +96,37 @@ class WeightedCriteria {
     score(criteria) {
         typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
 
-        const {heterogenous, homogenous, subjects} = this.asNumberArrays(criteria);
+        const {heterogenous, homogenous, subjects} = asNumberArrays(criteria);
         return this.algorithm(heterogenous, homogenous, subjects);
     }
+}
 
-    /**
-     * @private
-     * @summary Get criteria as number arrays
-     * @param {Criteria[]} criteria The criteria to get as number arrays
-     * @returns {any} The criteria as numbers
-     */
-    asNumberArrays(criteria) {
-        typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
+/**
+ * @private
+ * @summary Get criteria as number arrays
+ * @param {Criteria[]} criteria The criteria to get as number arrays
+ * @returns {any} The criteria as numbers
+ */
+function asNumberArrays(criteria) {
+    typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
 
-        const heterogenous = criteria.map((c) =>
-            [
-                c.learningStyles.activeReflective,
-                c.learningStyles.visualVerbal,
-                c.learningStyles.sensingIntuitive,
-                c.learningStyles.sequentialGlobal
-            ]
-                .map((a) => mapRange(a, -11, 11, -1, 1)));
-        const homogenous = criteria.map((c) =>
-            [
-                c.workingAtHome
-            ]
-        );
-        const subjects = criteria.map((c) =>
-            c.subjectPreference.subjects.map((s) => s.score)
-        );
-        return {heterogenous, homogenous, subjects};
-    }
+    const heterogenous = criteria.map((c) =>
+        [
+            c.learningStyles.activeReflective,
+            c.learningStyles.visualVerbal,
+            c.learningStyles.sensingIntuitive,
+            c.learningStyles.sequentialGlobal
+        ]
+            .map((a) => mapRange(a, -11, 11, -1, 1)));
+    const homogenous = criteria.map((c) =>
+        [
+            c.workingAtHome
+        ]
+    );
+    const subjects = criteria.map((c) =>
+        c.subjectPreference.subjects.map((s) => s.score)
+    );
+    return {heterogenous, homogenous, subjects};
 }
 
 /**
@@ -194,7 +172,7 @@ class FMGroup extends Group {
      * @returns {number} The score
      */
     score() {
-        return this.groupFormation.weightedCriteria.score(this.students.map((s) => s.criteria));
+        return this.groupFormation.score(this.students.map((s) => s.criteria));
     }
 
     /**
@@ -294,4 +272,4 @@ class FMStudent extends Student {
     }
 }
 
-module.exports = {GroupFormation, WeightedCriteria, FMGroup, FMStudent};
+module.exports = {GroupFormation, FMGroup, FMStudent};

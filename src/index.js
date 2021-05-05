@@ -59,8 +59,7 @@ fs.readFile("config.json", (configErr, configData) => {
                 const heterogenousAlgorithm = configToAlgorithmFunction(config);
                 const customMasterAlg = (heterogenousCri, homogenousCri, subjects) =>
                     masterAlg(heterogenousAlgorithm, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjects, config.algorithm.weights);
-                const weightedCriteria = new WeightedCriteria(config.algorithm.weights, customMasterAlg);
-                const groupFormation = new GroupFormation(students, config.algorithm.maxGroupSize, weightedCriteria);
+                const groupFormation = new GroupFormation(students, config.algorithm.maxGroupSize, customMasterAlg);
 
 
                 const webServer = new WebServer(config.server.hostname, config.server.port, "src/www");
