@@ -10,23 +10,20 @@ beforeAll(() => server.run());
 afterAll(() => Promise.all([webSocketServer.stop(), server.stop()]));
 
 it("recieve message", () => {
+    expect.assertions(2);
+
     const client = new WebSocketClient();
     return new Promise((resolve, reject) => {
         client.on("connectFailed", (e) => reject(e));
         client.on("connect", (c) => {
             webSocketServer.broadcastMessage("test");
-            c.on("error", (e) => reject(c));
+            c.on("error", () => reject(c));
             c.on("close", () => reject(c));
             c.on("message", (m) => {
-                if (m.type !== "utf8") {
-                    reject(c);
-                }
-                else if (m.utf8Data !== "test") {
-                    reject(c);
-                }
-                else {
-                    resolve(c);
-                }
+                expect(m.type).toEqual("utf8");
+                expect(m.utf8Data).toEqual("test");
+
+                resolve(c);
             });
         });
 

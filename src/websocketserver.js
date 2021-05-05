@@ -14,8 +14,8 @@ const {removeItemFromArray} = require("./math.js");
 /**
  * @public
  * @summary A websocket server wrapper
- * @property {WSServer} websocket
- * @property {connection[]} clients
+ * @property {WSServer} websocket The underlying websocket server
+ * @property {connection[]} clients The connected clients
  */
 class WebSocketServer {
     /**
@@ -39,8 +39,8 @@ class WebSocketServer {
                 conn.drop(0, "Receiving messages not supported");
             });
 
-            conn.on("close", (code, desc) => {
-                //console.log(`Closing connection: code: ${code} desc: ${desc}`);
+            conn.on("close", () => {
+                // console.log(`Closing connection: code: ${code} desc: ${desc}`);
                 removeItemFromArray(conn, this.clients);
             });
 
