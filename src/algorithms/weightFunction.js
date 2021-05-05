@@ -5,8 +5,6 @@
  * @author Mati-AAU and thom776g
  */
 
-module.exports = {constant, sigmoid0to2};
-
 /**
  * @summary constant weight function
  * @param {number} number input
@@ -24,3 +22,5 @@ function constant(number){
 function sigmoid0to2(number){
     return 0.5 * Math.tanh(number * 2.5 - 2.5) + 0.5;
 }
+
+module.exports = {constant, sigmoid0to2};

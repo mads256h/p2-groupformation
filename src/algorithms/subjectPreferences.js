@@ -6,7 +6,6 @@
  */
 const { preferenceAlg } = require("./preference.js");
 const { assertArray } = require("../typeassert");
-module.exports = {subjectAlg};
 
 /**
  * @summary Calculates score for subjects (using the preference algorithm)
@@ -21,3 +20,5 @@ function subjectAlg(subjects) {
     }
     return result / subjects.length;
 }
+
+module.exports = {subjectAlg};

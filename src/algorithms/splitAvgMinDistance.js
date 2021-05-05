@@ -5,7 +5,6 @@
  * @author Mati-AAU and thom776g
  */
 
-module.exports = {splitAvgMinDistance};
 const {
     assertArray,
     assertArrayItemsInstanceOf,
@@ -50,3 +49,5 @@ function splitAvgMinDistance(criteria){
 function maxScore(nrStudents){
     return 2 / (nrStudents - 1);
 }
+
+module.exports = {splitAvgMinDistance};

@@ -4,7 +4,7 @@
  * @see module:masterAlgorithm
  * @author Mati-AAU and thom776g
  */
-module.exports = {preferenceAlg};
+
 const {
     assertArrayItemsType,
     assertArrayNotEmpty,
@@ -36,3 +36,5 @@ function preferenceAlg(preferences){
         return -(min / max);
     }
 }
+
+module.exports = {preferenceAlg};

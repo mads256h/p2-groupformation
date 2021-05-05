@@ -5,7 +5,6 @@
  * @author Mati-AAU and thom776g
  */
 
-module.exports = {masterAlg};
 const {
     assertFunction,
     assertArraysOfArrayNotEmpty,
@@ -35,3 +34,5 @@ function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction, he
     // The algorithms needs to be normalized, so they can be weighted properly...
     return heterogenousFunction(heterogenousCriteria) + homogenousFunction(homogenousCriteria) + subjectFunction(subjectCriteria);
 }
+
+module.exports = {masterAlg};
