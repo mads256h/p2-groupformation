@@ -50,11 +50,14 @@ td {
 h1 {
   text-align: center;
   font-size: 150%;
+}
+
+h1,
+h2 {
   text-decoration: underline;
 }
 
 h2 {
-  text-decoration: underline;
   font-size: medium;
 }
 
