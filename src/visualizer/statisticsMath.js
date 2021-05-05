@@ -81,7 +81,7 @@
      * of the subject with the subject name provided in the subjectName argument
      * @param {object} group the group from which to get the data
      * @param {string} subjectName the name of the subject
-     * @returns {object} returns an object with the students of the groups values in the given subjects, the key is the students idx in the groups.students object
+     * @returns {number[]} returns an object with the students of the groups values in the given subjects, the key is the students idx in the groups.students object
      */
     function getSubjectValuesOfGroup(group, subjectName){
         return group.students.map((s) => s.criteria.subjectPreference.subjects[subjectName].score);
@@ -90,7 +90,7 @@
     /**
      * @summary Creates and returns a new array with the workingAtHome scores of the students in the group
      * @param {object} group the group from which to get the data
-     * @returns {object} returns an object with the students of the groups values in workingAtHome, the key is the students idx in the groups
+     * @returns {number[]} returns an object with the students of the groups values in workingAtHome, the key is the students idx in the groups
      */
     function getWorkingAtHomeOfGroup(group){
         return group.students.map((s) => s.criteria.workingAtHome);
