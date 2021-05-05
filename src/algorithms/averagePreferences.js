@@ -14,7 +14,7 @@ const { assertArraysOfArrayNotEmpty } = require("../typeassert");
  */
 function averagePreferenceAlg(preferencesArray) {
     assertArraysOfArrayNotEmpty(preferencesArray);
-    let result = preferencesArray.reduce((acc, p) => acc + preferenceAlg(p), 0);
+    const result = preferencesArray.reduce((acc, p) => acc + preferenceAlg(p), 0);
     return result / preferencesArray.length;
 }
 
