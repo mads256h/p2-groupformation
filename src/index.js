@@ -3,7 +3,7 @@
 const {WebServer, HttpError} = require("./webserver");
 const {WebSocketServer} = require("./websocketserver");
 const {Group, Student, Criteria, SubjectPreference, Subject, LearningStyles} = require("./group");
-const {GroupFormation, WeightedCriteria} = require("./formation");
+const {GroupFormation} = require("./formation");
 const fs = require("fs");
 const typeassert = require("./typeassert");
 const {balance} = require("./algorithms/0point");
@@ -13,6 +13,8 @@ const {averageVectorMinDistance, averageVectorDistance} = require("./algorithms/
 const weightFunctions = require("./algorithms/weightFunction");
 const {mapRange} = require("./math");
 const Cookies = require("cookies");
+const { masterAlg } = require("./algorithms/masterAlgorithm");
+const { averagePreferenceAlg } = require("./algorithms/averagePreferences");
 
 
 // Read config file
@@ -54,9 +56,10 @@ fs.readFile("config.json", (configErr, configData) => {
                 typeassert.assertArrayItemsInstanceOf(students, Student);
 
 
-                const algorithm = configToAlgorithmFunction(config);
-                const weightedCriteria = new WeightedCriteria(config.algorithm.weights, algorithm);
-                const groupFormation = new GroupFormation(students, config.algorithm.maxGroupSize, weightedCriteria);
+                const heterogenousAlgorithm = configToAlgorithmFunction(config);
+                const customMasterAlg = (heterogenousCri, homogenousCri, subjects) =>
+                    masterAlg(heterogenousAlgorithm, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjects, config.algorithm.weights);
+                const groupFormation = new GroupFormation(students, config.algorithm.maxGroupSize, customMasterAlg);
 
 
                 const webServer = new WebServer(config.server.hostname, config.server.port, "src/www");
@@ -169,7 +172,6 @@ function rankedgroupsHandler(groupFormation, cookies) {
     const values = arr.map((pair) => pair.value);
     const min = Math.min(...values);
     const max = Math.max(...values);
-
     return arr.map((pair) => {
         pair.value = mapRange(pair.value, min, max, 0, 10);
         return pair;

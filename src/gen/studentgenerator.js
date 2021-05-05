@@ -88,7 +88,7 @@ function subjectPreferenceGenerator(numSubjects){
  * @returns {Subject} Randomized subject
  */
 function subjectGenerator(name) {
-    return new Subject(name, Math.random());
+    return new Subject(name, Math.floor(Math.random() * 3 - 1));
 }
 
 

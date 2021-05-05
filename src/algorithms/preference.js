@@ -1,10 +1,10 @@
 /**
  * @description The preference algorithm, used for matching preferences such as working from home
- * @module masterAlgorithm
- * @see module:masterAlgorithm
+ * @module preference
+ * @see module:preference
  * @author Mati-AAU and thom776g
  */
-module.exports = {preferenceAlg};
+
 const {
     assertArrayItemsType,
     assertArrayNotEmpty,
@@ -36,3 +36,5 @@ function preferenceAlg(preferences){
         return -(min / max);
     }
 }
+
+module.exports = {preferenceAlg};

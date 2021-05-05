@@ -5,7 +5,6 @@
  * @author Mati-AAU and thom776g
  */
 
-module.exports = {maxDistance};
 const {
     assertArray,
     assertArrayItemsInstanceOf,
@@ -35,3 +34,5 @@ function maxDistance(criteria){
     }
     return value / transposedCriteria.length;
 }
+
+module.exports = {maxDistance};

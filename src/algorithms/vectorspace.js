@@ -5,7 +5,6 @@
  * @author Mati-AAU and thom776g
  */
 
-module.exports = {averageVectorMinDistance, averageVectorDistance};
 const {
     assertArray,
     assertArrayItemsInstanceOf,
@@ -48,9 +47,6 @@ function averageVectorMinDistance(criteria, p, weighFunc){
     return score / totalDistances;
 }
 
-
-
-
 /**
  * @summary Calculates average Lp distance between all vectors
  * @param {number[][]} criteria 2d array with students and their criterias
@@ -81,3 +77,5 @@ function averageVectorDistance(criteria, p, weighFunc){
     }
     return score / totalDistances;
 }
+
+module.exports = {averageVectorMinDistance, averageVectorDistance};

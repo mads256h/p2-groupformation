@@ -105,6 +105,6 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
     assertLessThanEq(inMin, inMax);
     assertLessThanEq(outMin, outMax);
 
-
-    return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
+    const result = outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
+    return Number.isNaN(result) ? 0 : result;
 }

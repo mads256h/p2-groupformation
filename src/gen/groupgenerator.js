@@ -6,8 +6,11 @@ const {splitAvgMinDistance} = require("../algorithms/splitAvgMinDistance");
 const {averageVectorMinDistance, averageVectorDistance} = require("../algorithms/vectorspace");
 const weightFunctions = require("../algorithms/weightFunction");
 const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("../group");
-const {GroupFormation, WeightedCriteria, FMGroup} = require("../formation");
+const {GroupFormation, FMGroup} = require("../formation");
 const fs = require("fs");
+const { masterAlg } = require("../algorithms/masterAlgorithm");
+// const { preferenceAlg } = require("../algorithms/preference");
+const { averagePreferenceAlg } = require("../algorithms/averagePreferences");
 
 
 const argv = process.argv.splice(2);
@@ -54,9 +57,10 @@ if (algorithm === undefined) {
     }
     process.exit(1);
 }
-
-const weightedCriteria = new WeightedCriteria(null, algorithm.alg);
-const groupFormation = new GroupFormation(studentArray, Number(argv[1]), weightedCriteria);
+const weights = {heterogenous: 1, homogenous: 1, subjects: 1};
+const customMasterAlgorithm = (heterogenousCri, homogenousCri, subjectCri) =>
+    masterAlg(algorithm.alg, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjectCri, weights);
+const groupFormation = new GroupFormation(studentArray, Number(argv[1]), customMasterAlgorithm);
 
 createBestGroups();
 
