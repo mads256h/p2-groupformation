@@ -13,6 +13,8 @@ const {averageVectorMinDistance, averageVectorDistance} = require("./algorithms/
 const weightFunctions = require("./algorithms/weightFunction");
 const {mapRange} = require("./math");
 const Cookies = require("cookies");
+const { masterAlg } = require("./algorithms/masterAlgorithm");
+const { averagePreferenceAlg } = require("./algorithms/averagePreferences");
 
 
 // Read config file
@@ -54,8 +56,10 @@ fs.readFile("config.json", (configErr, configData) => {
                 typeassert.assertArrayItemsInstanceOf(students, Student);
 
 
-                const algorithm = configToAlgorithmFunction(config);
-                const weightedCriteria = new WeightedCriteria(config.algorithm.weights, algorithm);
+                const heterogenousAlgorithm = configToAlgorithmFunction(config);
+                const customMasterAlg = (heterogenousCri, homogenousCri, subjects) =>
+                    masterAlg(heterogenousAlgorithm, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjects);
+                const weightedCriteria = new WeightedCriteria(config.algorithm.weights, customMasterAlg);
                 const groupFormation = new GroupFormation(students, config.algorithm.maxGroupSize, weightedCriteria);
 
 
