@@ -30,9 +30,9 @@ const {
         svgDiv.setAttribute("class", "svg");
         svgDiv.setAttribute("style", "width: " + svgWidth + "px;");
         // Create LearningStyles:
-        const LSTitle = document.createElement("p");
-        LSTitle.innerText = "Learningstyles";
-        svgDiv.appendChild(LSTitle);
+        const learningStyleTitle = document.createElement("p");
+        learningStyleTitle.innerText = "Learningstyles";
+        svgDiv.appendChild(learningStyleTitle);
         svgDiv.appendChild(createLearningStyles(group));
 
         // Create SubjectPreferences:
