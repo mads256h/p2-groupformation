@@ -8,7 +8,8 @@
 const {
     assertFunction,
     assertArraysOfArrayNotEmpty,
-    assertArrayLengthEq
+    assertArrayLengthEq,
+    assertObject
 } = require("../typeassert");
 
 /**
@@ -19,9 +20,10 @@ const {
  * @param {number[][]} heterogenousCriteria criteria for calculating heterogenous score
  * @param {number[][]} homogenousCriteria criteria for calculating homogenous score
  * @param {number[][]} subjectCriteria criteria for calculating subject score
+ * @param {object} weights object containing weights for algorithms
  * @returns {number} Calculated score for preferences
  */
-function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction, heterogenousCriteria, homogenousCriteria, subjectCriteria){
+function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction, heterogenousCriteria, homogenousCriteria, subjectCriteria, weights){
     assertFunction(heterogenousFunction);
     assertFunction(homogenousFunction);
     assertFunction(subjectFunction);
@@ -31,8 +33,11 @@ function masterAlg(heterogenousFunction, homogenousFunction, subjectFunction, he
     assertArrayLengthEq(...heterogenousCriteria);
     assertArrayLengthEq(...homogenousCriteria);
     assertArrayLengthEq(...subjectCriteria);
+    assertObject(weights);
     // The algorithms needs to be normalized, so they can be weighted properly...
-    return heterogenousFunction(heterogenousCriteria) + homogenousFunction(homogenousCriteria) + subjectFunction(subjectCriteria);
+    return heterogenousFunction(heterogenousCriteria) * weights.heterogenous +
+           homogenousFunction(homogenousCriteria) * weights.homogenous +
+           subjectFunction(subjectCriteria) * weights.subjects;
 }
 
 module.exports = {masterAlg};

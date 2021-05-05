@@ -1,7 +1,7 @@
 // TODO: Test FMGroup and FMStudent
 // They kinda already gets tested through GroupFormation
 const {GroupFormation, WeightedCriteria} = require("./formation");
-const {Student, Criteria, LearningStyles, SubjectPreference, Subject} = require("./group");
+const {Student, Criteria, LearningStyles, SubjectPreference} = require("./group");
 
 
 test("GroupFormation", () => {
@@ -48,33 +48,4 @@ test("WeightedCriteria", () => {
 
     expect(new WeightedCriteria(null, () => 0).score([])).toBe(0);
     expect(new WeightedCriteria(null, () => 1).score([])).toBe(1);
-});
-
-
-test("weighfunction", () => {
-    const weightConfig = {  // valid weight object
-        "heterogenous": 2,
-        "homogenous": 10,
-        "subjects": 100
-    };
-    const testCriteria = new Criteria(
-        1,
-        1,
-        new LearningStyles(1, 1, 1, 1),
-        new SubjectPreference([
-            new Subject("sub1", 1),
-            new Subject("sub2", 1)
-        ])
-    );
-    const testResultCriteria = new Criteria(
-        10,
-        10,
-        new LearningStyles(2, 2, 2, 2),
-        new SubjectPreference([
-            new Subject("sub1", 100),
-            new Subject("sub2", 100)
-        ])
-    );
-    const weigher = new WeightedCriteria(weightConfig, ()=>0); // dummy function is used to pass typecheck
-    expect(weigher.weighCriteria(testCriteria)).toStrictEqual(testResultCriteria); // deep check that everything exists and is equal in both
 });

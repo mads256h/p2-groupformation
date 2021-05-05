@@ -1,4 +1,4 @@
-const {Group, Student, Criteria, LearningStyles, SubjectPreference} = require("./group");
+const {Group, Student, Criteria} = require("./group");
 const {removeItemFromArray, mapRange} = require("./math");
 const typeassert = require("./typeassert");
 
@@ -118,37 +118,8 @@ class WeightedCriteria {
     score(criteria) {
         typeassert.assertArrayItemsInstanceOf(criteria, Criteria);
 
-        const criteriaWeighted = criteria.map((c) => this.weighCriteria(c));
-        const {heterogenous, homogenous, subjects} = this.asNumberArrays(criteriaWeighted);
+        const {heterogenous, homogenous, subjects} = this.asNumberArrays(criteria);
         return this.algorithm(heterogenous, homogenous, subjects);
-    }
-
-    /**
-     * @private
-     * @summary Weigh criteria
-     * @param {Criteria} criteria The criteria to weigh
-     * @returns {Criteria} Weighed criteria
-     */
-    weighCriteria(criteria) {
-        typeassert.assertInstanceOf(criteria, Criteria);
-
-        const weightedCriteria = new Criteria(
-            criteria.ambitions * this.weights.homogenous,
-            criteria.workingAtHome * this.weights.homogenous,
-            new LearningStyles(
-                criteria.learningStyles.activeReflective * this.weights.heterogenous,
-                criteria.learningStyles.visualVerbal * this.weights.heterogenous,
-                criteria.learningStyles.sensingIntuitive * this.weights.heterogenous,
-                criteria.learningStyles.sequentialGlobal * this.weights.heterogenous,
-            ),
-            new SubjectPreference(
-                criteria.subjectPreference.subjects.map((s) => {
-                    s.score *= this.weights.subjects;
-                    return s;
-                })
-            )
-        );
-        return weightedCriteria;
     }
 
     /**
