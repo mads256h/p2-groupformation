@@ -1,5 +1,5 @@
 /**
- * @description The average preferencE algorithm, used for matching common interest in preferences, such as subjects
+ * @description The average preference algorithm, used for matching common interest in preferences, such as subjects
  * @module averagePreferences
  * @see module:averagePreferences
  * @author CasperNS and Mati-AAU
