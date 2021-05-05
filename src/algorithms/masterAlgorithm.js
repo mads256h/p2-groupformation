@@ -7,7 +7,8 @@
 
 module.exports = {masterAlg};
 const {
-    assertFunction, assertArraysOfArrayNotEmpty
+    assertFunction,
+    assertArraysOfArrayNotEmpty
 } = require("../typeassert");
 
 /**
