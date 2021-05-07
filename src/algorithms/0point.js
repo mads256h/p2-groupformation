@@ -28,10 +28,9 @@ function balance(criteria){
     assertArrayLengthEq(...criteria);
 
     // Criteria must be transposed so it is an array of criterias and their students
-    return transposeArray(criteria)
-        // Summate students criterium values for the criteria
-        .reduce((outerSum, criterium) =>
-            outerSum + Math.abs(criterium.reduce((innerSum, criValue) =>
+    return -transposeArray(criteria)
+        .reduce((outerSum, criterium) => // Sum all criteria
+            outerSum + Math.abs(criterium.reduce((innerSum, criValue) => // Sum all students in criterium
                 innerSum + criValue)),
         0);
 }
