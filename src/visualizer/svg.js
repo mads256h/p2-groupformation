@@ -18,7 +18,7 @@ const {
     const svgLineWidth = svgWidth * 0.01;
     const svgTextSize = svgLineSpace * 0.5;
     const learningStyleRangeWidth = 22; // Learningstyle rangewith, from -11 to 11 = 22
-    const workingAtHhomeRangeWidth = 2; // Working At Home rangewith, from -1 to 1 = 2
+    const workingAtHomeAndSubjectRangeWidth = 2; // Working At Home rangewith, from -1 to 1 = 2
 
     /**
      * @summary Creates and appends a div element with the svg of the learningstyles
@@ -109,11 +109,11 @@ const {
      */
     function createSubject(group, subjectName, svg, yValue){
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        createBar(yValue, 0, 1, svg, subjectName);
+        createBar(yValue, -1, workingAtHomeAndSubjectRangeWidth, svg, subjectName);
         // Create the circles
         const arrCircleSize = closeby(getSubjectValuesOfGroup(group, subjectName), 0.05);
         for (const i in arrCircleSize) {
-            const xValue = circleXValue(group.students[i].criteria.subjectPreference.subjects[subjectName].score, 1, 0);
+            const xValue = circleXValue(group.students[i].criteria.subjectPreference.subjects[subjectName].score, workingAtHomeAndSubjectRangeWidth, workingAtHomeAndSubjectRangeWidth / 2);
             const studentColor = colorArr[i];
             svg.appendChild(createCircle(xValue, yValue, studentColor, arrCircleSize[i]));
         }
@@ -128,12 +128,12 @@ const {
         const svg = createSvgElement(2 * svgLineSpace);
         const yValue = svgLineSpace;
         const colorArr = ["blue", "green", "red", "yellow", "lime", "orange", "magenta", "brown", "pink", "cyan", "purple", "hotpink", "chartreuse"];
-        createBar(yValue, -1, workingAtHhomeRangeWidth, svg, "Working at home");
+        createBar(yValue, -1, workingAtHomeAndSubjectRangeWidth, svg, "Working at home");
 
         // Create the circles
         const arrCircleSize = closeby(getWorkingAtHomeOfGroup(group), 0.1);
         for (const i in arrCircleSize) {
-            const xValue = circleXValue(group.students[i].criteria.workingAtHome, workingAtHhomeRangeWidth, workingAtHhomeRangeWidth / 2);
+            const xValue = circleXValue(group.students[i].criteria.workingAtHome, workingAtHomeAndSubjectRangeWidth, workingAtHomeAndSubjectRangeWidth / 2);
             const studentColor = colorArr[i];
             svg.appendChild(createCircle(xValue, yValue, studentColor, arrCircleSize[i]));
         }
