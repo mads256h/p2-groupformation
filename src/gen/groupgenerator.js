@@ -8,9 +8,9 @@ const weightFunctions = require("../algorithms/weightFunction");
 const {Student, Criteria, LearningStyles, Subject, SubjectPreference} = require("../group");
 const {GroupFormation, FMGroup} = require("../formation");
 const fs = require("fs");
-const { masterAlg } = require("../algorithms/masterAlgorithm");
+const {masterAlg} = require("../algorithms/masterAlgorithm");
 // const { preferenceAlg } = require("../algorithms/preference");
-const { averagePreferenceAlg } = require("../algorithms/averagePreferences");
+const {averagePreferenceAlg} = require("../algorithms/averagePreferences");
 
 
 const argv = process.argv.splice(2);
@@ -22,27 +22,27 @@ if (argv.length !== 4) {
 
 const algorithmMap =
 {
-    "random": {alg: () => Math.random(), highBetter: true},
-    "0point": {alg: balance, highBetter: false},
-    "distance": {alg: maxDistance, highBetter: true},
-    "amalgemation": {alg: (criteria) => 22 - maxDistance(criteria) + balance(criteria), highBetter: false},
-    "mindistance": {alg: splitAvgMinDistance, highBetter: true},
-    "vectormindistance0.5constant": {alg: (criteria) => averageVectorMinDistance(criteria, 0.5, weightFunctions.constant), highBetter: true},
-    "vectormindistance1constant": {alg: (criteria) => averageVectorMinDistance(criteria, 1, weightFunctions.constant), highBetter: true},
-    "vectormindistance2constant": {alg: (criteria) => averageVectorMinDistance(criteria, 2, weightFunctions.constant), highBetter: true},
-    "vectormindistance3constant": {alg: (criteria) => averageVectorMinDistance(criteria, 3, weightFunctions.constant), highBetter: true},
-    "vectormindistance0.5sigmoid": {alg: (criteria) => averageVectorMinDistance(criteria, 0.5, weightFunctions.sigmoid0to2), highBetter: true},
-    "vectormindistance1sigmoid": {alg: (criteria) => averageVectorMinDistance(criteria, 1, weightFunctions.sigmoid0to2), highBetter: true},
-    "vectormindistance2sigmoid": {alg: (criteria) => averageVectorMinDistance(criteria, 2, weightFunctions.sigmoid0to2), highBetter: true},
-    "vectormindistance3sigmoid": {alg: (criteria) => averageVectorMinDistance(criteria, 3, weightFunctions.sigmoid0to2), highBetter: true},
-    "vectoravgdistance0.5constant": {alg: (criteria) => averageVectorDistance(criteria, 0.5, weightFunctions.constant), highBetter: true},
-    "vectoravgdistance1constant": {alg: (criteria) => averageVectorDistance(criteria, 1, weightFunctions.constant), highBetter: true},
-    "vectoravgdistance2constant": {alg: (criteria) => averageVectorDistance(criteria, 2, weightFunctions.constant), highBetter: true},
-    "vectoravgdistance3constant": {alg: (criteria) => averageVectorDistance(criteria, 3, weightFunctions.constant), highBetter: true},
-    "vectoravgdistance0.5sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 0.5, weightFunctions.sigmoid0to2), highBetter: true},
-    "vectoravgdistance1sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 1, weightFunctions.sigmoid0to2), highBetter: true},
-    "vectoravgdistance2sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 2, weightFunctions.sigmoid0to2), highBetter: true},
-    "vectoravgdistance3sigmoid": {alg: (criteria) => averageVectorDistance(criteria, 3, weightFunctions.sigmoid0to2), highBetter: true},
+    "random": () => Math.random(),
+    "0point": balance,
+    "distance": maxDistance,
+    "amalgemation": (criteria) => maxDistance(criteria) + balance(criteria),
+    "mindistance": splitAvgMinDistance,
+    "vectormindistance0.5constant": (criteria) => averageVectorMinDistance(criteria, 0.5, weightFunctions.constant),
+    "vectormindistance1constant": (criteria) => averageVectorMinDistance(criteria, 1, weightFunctions.constant),
+    "vectormindistance2constant": (criteria) => averageVectorMinDistance(criteria, 2, weightFunctions.constant),
+    "vectormindistance3constant": (criteria) => averageVectorMinDistance(criteria, 3, weightFunctions.constant),
+    "vectormindistance0.5sigmoid": (criteria) => averageVectorMinDistance(criteria, 0.5, weightFunctions.sigmoid0to2),
+    "vectormindistance1sigmoid": (criteria) => averageVectorMinDistance(criteria, 1, weightFunctions.sigmoid0to2),
+    "vectormindistance2sigmoid": (criteria) => averageVectorMinDistance(criteria, 2, weightFunctions.sigmoid0to2),
+    "vectormindistance3sigmoid": (criteria) => averageVectorMinDistance(criteria, 3, weightFunctions.sigmoid0to2),
+    "vectoravgdistance0.5constant": (criteria) => averageVectorDistance(criteria, 0.5, weightFunctions.constant),
+    "vectoravgdistance1constant": (criteria) => averageVectorDistance(criteria, 1, weightFunctions.constant),
+    "vectoravgdistance2constant": (criteria) => averageVectorDistance(criteria, 2, weightFunctions.constant),
+    "vectoravgdistance3constant": (criteria) => averageVectorDistance(criteria, 3, weightFunctions.constant),
+    "vectoravgdistance0.5sigmoid": (criteria) => averageVectorDistance(criteria, 0.5, weightFunctions.sigmoid0to2),
+    "vectoravgdistance1sigmoid": (criteria) => averageVectorDistance(criteria, 1, weightFunctions.sigmoid0to2),
+    "vectoravgdistance2sigmoid": (criteria) => averageVectorDistance(criteria, 2, weightFunctions.sigmoid0to2),
+    "vectoravgdistance3sigmoid": (criteria) => averageVectorDistance(criteria, 3, weightFunctions.sigmoid0to2),
 };
 
 const studentArray = JSON.parse(fs.readFileSync(argv[2])).map((s) => studentToStudent(s));
@@ -59,7 +59,7 @@ if (algorithm === undefined) {
 }
 const weights = {heterogenous: 1, homogenous: 1, subjects: 1};
 const customMasterAlgorithm = (heterogenousCri, homogenousCri, subjectCri) =>
-    masterAlg(algorithm.alg, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjectCri, weights);
+    masterAlg(algorithm, averagePreferenceAlg, averagePreferenceAlg, heterogenousCri, homogenousCri, subjectCri, weights);
 const groupFormation = new GroupFormation(studentArray, Number(argv[1]), customMasterAlgorithm);
 
 createBestGroups();
@@ -107,15 +107,9 @@ function isDone() {
  */
 function bestCandidate(candidateScores) {
     let g;
-    let v = algorithm.highBetter ? -Infinity : Infinity;
+    let v = -Infinity;
     for (let [group, value] of candidateScores) {
-        if (algorithm.highBetter) {
-            if (v < value) {
-                g = group;
-                v = value;
-            }
-        }
-        else if (v > value) {
+        if (v < value) {
             g = group;
             v = value;
         }
