@@ -27,10 +27,13 @@ function balance(criteria){
     assertArraysOfArrayNotEmpty(criteria);
     assertArrayLengthEq(...criteria);
 
-
+    // Criteria must be transposed so it is an array of criterias and their students
     return transposeArray(criteria)
-        // Summate the criteria
-        .reduce((a, b) => a + Math.abs(b.reduce((c, d) => c + d)), 0);
+        // Summate students criterium values for the criteria
+        .reduce((outerSum, criterium) =>
+            outerSum + Math.abs(criterium.reduce((innerSum, criValue) =>
+                innerSum + criValue)),
+        0);
 }
 
 module.exports = {balance};
