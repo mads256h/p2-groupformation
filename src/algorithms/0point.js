@@ -28,9 +28,9 @@ function balance(criteria){
     assertArrayLengthEq(...criteria);
 
 
-    return -transposeArray(criteria)
+    return (-transposeArray(criteria)
         // Summate the criteria
-        .reduce((a, b) => a + Math.abs(b.reduce((c, d) => c + d)), 0);
+        .reduce((a, b) => a + Math.abs(b.reduce((c, d) => c + d)), 0));
 }
 
 module.exports = {balance};
