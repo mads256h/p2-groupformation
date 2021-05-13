@@ -11,6 +11,20 @@ Compatabillity is calculated by an algorithm assessing the two groups' criteria.
 
 There are serveral different subprograms that we developed to help assess different algorithms.
 
+To run any of these programs you need to have `node` and `npm` installed.
+Windows users need to download and install node from here:
+https://nodejs.org/en/download/
+
+Archlinux user can install these programs with this command:
+```
+sudo pacman -Suy nodejs npm
+```
+
+`cd` into this project and run the following command to install the dependencies:
+```
+npm install
+```
+
 ## Generators
 
 The `src/gen` folder contains programs that are used to generate students and groups.
