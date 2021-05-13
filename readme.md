@@ -12,7 +12,7 @@ Compatabillity is calculated by an algorithm assessing the two groups' criteria.
 There are serveral different subprograms that we developed to help assess different algorithms.
 
 To run any of these programs you need to have `node` and `npm` installed.
-Windows users need to download and install node from here:
+Windows users need to download and install node from here (make sure you dont grab the lts version):
 https://nodejs.org/en/download/
 
 Archlinux user can install these programs with this command:
