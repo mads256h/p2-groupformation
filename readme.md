@@ -20,7 +20,7 @@ Archlinux user can install these programs with this command:
 sudo pacman -Suy nodejs npm
 ```
 
-`cd` into this project and run the following command to install the dependencies:
+Clone the project, `cd` into this project and run the following command to install the dependencies:
 ```
 npm install
 ```
